@@ -1,0 +1,34 @@
+@import '../../../scss/vars';
+
+.menu {
+    &__enter-btn {
+        text-transform: uppercase;
+        color: $white;
+        padding: 10px 15px;
+        border-radius: 10px;
+        background-color: $red;
+        transition: background-color 0.4s, color 0.4s, color 0.4s;
+
+        &:focus {
+            outline-color: transparent;
+            background-color: $black;
+        }
+
+        &:hover {
+            border-radius: 10px;
+            background-color: $black;
+        }
+
+        &.active {
+            background-color: $black;
+        }
+
+        @include r($mobile-xl) {
+            margin-right: 10px;
+        }
+
+        @include r($mobile-sm) {
+            margin-right: 0;
+        }
+    }
+}

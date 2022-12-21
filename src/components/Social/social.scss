@@ -1,0 +1,50 @@
+@import '../../scss/vars';
+
+.social {
+    display: flex;
+    max-width: 100%;
+
+    &__item {
+        
+        &:not(:last-child) {
+            margin-right: 15px;
+        }
+    }
+
+    &__link {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background-repeat: no-repeat;
+        background-position: center;
+        padding: 20px 43px;
+        border: 1px solid $white;
+        border-radius: 50px;
+        transition: background-color 0.4s, border 0.4s;
+
+        &:hover {
+            background-color: $red;
+            border-color: transparent;
+        }
+
+        &--google {
+            background-image: url(../../assets/images/google__plus-icon.svg);
+        }
+
+        &--facebook {
+            background-image: url(../../assets/images/facebook-icon.svg);
+        }
+
+        &--twitter {
+            background-image: url(../../assets/images/twitter-icon.svg);
+        }
+
+        &--instagram {
+            background-image: url(../../assets/images/instagram-icon.svg);
+        }
+
+        &:focus {
+            border-color: $red;
+        }
+    }
+}

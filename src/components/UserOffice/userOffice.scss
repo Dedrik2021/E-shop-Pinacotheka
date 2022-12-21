@@ -1,0 +1,128 @@
+@import '../../scss/vars';
+
+.user {
+    position: relative;
+    margin-right: 0;
+    max-width: 330px;
+    z-index: 10;
+
+    &__img {
+        position: absolute;
+        object-fit: cover;
+        left: -90px;
+        border-radius: 50%;
+        height: 70px;
+        width: 70px;
+        top: -15px;
+
+    }
+
+    &-dropdown {
+        position: absolute;
+        display: flex;
+        flex-direction: column;
+        opacity: 0;
+        visibility: hidden;
+        background-color: $white;
+        box-shadow: 0px 5px 7px 0px rgb(0 0 0 / 50%);
+        border-radius: 10px;
+        top: 35px;
+        padding: 10px;
+        width: 100%;
+        transition: visibility 0.3s ease-in-out, opacity 0.3s ease-in-out, top 0.3s ease-in-out;
+
+        &.active {
+            top: 50px;
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .user__link,
+        &__name,
+        &__title {
+            font-family: $journalism;
+            font-weight: 900;
+        }
+
+        &__title {
+            font-size: 22px;
+            margin-bottom: 20px;
+            text-align: center;
+            background-color: $gray-300;
+            padding: 5px 0;
+            border-radius: 10px;
+        }
+
+        &__name {
+            font-size: 25px !important;
+            padding-top: 10px;
+            color: #CE0020;
+            font-size: 20px;
+            word-wrap: break-word;
+            @include line-clamp(1)
+        }
+    }
+
+    &__list {
+        margin-bottom: 30px;
+        padding: 0 10px;
+    }
+
+    &__item {
+
+        &:not(:last-child) {
+            margin-bottom: 15px;
+        }
+
+        // &:last-child {
+        //     padding-top: 20px;
+        // }
+    }
+
+    &__link {
+        border-bottom: 2px solid transparent;
+        font-size: 25px;
+        transition: border-bottom-color 0.3s ease-in-out, color 0.3s ease-in-out;
+
+        &:hover {
+            color: $red;
+        }
+
+        &.active {
+            border-bottom-color: $red;
+        }
+
+        span {
+            padding-left: 10px;
+            color: $red;
+            font-family: $journalism;
+            font-size: 25px;
+            font-weight: 900;
+        }
+    }
+
+    &__btn {
+        padding: 10px 80px;
+        border-radius: 10px;
+        position: relative;
+        top: -5px;
+        z-index: 1;
+        transition: background-color 0.3s ease-in-out;
+
+        &.active {
+            background-color: $black;
+        }
+
+        svg {
+            fill: $white;
+            position: absolute;
+            right: 20%;
+            top: 50%;
+            transform: translateY(-50%);
+        }
+
+        &--logout {
+            padding: 5px 25px 7px;
+        }
+    }
+}

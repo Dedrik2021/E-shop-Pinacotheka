@@ -1,0 +1,72 @@
+@import '../../../scss/vars';
+
+.gallery-filters {
+    display: flex;
+    margin-bottom: 55px;
+    position: relative;
+
+    @include r($mobile-sm) {
+        background-color: $gray;
+        margin-bottom: 30px;
+        max-width: 100%;
+        width: 100%;
+        border-radius: 20px;
+        height: 50px;
+        align-items: center;
+        overflow-x: auto;
+    }
+
+    &::-webkit-scrollbar {
+        height: 0;
+    }
+
+    &__item {
+
+        @include r($mobile-sm) {
+            min-width: 150px;
+            margin: 0 10px;
+        }
+
+        &:not(:last-child) {
+            margin-right: 10px;
+        }
+    }
+
+    &__btn {
+        color: $gray;
+        padding: 7px 16px;
+        border-bottom: 2px solid transparent;
+        transition: background-color 0.4s, color 0.4s, border-bottom-color 0.4s;
+
+        @include r($mobile-md) {
+            padding: 7px 10px;
+        }
+
+        @include r($mobile-sm) {
+            border-radius: 10px;
+            background-color: $red;
+            color: $white;
+            width: 100%;
+        }
+
+        &.active {
+            border-radius: 10px;
+            background-color: $white;
+            font-size: 16px;
+            color: $black;
+            pointer-events: none;
+            border-bottom: none;
+        }
+
+        &:hover {
+            border-radius: 10px;
+            background-color: $red;
+            color: $white;
+        }
+
+        &:focus {
+            outline: transparent;
+            border-bottom-color: $red;
+        }
+    }
+}

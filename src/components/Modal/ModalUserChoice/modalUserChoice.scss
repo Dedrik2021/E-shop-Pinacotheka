@@ -1,0 +1,25 @@
+@import '../../../scss/vars';
+
+.modal-form {
+    &__top {
+        margin-bottom: 15px;
+
+        @include r($mobile-sm) {
+            margin-bottom: 15px;
+        }
+    }
+
+    &__wrapper,
+    &__top {
+        display: flex;
+    }
+
+    &__wrapper {
+        align-items: center;
+        position: relative;
+
+        &:not(:last-child) {
+            margin-right: 15px;
+        }
+    }
+}

@@ -1,0 +1,63 @@
+@import '../../../scss/vars';
+
+.menu-dropdown {
+    position: absolute;
+    padding: 15px 15px 20px;
+    top: 20px;
+    right: -60px;
+    background-color: $white;
+    text-align: center;
+    opacity: 0;
+    visibility: hidden;
+    border-radius: 10px;
+    width: 200px;
+    box-shadow: 0px 5px 7px 0px rgba(0, 0, 0, 0.5);
+    transition: visibility 0.3s ease-in, opacity 0.3s ease-in, top 0.3s ease-in-out, position 1s ease-in-out;
+
+    @include r($mobile-xl) {
+        position: relative;
+        top: 0px;
+        left: 0;
+        padding: 30px 15px;
+        width: 100%;
+        display: none;
+    }
+
+    @include r($mobile-sm) {
+        padding: 20px 15px;
+    }
+
+    &__item {
+
+        &:not(:last-child) {
+            margin-bottom: 10px;
+            transition: margin-bottom 0.4s ease;
+
+            @include r($mobile-xl) {
+                margin-bottom: 25px;
+            }
+
+            @include r($mobile-sm) {
+                margin-bottom: 15px;
+            }
+        }
+    }
+
+    &__link {
+        font-weight: 600;
+        font-size: 15px;
+        border-bottom: 2px solid transparent;
+        padding-bottom: 3px;
+        transition: border-bottom-color 0.4s;
+
+        @include r($mobile-xl) {
+            font-size: 18px;
+        }
+
+        &:focus,
+        &:hover {
+            outline-color: transparent;
+            border-bottom-color: $red;
+        }
+    }
+}

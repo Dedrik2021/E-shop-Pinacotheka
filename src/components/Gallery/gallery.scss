@@ -1,0 +1,23 @@
+@import '../../scss/vars';
+
+.gallery {
+    background-color: $gray-300;
+    padding: 85px 0 95px;
+    transition: filter 0.2s;
+
+    &.active {
+        filter: blur(10px);
+    }
+
+    @include r($mobile-md) {
+        padding: 60px 0 85px;
+    }
+
+    &__list {
+        margin-bottom: 120px;
+    }
+
+    &__item {
+        height: auto;
+    }
+}

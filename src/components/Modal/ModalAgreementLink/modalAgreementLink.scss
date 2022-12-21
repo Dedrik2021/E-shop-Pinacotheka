@@ -1,0 +1,40 @@
+@import '../../../scss/vars';
+
+.modal-form {
+    &__wrapper-box {
+        display: flex;
+        position: relative;
+
+        @include r($mobile-sm) {
+            align-items: center;
+        }
+
+        .checkbox-custom {
+            max-width: 15px;
+            width: 100%;
+        }
+
+        .modal-form__label {
+            font-size: 12px !important;
+            line-height: 1.5;
+            position: relative;
+
+            @include r($mobile-sm) {
+                color: $red;
+            }
+
+            a {
+                font-size: 12px;
+                color: $black;
+                border-bottom: 1px solid $black;
+                transition: border-bottom-color 0.4s;
+
+                &:focus,
+                &:hover {
+                    outline: transparent;
+                    border-bottom-color: $red;
+                }
+            }
+        }
+    }
+}

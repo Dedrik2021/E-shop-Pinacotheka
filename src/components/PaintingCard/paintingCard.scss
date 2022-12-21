@@ -1,0 +1,207 @@
+@import '../../scss/vars';
+
+.painting-card {
+    position: relative;
+    height: 100%;
+    width: 100%;
+    border-radius: 10px;
+    padding: 10px;
+    transition: background-color 0.5s, border-bottom-right-radius 0.5s, border-bottom-left-radius 0.5s;
+
+    @include r($mobile-lg) {
+        background-color: $white;
+        box-shadow: 3px 5px 10px -2px rgba(0, 0, 0, 0.5);
+        border-bottom-right-radius: 0;
+        border-bottom-left-radius: 0;
+    }
+
+    &:hover {
+        background-color: $white;
+        border-bottom-right-radius: 0;
+        border-bottom-left-radius: 0;
+
+        .painting-card__buy {
+            opacity: 1;
+            visibility: visible;
+            bottom: -60px;
+
+            @include r($mobile-lg) {
+                bottom: -70px;
+            }
+        }
+    }
+
+    &:focus {
+        outline: transparent;
+        background-color: $white;
+        border-bottom-right-radius: 0;
+        border-bottom-left-radius: 0;
+
+        .painting-card__buy {
+            opacity: 1;
+            visibility: visible;
+            bottom: -60px;
+
+            @include r($mobile-lg) {
+                bottom: -70px;
+            }
+        }
+    }
+
+    &__img-link {
+        display: block;
+        max-width: 100%;
+        background-color: rgba(0, 0, 0, 0.3);
+        height: 293px;
+        border-radius: 10px;
+        margin-bottom: 10px;
+        position: relative;
+        @include liner-gradient;
+
+        img {
+            border-radius: 10px;
+            height: 100%;
+            width: 100%;
+            object-fit: cover;
+        }
+    }
+
+    &__link {
+        display: inline-block;
+        margin-bottom: 5px;
+        border-bottom: 1px solid transparent;
+        transition: border-bottom-color 0.4s, color 0.4s;
+    }
+
+    &__title {
+        @include line-clamp(1);
+    }
+
+    &__price,
+    &__title {
+        font-weight: 700;
+        font-size: 18px;
+        letter-spacing: 0;
+        @include line-clamp(1);
+    }
+
+    &__box {
+        display: flex;
+    }
+
+    &__author-link,
+    &__material {
+        display: block;
+        font-size: 14px;
+        color: $gray-100;
+        letter-spacing: 0;
+        @include line-clamp(1);
+    }
+
+    &__author-link {
+        display: inline-block;
+        margin-bottom: 5px;
+        border-bottom: 1px solid transparent;
+        transition: border-bottom-color 0.4s, color 0.4s;
+
+        &:focus {
+            outline: transparent;
+            border-bottom-color: $black;
+        }
+
+        span {
+            @include line-clamp(1);
+        }
+    }
+
+    &__link,
+    &__author-link {
+
+        &:focus,
+        &:hover {
+            outline: transparent;
+            border-bottom-color: $gray-100;
+        }
+
+        &:hover {
+            color: $red;
+        }
+    }
+
+    &__wrapper {
+        padding-top: 5px;
+    }
+
+    &__rating {
+        display: flex;
+        flex-direction: column;
+        margin-left: auto;
+        align-items: flex-end;
+        padding-top: 5px;
+    }
+
+    &__stars {
+        padding: 0;
+        margin-bottom: 11px;
+    }
+
+    &__price {
+        max-width: 85px;
+    }
+
+    &__buy {
+        position: absolute;
+        bottom: -50px;
+        left: 0;
+        z-index: 5;
+        background-color: $white;
+        display: flex;
+        justify-content: center;
+        padding: 10px;
+        border-bottom-right-radius: 10px;
+        border-bottom-left-radius: 10px;
+        opacity: 0;
+        width: 100%;
+        visibility: hidden;
+        transition: opacity 0.4s, visibility 0.5s, bottom 0.5s;
+
+        @include r($mobile-lg) {
+            visibility: visible;
+            opacity: 1;
+            bottom: -70px;
+            padding: 10px 10px 20px;
+            box-shadow: 3px 10px 10px -2px rgba(0, 0, 0, 0.5);
+        }
+    }
+
+    &__btn {
+        padding: 10px 52px 10px 51px;
+        border: 1px solid $black;
+
+        &:not(:last-child) {
+            margin-right: 10px;
+        }
+
+        &--share,
+        &--favorite {
+            width: 40px;
+            height: 40px;
+            padding: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            &:hover {
+
+                svg {
+                    fill: $white;
+                }
+            }
+
+            svg {
+                fill: $black;
+                transition: fill 0.4s;
+            }
+        }
+    }
+}

@@ -1,0 +1,42 @@
+@import '../../../scss/vars';
+
+.btns-tabs {
+    display: flex;
+    margin-bottom: 10px;
+
+    @include r($mobile-sm) {
+        margin-bottom: 20px;
+    }
+
+    &__item {
+
+        &:not(:last-child) {
+            margin-right: 50px;
+        }
+    }
+
+    &__btn {
+        font-size: 20px;
+        font-weight: 500;
+        color: $gray;
+        border-bottom: 2px solid transparent;
+        padding-bottom: 2px;
+        transition: color 0.4s, border-bottom-color 0.4s;
+
+        &.active {
+            color: $red;
+            pointer-events: none;
+            border-bottom-color: $black;
+        }
+
+        &:focus {
+            outline: transparent;
+            border-bottom-color: $black;
+        }
+
+        &:hover {
+            color: $black;
+            border-bottom-color: $red;
+        }
+    }
+}

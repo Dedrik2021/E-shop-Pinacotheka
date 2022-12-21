@@ -1,0 +1,21 @@
+@import '../../scss/vars';
+
+.app {
+    height: 100%;
+
+    &.lock {
+        overflow: hidden;
+    }
+}
+
+.content-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    height: 100%;
+    transition: filter 0.3s ease-in-out;
+
+    &.active {
+        filter: blur(10px);
+    }
+}

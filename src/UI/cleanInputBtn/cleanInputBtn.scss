@@ -1,0 +1,12 @@
+.clean {
+    position: absolute;
+    right: 20px;
+    opacity: 0.5;
+    top: -50%;
+    transform: translateY(50%);
+    transition: opacity 0.3s;
+
+    &:hover {
+        opacity: 1;
+    }
+}

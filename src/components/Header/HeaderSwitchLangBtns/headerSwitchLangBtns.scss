@@ -1,0 +1,51 @@
+@import '../../../scss/vars';
+
+.language-switcher {
+    display: flex;
+
+    &__item {
+
+        &:not(:last-child) {
+            margin-right: 15px;
+            position: relative;
+
+            &::after {
+                position: absolute;
+                content: "";
+                color: $black;
+                right: -14px;
+                width: 13px;
+                height: 1px;
+                top: 11px;
+                background-color: $black;
+                transform: rotate(-60deg);
+            }
+        }
+    }
+
+    &__btn {
+        font-weight: 400;
+        font-size: 14px;
+        color: $gray;
+        text-transform: uppercase;
+        border-bottom: 1px solid transparent;
+        transition: border-bottom-color 0.4s;
+        margin-bottom: 5px;
+
+        &:hover,
+        &:focus {
+            outline-color: transparent;
+            border-bottom-color: $red;
+            color: $red;
+        }
+
+        &.active {
+            color: $black;
+            pointer-events: none;
+
+            &:focus {
+                border-bottom-color: transparent;
+            }
+        }
+    }
+}
