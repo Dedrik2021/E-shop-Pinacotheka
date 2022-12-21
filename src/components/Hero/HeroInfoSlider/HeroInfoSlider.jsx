@@ -16,6 +16,7 @@ const HeroInfoSlider = memo((props) => {
 			ref={(sliderInfo) => setSliderInfo(sliderInfo)}
 		>
 			{paintingsInfo.map(({ id, works }) => {
+				
 				return (
 					<li className="hero__item" key={id}>
 						<article className="pick-card">
@@ -27,7 +28,7 @@ const HeroInfoSlider = memo((props) => {
 							<div className="pick-card__wrapper">
 								<span>{switchBtn ? 'Autor' : 'Author'}:</span>
 								<Link className="pick-card__author" to={''} rel="author">
-									{works[0].cardInfo[0].info}
+									{works[0].cardInfo[0]}
 								</Link>
 							</div>
 							<span className="pick-card__material">

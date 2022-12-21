@@ -1,0 +1,90 @@
+@import '../../scss/vars';
+
+.pagination {
+    display: none;
+    align-items: center;
+    margin-bottom: 40px;
+
+    @include r($mobile-sm) {
+        margin-bottom: 30px;
+    }
+
+    &__list {
+        display: flex;
+        align-items: center;
+    }
+
+    &__item {
+        margin: 0 5px;
+        background-color: $white;
+
+        &:first-child {
+            margin-left: 15px;
+
+            @include r($mobile-sm) {
+                margin: 0 5px 0 10px;
+            }
+        }
+
+        &:last-child {
+            margin-right: 15px;
+
+            @include r($mobile-sm) {
+                margin-right: 10px;
+            }
+        }
+    }
+
+    &--style {
+        pointer-events: none;
+        background-color: $gray;
+    }
+
+    &__btn {
+        padding: 12px 17px 13px;
+        display: flex;
+        align-items: center;
+        transition: background-color 0.4s, color 0.4s, border-color 0.4s;
+
+        @include r($mobile-md) {
+            padding: 8px 13px 9px;
+        }
+
+        &:hover {
+            background-color: $green;
+            border-color: transparent;
+            color: $white;
+        }
+
+        &--num {
+            border: 1px solid $black;
+            border-radius: 0;
+            cursor: pointer;
+        }
+
+        &--active {
+            pointer-events: none;
+            background-color: $gray;
+            color: $white;
+            border-color: transparent;
+        }
+
+        &--prev,
+        &--next {
+            padding: 0;
+
+            a {
+                padding: 12px 17px 13px;
+            }
+
+            cursor: pointer;
+            &:hover {
+                background-color: $blue;
+            }
+        }
+
+        // &--prev {
+        //     margin-right: 10px;
+        // }
+    }
+}
