@@ -34,12 +34,12 @@ const Home = () => {
 			)}
 			{authorsDataStatus === Status.SUCCESS ? (
 				<>
-					<Gallery switchBtn={switchBtn} />
-					<div className="container">
+					<Gallery switchBtn={switchBtn} gallery={paintingsInfo} />
+					{/* <div className="container">
 						{[...new Array(18)].map((_, i) => (
 							<GallerySkeleton key={i} />
 						))}
-					</div>
+					</div> */}
 				</>
 			) : (
 				<div className="container">

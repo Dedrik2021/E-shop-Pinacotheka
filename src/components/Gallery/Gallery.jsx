@@ -1,79 +1,43 @@
 import { memo, useEffect, useState } from 'react';
-import { collection, query, orderBy, startAfter, limit, getDocs, startAt, doc, getDoc, lastDocs } from "firebase/firestore/lite";
 
 import GalleryFilter from './GalleryFilter/GalleryFilter';
 import PaintingCard from '../PaintingCard/PaintingCard';
 import Pagination from '../Pagination/Pagination';
-import { database } from '../../firebase/firebaseConfig';
 
 import './gallery.scss';
 
-const Gallery = memo(({ switchBtn }) => {
+const Gallery = memo(({ switchBtn, gallery }) => {
 	const [filterBtn, setFilterBtn] = useState(0);
-	const [pageCount, setPageCount] = useState(1);
 	const [dataSelected, setDataSelected] = useState(1);
-	const [authors, setAuthors] = useState([])
-	const [authorsLength, setAuthorsLength] = useState(0)
-	const [lastDocs, setLastDocs] = useState();
+	const [authorsDataLength, setAuthorsDataLength] = useState(0)
+
+	const [limitLast, setLimitLast] = useState(18)
+	const [limitStart, setLimitStart] = useState(18)
 	const works = []
 
-	const collectionRef = collection(database, "authors")
-
-	useEffect(() => {
-		getData();
-		window.scrollTo(0, 0);
-	}, []);
-
-	const getData = async () => {
-		const collectionQuery = query(collectionRef, orderBy('id', 'desc'), limit(18));
-		updateState(collectionQuery);
-	};
-
-
-	const updateState = async (collectionQuery) => {
-		// setLoading(true);
-		const data = await getDocs(collectionQuery);
-		const authorsData = data.docs.map((item) => {
-			return item.data();
-		});
-		const lastDoc = data.docs[data.docs.length - 1];
-		setAuthors(authorsData);
-		setLastDocs(lastDoc);
-
-		const total = await getDocs(collectionRef);
-		const totalLength = total.docs.map((item) => {
-			return item.data();
-		});
-		// setNewsLength(totalLength.length);
-		setPageCount(Math.ceil(totalLength.length / 18));
-		// setLoading(false);
-		return authorsData;
-	};
-
-	console.log(authors);
-
-	const onCurrentPage = (authorsData) => {
-		let currentPage = authorsData.selected + 1;
-		setDataSelected(currentPage);
-
-		if (authorsData.isNext) {
-			const collectionQuery = query(collectionRef, orderBy('id', 'asc'), startAfter(lastDocs), limit(18));
-			updateState(collectionQuery);
-		} else if (authorsData.isPrevious) {
-			//??????????????????????????????
-		}
-	};
-
-	const paintingsInfo = authors.map(item => item.works)
-
-
+	const paintingsInfo = gallery.map(item => item.works)
+	
 	for (const i of paintingsInfo) {
 		works.push(...i);
 	}
+
 	useEffect(() => {
-	
-		setAuthorsLength(Math.ceil(works.length / 18))
-	}, [authors])
+		setAuthorsDataLength(Math.ceil(works.length / 18))
+		setLimitLast(18 * dataSelected)
+		setLimitStart(limitLast - 18)
+	}, [dataSelected, limitLast, works])
+
+	const onCurrentPage = (authorsData) => {
+		setFilterBtn(0)
+		let currentPage = authorsData.selected + 1
+		setDataSelected(currentPage);
+		
+		if (authorsData.isNext) {
+			setLimitLast(limitLast + 18)
+		} else if (authorsData.isPrevious) {
+			setLimitLast(limitLast - 18)
+		}
+	};
 
 	const filterWorks = () => {
 		switch (filterBtn) {
@@ -92,7 +56,7 @@ const Gallery = memo(({ switchBtn }) => {
 		}
 	};
 
-	const paintings = filterWorks().length > 0 ? filterWorks() : works
+	const paintings = filterWorks().length > 0 ? filterWorks() : works.slice(limitStart, limitLast)
 
 	return (
 		<section className={`gallery`}>
@@ -104,17 +68,13 @@ const Gallery = memo(({ switchBtn }) => {
 						filterBtn={filterBtn}
 						clickOnFilterBtn={setFilterBtn}
 					/>
-					{/* <ul className="gallery__list cards-list"> */}
 					<PaintingCard 
 						switchBtn={switchBtn} 
 						paintingsInfo={paintings} 
 					/>
-					{/* {content} */}
-					{/* {errorMessage} */}
-					{/* </ul> */}
 					<Pagination 
 						pageChange={onCurrentPage} 
-						pageCount={authorsLength} 
+						pageCount={authorsDataLength} 
 						dataSelected={dataSelected}
 					/>
 				</div>

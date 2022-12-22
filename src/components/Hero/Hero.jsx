@@ -1,4 +1,4 @@
-import { useState, memo } from 'react';
+import { useState, memo, useEffect } from 'react';
 
 import HeroImgSlider from './HeroImgSlider/HeroImgSlider';
 import HeroInfoSlider from './HeroInfoSlider/HeroInfoSlider';
@@ -31,6 +31,10 @@ const Hero = memo(({ switchBtn, paintingsInfo }) => {
 	const [sliderImg, setSliderImg] = useState();
 	const [sliderInfo, setSliderInfo] = useState();
 	// const dispatch = useDispatch();
+
+	useEffect(() => {
+		window.scrollTo(0, 0);
+	}, [])
 
 	const onPainting = (id) => {
 		const findPainting = {
