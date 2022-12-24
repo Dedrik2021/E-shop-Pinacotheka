@@ -4,9 +4,9 @@ import ContentLoader from 'react-content-loader';
 const AuthorsBlockSkeleton = () => (
 	<ContentLoader
 		speed={2}
-		width={122}
+		width={139}
 		height={150}
-		viewBox="0 0 122 150"
+		viewBox="0 0 139 150"
 		backgroundColor="#b3b2b2"
 		foregroundColor="#f2eeee"
 	>

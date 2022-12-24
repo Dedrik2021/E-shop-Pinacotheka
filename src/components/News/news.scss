@@ -1,0 +1,259 @@
+@import '../../scss/vars';
+
+.news-block {
+    padding-bottom: 130px;
+    transition: filter 0.2s;
+
+    &.active {
+        filter: blur(10px);
+    }
+
+    @include r($screen-xl) {
+        padding-bottom: 70px;
+    }
+
+    @include r($mobile-lg) {
+        padding-bottom: 50px;
+    }
+
+    @include r($mobile-sm) {
+        flex-direction: column;
+    }
+
+    &__title {
+        max-width: 90%;
+
+        @include r($mobile-sm) {
+            max-width: 100%;
+            margin-bottom: 10px;
+        }
+    }
+
+    &__box {
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-end;
+        margin-bottom: 40px;
+
+        @include r($screen-xl) {
+            align-items: center;
+        }
+
+        @include r($mobile-lg) {
+            margin-bottom: 20px;
+        }
+
+        @include r($mobile-sm) {
+            flex-direction: column;
+            margin-bottom: 20px;
+        }
+    }
+
+    // &__list {
+    //     display: flex;
+
+    //     @include r($screen-xl) {
+    //         justify-content: space-around;
+    //     }
+
+    //     @include r($mobile-md) {
+    //         flex-direction: column;
+    //         align-items: center;
+    //     }
+    // }
+
+    // &__item {
+    //     max-width: 535px;
+    //     width: 100%;
+    //     border-radius: 10px;
+    //     margin-bottom: 100px;
+    //     transition: all 0.5s;
+
+    //     @include r($screen-xl) {
+    //         max-width: 640px;
+    //     }
+
+    //     @include r($mobile-md) {
+    //         max-width: 600px;
+    //     }
+
+    //     @include r($mobile-sm) {
+    //         max-width: 450px;
+    //     }
+
+    //     &:not(:last-child) {
+    //         margin-right: 35px;
+
+    //         @include r($screen-xxl) {
+    //             margin-right: 20px;
+    //         }
+
+    //         @include r($mobile-lg) {
+    //             margin-right: 10px;
+    //         }
+
+    //         @include r($mobile-md) {
+    //             margin: 0 0 20px;
+    //         }
+    //     }
+
+    //     &:hover {
+    //         box-shadow: 5px 7px 10px 1px rgba(0, 0, 0, 0.5);                                     
+    //     }
+    // }
+
+    &__link {
+        font-weight: 600;
+        font-size: 14px;
+        color: $gray;
+        border-bottom: 1px solid transparent;
+        transition: color 0.4s, border-bottom-color 0.4s;
+
+        &:focus {
+            outline: transparent;
+            border-bottom-color: $black;
+        }
+
+        &:hover {
+            color: $black;
+            border-bottom-color: $red;
+        }
+
+        .news-card {
+            height: 100%;
+            padding: 10px 10px 0px;
+            
+            &__link {
+                // display: flex;
+                // padding: 5px;
+                border-radius: 10px;
+                transition: box-shadow 0.4s, color 0.4s;
+        
+                @include r($screen-xl) {
+                    padding: 0;
+                    // flex-direction: column;
+                    width: 100%;
+                    height: 100%;
+                }
+        
+                @include r($mobile-lg) {
+                    box-shadow: 5px 7px 10px 1px rgba(0, 0, 0, 0.5);
+                }
+        
+                @include r($mobile-md) {
+                    flex-direction: row;
+                    padding: 5px 0 8px 5px;
+                }
+        
+                @include r($mobile-sm) {
+                    flex-direction: column;
+                    padding: 0;
+                }
+            
+                &:focus {
+                    outline: transparent;
+                    box-shadow: 5px 7px 10px 1px rgba(0, 0, 0, 0.5);                                     
+                }
+            }
+        
+            &__img-wrapper {
+                height: 250px;
+                position: relative;
+                border-radius: 10px;
+                display: flex;
+                justify-content: center;
+                // height: 160px;
+                width: 100%;
+                // margin-right: 15px;
+                @include liner-gradient;
+                transition: box-shadow 0.4s;
+        
+                @include r($screen-xl) {
+                    max-width: 363px;
+                    width: 100%;
+                    padding: 5px 5px 0;
+                    margin-right: 0;
+                }
+        
+                @include r($mobile-md) {
+                    max-width: 263px;
+                    padding: 0;
+                    margin-right: 15px;
+                }
+        
+                @include r($mobile-sm) {
+                    max-width: 100%;
+                    width: 100%;
+                    padding: 10px 10px 0;
+                    margin-right: 0;
+                }
+        
+                &:hover {
+                    box-shadow: 3px 3px 8px 1px rgba(0, 0, 0, 0.5);
+                }
+        
+                img {
+                    border-radius: 10px;
+                    height: 100%;
+                    width: 100%;
+                    object-fit: cover;
+        
+                    // @include r($screen-xl) {
+                    //     max-width: 100%;
+                    //     width: 100%;
+                    //     height: 163px;
+                    // }
+                }
+            }
+        
+            &__box {
+                display: flex;
+                height: auto;
+                flex-direction: column;
+                padding: 20px 0;
+        
+                @include r($screen-xl) {
+                    padding: 20px 15px;
+                }
+        
+                @include r($mobile-md) {
+                    padding: 20px 15px 0 0;
+                }
+        
+                @include r($mobile-sm) {
+                    padding: 20px 15px;
+                }
+            }
+        
+            &__date {
+                font-weight: 400;
+                font-size: 14px;
+                color: $gray;
+                margin-bottom: 20px;
+                letter-spacing: 0;
+        
+                @include r($screen-xxl) {
+                    margin-bottom: 20px;
+                }
+            }
+        
+            &__title {
+                font-size: 18px;
+                font-weight: 600;
+                margin-bottom: 20px;
+                transition: color 0.4s;
+                @include line-clamp(3);
+        
+                &:hover {
+                    color: $red;
+                }
+            } 
+        
+            &__text {
+                p {
+                    @include line-clamp(6);
+                }
+            }
+        }
+    }
+}

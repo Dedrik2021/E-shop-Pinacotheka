@@ -28,12 +28,14 @@ const PaintingCard = memo(({ paintingsInfo, switchBtn }) => {
 	// 	dispatch(changeSinglePainting({ findPainting }));
 	// };
 
+	
 	return (
 		<ul className="gallery__list cards-list">
 			{paintingsInfo.map((item, i) => {
 
 				return (
 					<li className="gallery__item" key={i}>
+						{/* {getContent(item)} */}
 						<article className="painting-card" tabIndex="0">
 							<Link
 								className="painting-card__img-link"

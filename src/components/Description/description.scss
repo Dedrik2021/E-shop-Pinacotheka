@@ -1,0 +1,93 @@
+@import '../../scss/vars';
+
+.descr {
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: cover;
+    padding: 0 0 35px 95px;
+    margin-bottom: 175px;
+    transition: filter 0.2s;
+
+    &.active {
+        filter: blur(10px);
+    }
+
+    @include r($screen-xl) {
+        margin-bottom: 70px;
+    }
+
+    @include r($mobile-xl) {
+        padding: 0;
+    }
+
+    &__content {
+        display: flex;
+        justify-content: space-between;
+
+        @include r($mobile-xl) {
+            flex-direction: column;
+        }
+    }
+
+    &__text {
+        position: relative;
+        background-color: $red;
+        max-width: 1335px;
+        padding: 50px 250px 50px 125px;
+        border-radius: 15px;
+        top: 120px;
+
+        @include r($screen-xxl) {
+            padding: 30px 120px 30px 80px;
+        }
+
+        @include r($screen-xl) {
+            padding: 30px;
+            top: 70px;
+        }
+
+        @include r($mobile-xl) {
+            top: 40px;
+        }
+
+        @include r($mobile-sm) {
+            padding: 30px 20px;
+        }
+
+        p {
+            position: relative;
+            z-index: 1;
+            font-weight: 400;
+            font-size: 16px;
+            color: $white;
+            line-height: 1.9;
+
+            &:not(:last-child) {
+                margin-bottom: 30px;
+
+                @include r($screen-xl) {
+                    margin-bottom: 15px;
+                }
+            }
+        }
+    }
+
+    img {
+
+        @include r($screen-xxl) {
+            margin-right: 30px;
+        }
+
+        @include r($screen-xl) {
+            margin-right: 30px;
+            width: 250px;
+            height: 75px;
+            top: 70px;
+        }
+
+        @include r($mobile-xl) {
+            margin: 0 0 15px;
+            top: 40px;
+        }
+    }
+}

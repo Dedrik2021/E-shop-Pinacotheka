@@ -1,0 +1,99 @@
+@import '../../scss/vars';
+
+.authors-list {
+    padding-bottom: 100px;
+    transition: filter 0.2s;
+
+    &.active {
+        filter: blur(10px);
+    }
+
+    @include r($screen-xl) {
+        padding-bottom: 70px;
+    }
+
+    @include r($mobile-xl) {
+        padding-bottom: 40px;
+    }
+
+    &__title {
+        margin-bottom: 50px;
+
+        @include r($mobile-lg) {
+            margin-bottom: 20px;
+        }
+
+        @include r($mobile-sm) {
+            text-align: center;
+        }
+    }
+
+    &__content,
+    &__list {
+        display: grid;
+        gap: 10px;
+    }
+
+    &__content {
+        grid-template-columns: 12fr 122px;
+
+        @include r($mobile-md) {
+            grid-template-columns: 1fr;
+        }
+    }
+
+    &__list {
+        grid-template-columns: repeat(auto-fit, minmax(122px, 1fr));
+        gap: 19px;
+        margin-right: 10px;
+
+        @include r($mobile-md) {
+            margin: 0 0 10px;
+        }
+    }
+
+    &__item,
+    &__btn {
+        display: flex;
+    }
+
+    &__item {
+        max-width: 100%;
+        flex-direction: column;
+    }
+
+    &__btn {
+        align-items: center;
+        margin: 0 auto;
+        font-weight: 600;
+        padding: 0 15px;
+        font-size: 14px;
+        text-align: center;
+        height: 125px;
+        color: $gray-100;
+        background-color: $gray-400;
+        border-radius: 10px;
+        transition: box-shadow 0.4s, background-color 0.4s, color 0.4s;
+
+        @include r($screen-xxl) {
+            box-shadow: 3px 3px 8px 1px rgba(0, 0, 0, 0.5);
+        }
+
+        @include r($mobile-xl) {
+            height: 100%;
+        }
+
+        @include r($mobile-md) {
+            max-width: 100%;
+            width: 100%;
+            justify-content: center;
+            padding: 50px 0;
+            background-color: $red;
+            color: $white;
+        }
+
+        &:hover {
+            box-shadow: 3px 3px 8px 1px rgba(0, 0, 0, 0.5);
+        }
+    }
+}
