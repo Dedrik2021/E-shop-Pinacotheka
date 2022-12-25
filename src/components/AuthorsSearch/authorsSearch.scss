@@ -1,0 +1,58 @@
+@import '../../scss/vars';
+
+.authors-search {
+    position: relative;
+    margin-right: 25px;
+    max-width: 400px;
+    width: 100%;
+
+    @include r($screen-xl) {
+        margin-right: 20px;
+    }
+
+    @include r($mobile-sm) {
+        margin: 0 0 10px;
+    }
+
+    &__label {
+        position: absolute;
+        top: 13px;
+        margin: auto 0;
+        width: 100%;
+        font-size: 16px;
+        z-index: 5;
+        cursor: pointer;
+        transition: color 0.4s, border-bottom-color 0.4s;
+
+        &:hover {
+            color: $red;
+        }
+    }
+
+    &__search {
+        position: relative;
+        left: 15px;
+        top: 2px;
+    }
+
+    &__input {
+        max-width: 100%;
+        width: 100%;
+        border: 1px solid $gray;
+        border-radius: 10px;
+        font-size: 14px;
+        font-weight: 300;
+        padding: 15px 40px 15px 40px;
+        margin-bottom: 15px;
+
+        @include r($mobile-lg) {
+            border-color: $red;
+        }
+
+        &:focus,
+        &:hover {
+            outline: transparent;
+            border-color: $red;
+        }
+    }
+}

@@ -5,6 +5,7 @@ import Social from '../../Social/Social';
 import ModalAgreementLink from '../ModalAgreementLink/ModalAgreementLink';
 import ModalPasswordLink from '../ModalPasswordLink/ModalPasswordLink';
 import ModalUsersChoice from '../ModalUserChoice/ModalUsersChoice';
+
 import CleanInputBtn from '../../../UI/cleanInputBtn/CleanInputBtn';
 import ShowPasswordBtn from '../../../UI/showPsswordBtn/ShowPasswordBtn';
 

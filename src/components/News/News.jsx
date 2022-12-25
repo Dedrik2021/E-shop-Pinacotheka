@@ -1,13 +1,10 @@
 import { useEffect, useState, memo, useMemo } from 'react';
 import { Link } from 'react-router-dom';
-import { collection, getDocs, limit, orderBy, query } from 'firebase/firestore/lite';
-import { useSelector } from 'react-redux';
 
 import NewsCard from '../NewsCard/NewsCard';
 import Pagination from '../Pagination/Pagination';
 
 import NewsBlockSkeleton from '../../skeletons/newsBlockSkeleton';
-import { database } from '../../firebase/firebaseConfig';
 
 import './news.scss';
 
@@ -17,57 +14,6 @@ const News = memo(({ switchBtn, newsData }) => {
 	const [limitStart, setLimitStart] = useState(4);
 	const [loading, setLoading] = useState(false);
 	const [dataSelected, setDataSelected] = useState(1);
-	// const [news, setNews] = useState([]);
-	// const [loading, setLoading] = useState(true)
-	// const collectionRef = collection(database, 'news')
-	// const modal = useSelector(state => state.authorsInfos.modal)
-	// const switchLanguageBtn = useSelector((state) => state.filters.switchLanguageBtn);
-	// const switchBtn = switchLanguageBtn[0] === 0
-
-	// useEffect(() => {
-	//     getData()
-	// },[])
-
-	// const getData = async () => {
-	//     setLoading(true)
-	//     const collectionQuery = query(collectionRef, orderBy('id', 'desc'), limit(4))
-	//     const dataNews = await getDocs(collectionQuery)
-	//     const newsData = dataNews.docs.map(item => {
-	//         return item.data()
-	//     })
-	//     setNews(newsData)
-	//     setLoading(false)
-	// }
-
-	// console.log(news);
-
-	// useEffect(() => {
-	//     fetchNews()
-	// }, [])
-
-	// const fetchNews = async (currentPage) => {
-	//     setLoading(true)
-	//     const response = await fetch(`http://localhost:3001/news?_page=${currentPage}&_limit=4`);
-	//     const data = await response.json();
-	//     setNews(data)
-	//     // const total = response.headers.get('x-total-count')
-	//     // setPageCount(Math.ceil(total/4))
-	//     setLoading(false)
-	//     return data;
-	// };
-
-	// const onCurrentPage = async (data) => {
-	//     let currentPage = data.selected + 1
-	//     setDataSelected(currentPage)
-	//     const fetchItems = await fetchNews(currentPage)
-	//     setNews(fetchItems)
-	// }
-
-	// const content = loading ? (
-	// 	[...new Array(4)].map((_, i) => <NewsBlockSkeleton key={i} />)
-	// ) : (
-	// 	<NewsCard news={news} />
-	// );
 
 	useMemo(() => {
 		setLoading(true);
@@ -82,13 +28,13 @@ const News = memo(({ switchBtn, newsData }) => {
 		setNewsDataLength(Math.ceil(newsData.length / 4));
 	}, [newsData]);
 
-	const onCurrentPage = (authorsData) => {
-		let currentPage = authorsData.selected + 1;
+	const onCurrentPage = (data) => {
+		let currentPage = data.selected + 1;
 		setDataSelected(currentPage);
 
-		if (authorsData.isNext) {
+		if (data.isNext) {
 			setLimitLast(limitLast + 4);
-		} else if (authorsData.isPrevious) {
+		} else if (data.isPrevious) {
 			setLimitLast(limitLast - 4);
 		}
 	};

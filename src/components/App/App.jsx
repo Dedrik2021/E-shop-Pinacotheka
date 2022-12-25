@@ -1,20 +1,22 @@
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import { Suspense } from 'react';
+import { useSelector } from 'react-redux';
 
-import { MainLayout, Home } from '../../pages/indexPage';
+import { MainLayout, Home, Authors } from '../../pages/indexPage';
 
 import './app.scss';
 import '../../scss/style.scss'
 
 const App = () => {
+
 	return (
 		<Router>
 			<Suspense>
 				<Routes>
 					<Route path="/" element={<MainLayout />}>
 						<Route path="" element={<Home />} />
-						{/* <Route path={switchBtn ? '/Autoren' : '/Authors'} element={<Authors />} />
-						<Route
+						<Route path={'/Authors'} element={<Authors />} />
+						{/* <Route
 							path={`${switchBtn ? '/Autor/' : '/Author/'}:id`}
 							element={<AboutAuthor />}
 						/>

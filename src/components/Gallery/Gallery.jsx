@@ -89,8 +89,7 @@ const Gallery = memo(({ switchBtn, gallery }) => {
 					overflow: filterBtn > 0 && 'auto',
 					borderBottom: filterBtn > 0 && '43px solid #EDEDED',
 					boxShadow: filterBtn > 0 && '0px 0px 10px 2px rgba(0, 0, 0, 0.5)',
-					borderTop: '20px solid #EDEDED',
-					borderRadius: '20px'
+					marginBottom: filterBtn > 0 ? '100px' : '97px',
 					}} 
 					>
 					{!loading ? (
@@ -101,8 +100,8 @@ const Gallery = memo(({ switchBtn, gallery }) => {
 							/>
 						</>
 					) : (
-						<div className="container" style={{ height: '1195px', marginBottom: '101px' }}>
-							{[...new Array(18)].map((_, i) => (
+						<div className="container" style={{ height: '1195px', marginBottom: '97px', padding: '0' }}>
+							{[...new Array(paintings.length)].map((_, i) => (
 								<GallerySkeleton key={i} />
 							))}
 						</div>

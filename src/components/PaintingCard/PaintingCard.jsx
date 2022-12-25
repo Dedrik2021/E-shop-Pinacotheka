@@ -1,5 +1,4 @@
 import { Link } from 'react-router-dom';
-import { useDispatch, useSelector } from 'react-redux';
 import { memo } from 'react';
 
 import FavoriteIcon from '../../assets/sprite/favorit-icon.svg';
@@ -7,27 +6,7 @@ import ShareIcon from '../../assets/sprite/share-icon.svg';
 
 import './paintingCard.scss';
 
-// const PaintingCard = memo((props) => {
-// 	const { works } = props;
-
-// 	const content = works.map((item) => <Painting key={item.id} item={item} props={props} />);
-
-// 	return <>{content}</>;
-// });
-
 const PaintingCard = memo(({ paintingsInfo, switchBtn }) => {
-	// const dispatch = useDispatch();
-	// const switchLanguageBtn = useSelector((state) => state.filters.switchLanguageBtn);
-	// const switchBtn = switchLanguageBtn[0] === 0
-
-	// const onAuthorInfo = () => {
-	// 	const findPainting = {
-	// 		painting: item.id,
-	// 	};
-	// 	dispatch(setAuthorInfoBtn(0));
-	// 	dispatch(changeSinglePainting({ findPainting }));
-	// };
-
 	
 	return (
 		<ul className="gallery__list cards-list">

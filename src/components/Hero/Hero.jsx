@@ -30,7 +30,6 @@ const PrevArrow = (props) => {
 const Hero = memo(({ switchBtn, paintingsInfo }) => {
 	const [sliderImg, setSliderImg] = useState();
 	const [sliderInfo, setSliderInfo] = useState();
-	// const dispatch = useDispatch();
 
 	useEffect(() => {
 		window.scrollTo(0, 0);
@@ -40,7 +39,6 @@ const Hero = memo(({ switchBtn, paintingsInfo }) => {
 		const findPainting = {
 			painting: id,
 		};
-		// dispatch(changeSinglePainting({ findPainting }));
 	};
 
 	const imgSlider = {

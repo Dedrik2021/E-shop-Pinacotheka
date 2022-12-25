@@ -14,7 +14,8 @@ import UserOffice from '../UserOffice/UserOffice';
 import { realDb } from '../../firebase/firebaseConfig';
 
 import { setSwitchLanguageBtn } from '../../redux/slices/langBtnsSlice';
-import { setUserOfficeDropdown } from '../../redux/modules/users/usersSlice';
+import { setUserOfficeDropdown, setFoundUser } from '../../redux/modules/users/usersSlice';
+import { searchData } from '../../services/data/searchData';
 import { fetchAuthorsData } from '../../redux/modules/authors/authorsThunks';
 import { fetchNewsData } from '../../redux/modules/news/newsThunks';
 import { fetchUsersData } from '../../redux/modules/users/usersThunks';
@@ -46,9 +47,7 @@ const Header = memo(({ clickOpenLogout, openLogout }) => {
 	const [scroll, setScroll] = useState(false)
 
 	const authorsData = useSelector((state) => state.authorsSlice.authorsData);
-
 	const newsData = useSelector((state) => state.newsSlice.newsData);
-
 	const { usersData, usersDataStatus } = useSelector((state) => state.usersSlice);
 
 	const switchLanguageBtn = useSelector((state) => state.langBtnsSlice.switchLanguageBtn);
@@ -67,6 +66,14 @@ const Header = memo(({ clickOpenLogout, openLogout }) => {
 			href: switchBtn ? '/Arbeitsplan' : '/WorkSchedule',
 		},
 	];
+
+	const foundUser = user &&
+			(usersData.find((item) => item.emailId === user.email) ||
+			authorsData.find(item => item.emailId === user.email))
+
+	useEffect(() => {
+			dispatch(setFoundUser(foundUser))
+	}, [dispatch, foundUser])
 
 	useEffect(() => {
 		onAuthStateChanged(auth, (snapshot) => {
@@ -97,6 +104,7 @@ const Header = memo(({ clickOpenLogout, openLogout }) => {
 				setScroll(true);
 				setDropdown(false);
 				setOpenMenu(false)
+				dispatch(setUserOfficeDropdown(false))
 			} else {
 				setScroll(false);
 			}
@@ -174,34 +182,19 @@ const Header = memo(({ clickOpenLogout, openLogout }) => {
 		setOpenMenu(!openMenu);
 	};
 
-	const searchData = (searchInput, items) => {
-		if (searchInput.val.trim().length === 0) {
-			return items;
-		}
-
-		return items.filter((item) => {
-			if (item.title.toLowerCase().indexOf(searchInput.val.toLowerCase().trim()) > -1) {
-				return true;
-			}
-		});
-	};
-
 	const changeAuth = () => {
 		if (user !== null) {
-			// const findUser = user &&
-			// 	(users.find((item) => item.emailId === user.email) ||
-			// 	authors.find(item => item.emailId === user.email))
-			const findUser = usersData.find((item) => item.emailId === user.email);
 			const userContent =
 				usersDataStatus === Status.LOADING || usersDataStatus === Status.ERROR ? (
 					<UserAuthSkeleton />
 				) : (
 					<UserOffice
 						logOut={clickOpenLogout}
-						findUser={findUser}
+						findUser={foundUser}
 						userOfficeDropdownRefs={userOfficeDropdownRefs}
 						switchBtn={switchBtn}
 						openLogout={openLogout}
+						setUserOfficeDropdown={setUserOfficeDropdown}
 					/>
 				);
 			return userContent;
@@ -254,7 +247,7 @@ const Header = memo(({ clickOpenLogout, openLogout }) => {
 							<li
 								className={`menu__item menu__item--dropdown 
 								${dropdown ? 'active' : ''}`}
-								onFocus={() => setDropdown(true)}
+								onClick={() => setDropdown(true)}
 							>
 								<button className={`menu__link `} type="button">
 									{switchBtn ? 'Katalog' : 'Catalog'}

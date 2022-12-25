@@ -1,6 +1,5 @@
 import { memo } from 'react';
 import { Link } from 'react-router-dom';
-import { useSelector } from 'react-redux';
 
 import './newsCard.scss'
 

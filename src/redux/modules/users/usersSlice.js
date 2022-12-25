@@ -5,6 +5,7 @@ import { Status } from "../../../utils/status/status"
 
 const initialState = {
     userOfficeDropdown: false,
+    foundUser: {},
     usersData: [],
     usersDataStatus: Status.LOADING
 }
@@ -15,6 +16,9 @@ const usersInfoSlice = createSlice({
     reducers: {
         setUserOfficeDropdown(state, action) {
             state.userOfficeDropdown = action.payload
+        },
+        setFoundUser(state, action) {
+            state.foundUser = action.payload
         }
     },
     extraReducers: (builder) => {
@@ -34,6 +38,6 @@ const usersInfoSlice = createSlice({
     }
 })
 
-export const {setUserOfficeDropdown} = usersInfoSlice.actions
+export const {setUserOfficeDropdown, setFoundUser} = usersInfoSlice.actions
 
 export default usersInfoSlice.reducer

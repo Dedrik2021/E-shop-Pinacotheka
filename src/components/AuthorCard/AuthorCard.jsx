@@ -1,11 +1,15 @@
 import { memo } from 'react';
 import {Link} from 'react-router-dom'
+import { getAuth } from 'firebase/auth';
 
 import unknowImg from '../../assets/images/unknow-photo.png';
 
 import './authorCard.scss'
 
-const AuthorCard = memo(({item, switchBtn}) => {
+const AuthorCard = memo(({item, switchBtn, foundUser}) => {
+	const auth = getAuth()
+	const user = auth.currentUser
+
 	return (
 		<li className="authors-list__item" key={item.id}>
 			<article className="author-card">
@@ -24,13 +28,15 @@ const AuthorCard = memo(({item, switchBtn}) => {
 					<span className="author-card__portfolio">{item.works.length}</span>
 
 					<span
-						className={`author-card__online`}
-						// ${
-						// 	foundUser !== undefined &&
-						// 	item.emailId === foundUser.emailId
-						// 		? 'active'
-						// 		: ''
-						// }
+						className={`author-card__online ${
+							user !== null ? foundUser !== undefined &&
+							item.emailId === foundUser.emailId : foundUser !== null &&
+							item.emailId === foundUser.emailId
+							
+								? 'active'
+								: ''
+						}`}
+						
 					></span>
 				</Link>
 

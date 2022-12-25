@@ -120,7 +120,7 @@
     position: absolute;
     left: -470px;
     bottom: 0px !important;
-    z-index: -1;
+    z-index: 5;
 
     @include r($mobile-md) {
         bottom: 28px;

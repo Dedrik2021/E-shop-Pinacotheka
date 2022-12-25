@@ -5,15 +5,13 @@ import { Link } from 'react-router-dom';
 
 import { database } from '../../firebase/firebaseConfig';
 
-import { setUserOfficeDropdown } from '../../redux/modules/users/usersSlice';
-
 import unknowImg from '../../assets/images/unknow-photo.png'
 import UserIcon from '../../assets/sprite//user-icon.svg';
 
 import './userOffice.scss'
 
 const UserOffice = memo((props) => {
-	const { logOut, findUser, userOfficeDropdownRefs, openLogout } = props;
+	const { logOut, findUser, userOfficeDropdownRefs, openLogout, setUserOfficeDropdown } = props;
 
 	const dispatch = useDispatch();
 	const linkRefs = useRef([]);
@@ -162,7 +160,7 @@ const UserOffice = memo((props) => {
 					{getDate()}!<span className="user-dropdown__name">{findUser && findUser.title}</span>
 				</div>
 				<ul className="user__list">
-					{findUser && findUser.user === 'author'
+					{findUser && findUser.user === 'authors'
 						? authorLinks.map(({ id, title, path, countItems }) => {
 								return (
 									<li className="user__item" key={id}>

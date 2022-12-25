@@ -1,36 +1,11 @@
-import { useEffect, useState, memo } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { memo } from 'react';
 import { Link } from 'react-router-dom';
-import { getAuth } from 'firebase/auth';
 
 import AuthorCard from '../AuthorCard/AuthorCard';
 
-import AuthorsBlockSkeleton from '../../skeletons/authorsBlockSkeleton';
-
-
 import './authors.scss'
 
-const Authors = memo(({authorsData, switchBtn}) => {
-	// const [authors, setAuthors] = useState([]);
-	// const auth = getAuth();
-	// const dispatch = useDispatch();
-	// const modal = useSelector((state) => state.authorsInfos.modal);
-	// const { authors, authorsStatus } = useSelector((state) => state.authorsInfos);
-	// const foundUser = useSelector((state) => state.user.foundUser);
-
-	// console.log(authors);
-	// const userOnline = authors.find
-	// useEffect(() => {
-	// 	const getAuthors = async () => {
-	// 		try {
-	// 			const response = await fetch(`http://localhost:3001/items?_limit=11`);
-	// 			const data = await response.json();
-	// 			setAuthors(data);
-	// 			return data;
-	// 		} catch (error) {console.log(error);}
-	// 	};
-	// 	getAuthors();
-	// }, []);
+const Authors = memo(({authorsData, switchBtn, foundUser}) => {
 
 	return (
 		<div className={`authors-list `}>
@@ -46,6 +21,7 @@ const Authors = memo(({authorsData, switchBtn}) => {
                                     key={item.id}
                                     switchBtn={switchBtn}
                                     item={item}
+									foundUser={foundUser}
                                 />
 								
 							);
@@ -55,7 +31,7 @@ const Authors = memo(({authorsData, switchBtn}) => {
 						className="authors-list__btn btn btn--red-hover"
 						to={switchBtn ? `/Autoren` : '/Authors'}
 					>
-						Aussehen alle Autoren
+						{switchBtn ? 'Aussehen alle Autoren' : 'Show all authors'}
 					</Link>
 				</div>
 			</div>
