@@ -5,8 +5,8 @@ const AuthorsSkeleton = () => (
 	<ContentLoader
 		speed={2}
 		width={835}
-		height={250}
-		viewBox="0 0 835 250"
+		height={265}
+		viewBox="0 0 835 265"
 		backgroundColor="#b3b2b2"
 		foregroundColor="#f2eeee"
 	>

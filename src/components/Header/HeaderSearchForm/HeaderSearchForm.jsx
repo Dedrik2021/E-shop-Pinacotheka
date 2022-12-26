@@ -34,6 +34,7 @@ const HeaderSearchForm = ({ searchFormProps }) => {
 			<button 
 				className="menu__btn btn" 
 				type="button"
+				title={searchFormProps.search ? 'Close Search' : 'Open Search'}
 				onClick={searchFormProps.clickSearchOpen}
 				>
 				<span className="sr-only">

@@ -2,8 +2,7 @@
 
 .authors-search {
     position: relative;
-    margin-right: 25px;
-    max-width: 400px;
+    max-width: 100%;
     width: 100%;
 
     @include r($screen-xl) {

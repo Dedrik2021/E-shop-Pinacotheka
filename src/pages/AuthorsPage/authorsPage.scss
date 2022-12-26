@@ -34,10 +34,10 @@
     }
 
     &__wrapper {
-        max-width: 760px;
+        max-width: 500px;
         width: 100%;
         align-items: center;
-        justify-content: space-between;
+        justify-content: flex-end;
 
         @include r($screen-xl) {
             max-width: 700px;

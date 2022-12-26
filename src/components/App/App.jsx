@@ -1,8 +1,7 @@
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import { Suspense } from 'react';
-import { useSelector } from 'react-redux';
 
-import { MainLayout, Home, Authors } from '../../pages/indexPage';
+import { MainLayout, Home, Authors, Error404 } from '../../pages/indexPage';
 
 import './app.scss';
 import '../../scss/style.scss'
@@ -65,8 +64,8 @@ const App = () => {
 									: '/ReviewUserInformation/'
 							}:id`}
 							element={<ReviewUserInfo />}
-						/>
-						<Route path="*" element={<Error404 />} /> */}
+						/> */}
+						<Route path="*" element={<Error404 />} />
 					</Route>
 				</Routes>
 			</Suspense>

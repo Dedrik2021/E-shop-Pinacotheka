@@ -3,7 +3,6 @@
 .gallery {
     background-color: $gray-300;
     padding: 85px 0 95px;
-    // max-height: 1635px;
     transition: filter 0.2s;
 
     &.active {
@@ -15,8 +14,9 @@
     }
 
     &__content {
-        border-top: '20px solid #EDEDED';
-        border-radius: '20px';
+        margin-bottom: 100px;
+        max-width: 100%;
+        width: 100%;
     }
 
     &__item {

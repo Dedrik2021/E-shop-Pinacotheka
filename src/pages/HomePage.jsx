@@ -1,5 +1,6 @@
+import { useEffect } from 'react';
 import { Helmet } from 'react-helmet';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 
 import Hero from '../components/Hero/Hero';
 import Gallery from '../components/Gallery/Gallery';
@@ -12,9 +13,12 @@ import GallerySkeleton from '../skeletons/gallerySkeleton';
 import NewsBlockSkeleton from '../skeletons/newsBlockSkeleton';
 import AuthorsBlockSkeleton from '../skeletons/authorsBlockSkeleton';
 
+import { setBreadCrumbsTitle } from '../redux/slices/breadCrumbsSlice';
+
 import { Status } from '../utils/status/status';
 
 const Home = () => {
+	const dispatch = useDispatch()
 	const { authorsData, authorsDataStatus } = useSelector((state) => state.authorsSlice);
 	const { newsData, newsDataStatus } = useSelector((state) => state.newsSlice);
 	const paintingsInfo = authorsData.filter((item) => item.works.length !== 0);
@@ -22,6 +26,13 @@ const Home = () => {
 
 	const switchLanguageBtn = useSelector((state) => state.langBtnsSlice.switchLanguageBtn);
 	const switchBtn = switchLanguageBtn[0] === 0;
+
+	useEffect(() => {
+		dispatch(setBreadCrumbsTitle(''));
+		const pathName = window.location.pathname.substring(1, 8);
+		const name = pathName.split('/');
+		dispatch(setBreadCrumbsTitle(name));
+	}, [dispatch]);
 
 	return (
 		<>
@@ -42,7 +53,7 @@ const Home = () => {
 			{authorsDataStatus === Status.SUCCESS ? (
 				<Gallery switchBtn={switchBtn} gallery={paintingsInfo} />
 			) : (
-				<div className="container">
+				<div className="container" style={{marginBottom: '100px'}}>
 					{[...new Array(18)].map((_, i) => (
 						<GallerySkeleton key={i} />
 					))}

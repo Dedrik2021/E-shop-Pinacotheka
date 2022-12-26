@@ -1,9 +1,11 @@
 import { memo, useEffect, useState, useMemo } from 'react';
 
-import GallerySkeleton from '../../skeletons/gallerySkeleton';
 import GalleryFilter from './GalleryFilter/GalleryFilter';
 import PaintingCard from '../PaintingCard/PaintingCard';
 import Pagination from '../Pagination/Pagination';
+
+import PaginateSkeleton from '../../skeletons/paginateSkeleton';
+import GallerySkeleton from '../../skeletons/gallerySkeleton';
 
 import './gallery.scss';
 
@@ -14,6 +16,7 @@ const Gallery = memo(({ switchBtn, gallery }) => {
 	const [limitLast, setLimitLast] = useState(18);
 	const [limitStart, setLimitStart] = useState(18);
 	const [loading, setLoading] = useState(false);
+	const [loadingWorks, setLoadingWorks] = useState(false);
 	const works = [];
 
 	const paintingsInfo = gallery.map((item) => item.works);
@@ -23,37 +26,39 @@ const Gallery = memo(({ switchBtn, gallery }) => {
 	}
 
 	useMemo(() => {
-		setLoading(true);
+		setLoadingWorks(true);
 		setLimitLast(18 * dataSelected);
 		setLimitStart(limitLast - 18);
 		setTimeout(() => {
-			setLoading(false);
-		}, 500);
+			setLoadingWorks(false);
+		}, 1000);
 	}, [dataSelected, limitLast]);
 
 	useEffect(() => {
-		setAuthorsDataLength(Math.ceil(works.length / 18));
+		setAuthorsDataLength(Math.ceil(filterBtn < 1 ? works.length / 18 : filterWorks().length / 18));
 	}, [works]);
 
-	const onCurrentPage = (authorsData) => {
-		setFilterBtn(0);
-		let currentPage = authorsData.selected + 1;
+	const onCurrentPage = (data) => {
+		let currentPage = data.selected + 1;
 		setDataSelected(currentPage);
 
-		if (authorsData.isNext) {
+		if (data.isNext) {
 			setLimitLast(limitLast + 18);
-		} else if (authorsData.isPrevious) {
+		} else if (data.isPrevious) {
 			setLimitLast(limitLast - 18);
 		}
 	};
 
 	const clickOnFilterBtn = (id) => {
-		setLoading(true) 
-		setFilterBtn(id)
+		setFilterBtn(id);
+		setLoading(true);
+		setLoadingWorks(true);
 		setTimeout(() => {
 			setLoading(false);
-		}, 500);
-	}
+			setLoadingWorks(false);
+		}, 1000);
+		setDataSelected(1);
+	};
 
 	const filterWorks = () => {
 		switch (filterBtn) {
@@ -72,7 +77,10 @@ const Gallery = memo(({ switchBtn, gallery }) => {
 		}
 	};
 
-	const paintings = filterWorks().length > 0 ? filterWorks() : works.slice(limitStart, limitLast);
+	const paintings =
+		filterWorks().length > 0
+			? filterWorks().slice(limitStart, limitLast)
+			: works.slice(limitStart, limitLast);
 
 	return (
 		<section className={`gallery`}>
@@ -83,36 +91,42 @@ const Gallery = memo(({ switchBtn, gallery }) => {
 					filterBtn={filterBtn}
 					clickOnFilterBtn={clickOnFilterBtn}
 				/>
-				<div 
-					className="gallery__content" 
-					style={{height: filterBtn > 0 && '1250px', 
-					overflow: filterBtn > 0 && 'auto',
-					borderBottom: filterBtn > 0 && '43px solid #EDEDED',
-					boxShadow: filterBtn > 0 && '0px 0px 10px 2px rgba(0, 0, 0, 0.5)',
-					marginBottom: filterBtn > 0 ? '100px' : '97px',
-					}} 
-					>
-					{!loading ? (
+				<div
+					className="gallery__content"
+					style={{
+						height: filterBtn > 0 && '1198px',
+					}}
+				>
+					{!loadingWorks ? (
 						<>
-							<PaintingCard
-								switchBtn={switchBtn}
-								paintingsInfo={paintings}
-							/>
+							<PaintingCard switchBtn={switchBtn} paintingsInfo={paintings} />
 						</>
 					) : (
-						<div className="container" style={{ height: '1195px', marginBottom: '97px', padding: '0' }}>
-							{[...new Array(paintings.length)].map((_, i) => (
-								<GallerySkeleton key={i} />
-							))}
+						<div style={{
+									height: '1197px'
+								}}>
+							<div
+								className="container"
+								style={{
+									marginBottom: '30px',
+									padding: '0',
+									width: '100%',
+								}}
+							>
+								{[...new Array(paintings.length)].map((_, i) => (
+									<GallerySkeleton key={i} />
+								))}
+							</div>
+							{loading && <PaginateSkeleton />}
 						</div>
 					)}
 				</div>
-				{filterBtn < 1 && (
+				{!loading && (
 					<Pagination
-					pageChange={onCurrentPage}
-					pageCount={authorsDataLength}
-					dataSelected={dataSelected}
-				/>
+						pageChange={ onCurrentPage}
+						pageCount={ authorsDataLength}
+						dataSelected={ dataSelected}
+					/>
 				)}
 			</div>
 		</section>

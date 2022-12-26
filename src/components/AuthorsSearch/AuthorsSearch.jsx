@@ -15,10 +15,10 @@ const AuthorsSearch = memo((props) => {
                 <svg width="16" height="16" className='authors-search__search'>
 					<use href={`${SearchIcon}#search-icon`}></use>
 				</svg>
-                    <CleanInputBtn
-                        inputValue={authorsSearchInput}
-                        setInputValue={cleanSearchInput}
-                    />
+                <CleanInputBtn
+                    inputValue={authorsSearchInput}
+                    setInputValue={cleanSearchInput}
+                />
 				</label>
 				<input
 					className="authors-search__input"

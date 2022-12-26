@@ -29,7 +29,7 @@ const Authors = memo(({authorsData, switchBtn, foundUser}) => {
 					</ul>
 					<Link
 						className="authors-list__btn btn btn--red-hover"
-						to={switchBtn ? `/Autoren` : '/Authors'}
+						to={'/Authors'}
 					>
 						{switchBtn ? 'Aussehen alle Autoren' : 'Show all authors'}
 					</Link>

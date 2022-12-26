@@ -6,6 +6,7 @@ import newsSlice from './modules/news/newsSlice'
 import usersSlice from './modules/users/usersSlice'
 import langBtnsSlice from './slices/langBtnsSlice'
 import useModalContentSlice from './slices/modalContentSlice'
+import breadCrumbsSlice from './slices/breadCrumbsSlice'
 
 export const store = configureStore({
     reducer: {
@@ -13,7 +14,8 @@ export const store = configureStore({
         newsSlice,
         usersSlice,
         langBtnsSlice,
-        useModalContentSlice
+        useModalContentSlice,
+        breadCrumbsSlice
     },
     
     middleware: [thunk]

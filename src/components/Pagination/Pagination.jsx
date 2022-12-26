@@ -22,7 +22,7 @@ const Pagination = memo(({ pageChange, pageCount, dataSelected }) => {
 			nextClassName={`pagination__btn btn btn--red pagination__btn--next
                 ${dataSelected === pageCount ? 'pagination--style' : ''}`}
 			breakLinkClassName={'pagination__btn pagination__btn--num btn--universal btn'}
-			activeClassName={'pagination__btn--active'}
+			activeClassName={ `pagination__btn--active` }
 			
 		/>
 	);

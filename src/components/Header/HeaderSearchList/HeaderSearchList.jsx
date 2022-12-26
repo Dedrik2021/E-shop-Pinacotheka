@@ -25,9 +25,9 @@ const HeaderSearchList = memo(({ searchInput, filteredBySearch }) => {
 	const serchData = () => {
 		if (filteredBySearch.length !== 0) {
 			return (
-				filteredBySearch.map((data) => {
+				filteredBySearch.map((data, i) => {
 					return (
-						<li className="search-list__item" key={data.title}>
+						<li className="search-list__item" key={i}>
 							<Link className="search-list__link" to={`/${data.section}/${data.id}`}>
 								<img src={data.img ? data.img : unknowImg} alt={data.title} />
 								<span>{data.title}</span>
@@ -37,7 +37,7 @@ const HeaderSearchList = memo(({ searchInput, filteredBySearch }) => {
 				})
 			)
 		} else {
-			return <p className='search-list__message'>No Data</p>
+			return <p className='search-list__message'>Nothing was found for your query!</p>
 		}
 	}
 

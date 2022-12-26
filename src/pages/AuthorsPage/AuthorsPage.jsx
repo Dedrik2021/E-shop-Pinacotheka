@@ -5,27 +5,26 @@ import Helmet from 'react-helmet';
 import AuthorsSearch from '../../components/AuthorsSearch/AuthorsSearch';
 import AuthorCard from '../../components/AuthorCard/AuthorCard';
 import Pagination from '../../components/Pagination/Pagination';
+import BreadCrumbs from '../../components/BreadCrumbs/BreadCrumbs';
+import Error404 from '../Error404Page/Error404Page';
 
 import AuthorsSkeleton from '../../skeletons/authorsSkeleton';
 import { searchData } from '../../services/data/searchData';
+import { setBreadCrumbsTitle } from '../../redux/slices/breadCrumbsSlice';
 
 import { Status } from '../../utils/status/status';
 
 import './authorsPage.scss';
-// import { changeSinglePainting, fetchAuthorsItems } from '../../redux/slices/authorsInfosSlice';
-// import AuthorsList from '../components/AuthorsList';
-// import ShowMorePagination from '../components/ShowMorePagination';
-// import { setBreadCrumbs } from '../../redux/slices/breadCrumbsSlice';
-// import BreadCrumbs from '../components/BreadCrumbs';
-// import AuthorsSkeleton from '../../skeletons/authorsSkeleton';
 
 const AuthorsPage = () => {
+	const dispatch = useDispatch()
 	const [authorsSearchInput, setAuthorsSearchInput] = useState({ val: '', isValid: true });
 	const [loading, setLoading] = useState(false);
 	const [authorsDataLength, setAuthorsDataLength] = useState(0);
 	const [limitLast, setLimitLast] = useState(12);
 	const [limitStart, setLimitStart] = useState(12);
 	const [dataSelected, setDataSelected] = useState(1);
+	const [loadingPaginate, setLoadingPaginate] = useState(false)
 
 	const { authorsData, authorsDataStatus } = useSelector((state) => state.authorsSlice);
 	const foundUser = useSelector((state) => state.usersSlice.foundUser);
@@ -40,32 +39,35 @@ const AuthorsPage = () => {
 		setLimitStart(limitLast - 12);
 		setTimeout(() => {
 			setLoading(false);
-		}, 500);
+		}, 1000);
 	}, [dataSelected, limitLast]);
 
 	useEffect(() => {
-		setAuthorsDataLength(Math.ceil(authorsData.length / 12));
-	}, [authorsData]);
+		setAuthorsDataLength(Math.ceil(authorsSearchInput.val !== '' ? filteredBySearch.length / 12 : authorsData.length / 12));
+	}, [authorsData, authorsSearchInput, filteredBySearch]);
 
-	// useEffect(() => {
-	// 	dispatch(setBreadCrumbs(''));
-	// 	const pathName = window.location.pathname.substring(1, 8);
-	// 	const name = pathName.split('/');
-	// 	dispatch(setBreadCrumbs(name));
-	// }, []);
+	useEffect(() => {
+		dispatch(setBreadCrumbsTitle(''));
+		const pathName = window.location.pathname.substring(1, 8);
+		const name = pathName.split('/');
+		dispatch(setBreadCrumbsTitle(name));
+	}, [dispatch]);
 
 	const searchAuthors = (e) => {
-		setAuthorsDataLength(Math.ceil(filteredBySearch.length / 12))
+		setDataSelected(1)
 		setLoading(true);
+		setLoadingPaginate(true)
 		setAuthorsSearchInput({ val: e.target.value, isValid: true });
 		setTimeout(() => {
 			setLoading(false);
+			setLoadingPaginate(false)
 		}, 1000);
 	};
 
 	const cleanSearchInput = () => {
 		setAuthorsSearchInput({val: '', isValid: true})
 		setAuthorsDataLength(Math.ceil(authorsData.length / 12))
+		setDataSelected(1)
 	}
 
 	const getContent = () => {
@@ -87,7 +89,7 @@ const AuthorsPage = () => {
 			return (
 				<ul 
 					className="authors__list"
-					style={{marginBottom: authorsDataLength > 1 && '70px', height: filteredBySearch.length < 7 && '500px'}}
+					style={{marginBottom: '70px', height: filteredBySearch.length < 7 && '500px'}}
 					>
 					{filteredBySearch.map((item, i) => {
 						return (
@@ -104,9 +106,9 @@ const AuthorsPage = () => {
 		} else if (filteredBySearch.length === 0) {
 			if (!loading) {
 				return (
-					<div className="authors__empty">
-						<h2>NO DATA</h2>
-					</div>
+					<Error404 
+						noData={filteredBySearch}
+					/>
 				);
 			} else {
 				return (
@@ -148,7 +150,7 @@ const AuthorsPage = () => {
 
 			<section className="authors">
 				<div className="container">
-					{/* <BreadCrumbs /> */}
+					<BreadCrumbs />
 					<div className="authors__top">
 						<h1 className="authors__title title">
 							{switchBtn ? 'Autoren' : 'Authors'}
@@ -169,7 +171,7 @@ const AuthorsPage = () => {
 						</div>
 					</div>
 					{getContent()}
-					{authorsDataLength > 1 && (
+					{!loadingPaginate && authorsDataStatus === Status.SUCCESS && filteredBySearch.length > 0 && (
 						<Pagination
 						pageChange={onCurrentPage}
 						pageCount={authorsDataLength}

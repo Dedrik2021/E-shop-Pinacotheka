@@ -1,0 +1,70 @@
+@import '../../scss/vars';
+
+.breadcrumbs {
+    display: flex;
+    align-items: center;
+    margin: 200px 0 50px;
+
+    // // @include r($mobile-xl) {
+    // //     margin: 90px 0;
+    // // }
+
+    // @include r($mobile-lg) {
+    //     margin: 50px 0 70px;
+    // }
+
+    @include r($mobile-md) {
+        margin: 45px 0 30px;
+    }
+
+    &__item {
+
+        &:not(:last-child) {
+            margin-right: 25px;
+            position: relative;
+
+            &::after {
+                position: absolute;
+                content: "";
+                width: 13px;
+                height: 1px;
+                right: -18px;
+                background-color: $gray;
+                transform: rotate(-65deg);
+                top: 7px;
+            }
+        }
+
+        &:last-child {
+            pointer-events: none;
+
+            .breadcrumbs__link {
+                font-weight: 400;
+
+                &:focus {
+                    visibility: hidden;
+                }
+            }
+        }
+    }
+
+    &__link {
+        font-weight: 700;
+        font-size: 14px;
+        border-bottom: 1px solid transparent;
+        color: $gray;
+        transition: border-bottom-color 0.4s, color 0.4s;
+        max-width: 200px;
+        @include line-clamp(1);
+
+        &:focus,
+        &:hover {
+            outline: transparent;
+            border-bottom-color: $red;
+        }
+
+        &:hover {
+            color: $black;
+        }
+    }
+}
