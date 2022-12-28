@@ -269,7 +269,8 @@ const Modal = memo(() => {
 		showPassword,
 		setShowPassword,
 		checkedAgree,
-		setCheckedAgree
+		setCheckedAgree,
+		setShowModal
 	};
 
 	return (

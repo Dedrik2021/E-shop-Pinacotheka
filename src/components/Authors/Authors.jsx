@@ -3,10 +3,9 @@ import { Link } from 'react-router-dom';
 
 import AuthorCard from '../AuthorCard/AuthorCard';
 
-import './authors.scss'
+import './authors.scss';
 
-const Authors = memo(({authorsData, switchBtn, foundUser}) => {
-
+const Authors = memo(({ authorsData, switchBtn, foundUser }) => {
 	return (
 		<div className={`authors-list `}>
 			<div className="container">
@@ -14,7 +13,7 @@ const Authors = memo(({authorsData, switchBtn, foundUser}) => {
 					{switchBtn ? 'Autoren' : 'Authors'}
 				</span>
 				<div className="authors-list__content">
-					<ul className="authors-list__list">
+					<ul className="authors__list">
 						{authorsData.slice(0, 11).map((item) => {
 							return (
                                 <AuthorCard
@@ -27,10 +26,7 @@ const Authors = memo(({authorsData, switchBtn, foundUser}) => {
 							);
 						})}
 					</ul>
-					<Link
-						className="authors-list__btn btn btn--red-hover"
-						to={'/Authors'}
-					>
+					<Link className="authors-list__btn btn btn--red-hover" to={'/Authors'}>
 						{switchBtn ? 'Aussehen alle Autoren' : 'Show all authors'}
 					</Link>
 				</div>

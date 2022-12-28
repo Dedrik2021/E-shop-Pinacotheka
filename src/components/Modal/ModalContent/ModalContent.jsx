@@ -208,7 +208,7 @@ const ModalContent = memo(({ props }) => {
 							)}
 						</div>
 					) : (
-						<ModalPasswordLink switchLangBtn={switchLangBtn} />
+						<ModalPasswordLink switchLangBtn={switchLangBtn} setShowModal={props.setShowModal} />
 					)}
 				</div>
 			</form>

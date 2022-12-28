@@ -13,7 +13,7 @@ const MainLayout = () => {
 	const navigate = useNavigate()
 	const [open, setOpen] = useState(false);
 	const showModal = useSelector((state) => state.useModalContentSlice.showModal);
-
+	
 	const clickOpenLogout = () => {
 		setOpen(true);
 	};

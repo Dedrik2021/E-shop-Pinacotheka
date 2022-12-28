@@ -1,71 +1,41 @@
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import { Suspense } from 'react';
 
-import { MainLayout, Home, Authors, Error404 } from '../../pages/indexPage';
+import { createRef } from 'react';
+
+import {
+	MainLayout,
+	Home,
+	Authors,
+	AboutAuthor,
+	Error404,
+	UserAccount,
+	ForgottenPassword,
+	SinglePainting,
+} from '../../pages/indexPage';
 
 import './app.scss';
-import '../../scss/style.scss'
+import '../../scss/style.scss';
+
+const routes = [
+	{ path: '', element: <Home />, nodeRef: createRef() },
+	{ path: '/Authors', element: <Authors />, nodeRef: createRef() },
+	{ path: '/Author/:id', element: <AboutAuthor />, nodeRef: createRef() },
+	{ path: '/PersonalOffice', element: <UserAccount />, nodeRef: createRef() },
+	{ path: '/Author/SinglePainting/:id', element: <SinglePainting />, nodeRef: createRef() },
+	{ path: '/ForgottenPassword', element: <ForgottenPassword />, nodeRef: createRef() },
+	{ path: '*', element: <Error404 />, nodeRef: createRef() },
+];
 
 const App = () => {
-
 	return (
 		<Router>
 			<Suspense>
 				<Routes>
 					<Route path="/" element={<MainLayout />}>
-						<Route path="" element={<Home />} />
-						<Route path={'/Authors'} element={<Authors />} />
-						{/* <Route
-							path={`${switchBtn ? '/Autor/' : '/Author/'}:id`}
-							element={<AboutAuthor />}
-						/>
-						<Route
-							path={`${
-								switchBtn ? '/Autor/Einzelmalerei' : '/Author/SinglePainting'
-							}/:id`}
-							element={<SinglePainting />}
-						/>
-						<Route path={switchBtn ? '/Nachrichten' : '/News'} element={<News />} />
-						<Route path={switchBtn ? '/Korb' : '/Cart'} element={<UserCart />} />
-						<Route
-							path={switchBtn ? '/PersonlichesBuro' : '/PersonalOffice'}
-							element={<UserAccount />}
-						/>
-						<Route
-							path={switchBtn ? 'DieIhnenGefallen' : '/WhatYouLike'}
-							element={<UserLikes />}
-						/>
-						<Route
-							path={switchBtn ? '/PasswortVergessen' : 'ForgotYourPassword'}
-							element={<ForgottenPassword />}
-						/>
-						<Route
-							path={`${switchBtn ? '/Nachrichten/Nachricht/' : '/News/Newses/'}:id`}
-							element={<SingleNews />}
-						/>
-						<Route
-							path={`${
-								switchBtn ? '/Nachrichten/NachrichtenErstellen' : '/News/CreateNews'
-							}`}
-							element={<CreateNews />}
-						/>
-						<Route
-							path={`${
-								switchBtn
-									? '/Nachrichten/NeuigkeitenBearbeiten/'
-									: '/News/EditNews/'
-							}:id`}
-							element={<EditNews />}
-						/>
-						<Route
-							path={`${
-								switchBtn
-									? '/BenutzerinformationenUberprufen/'
-									: '/ReviewUserInformation/'
-							}:id`}
-							element={<ReviewUserInfo />}
-						/> */}
-						<Route path="*" element={<Error404 />} />
+						{routes.map((route) => {
+							return <Route key={route.path} path={route.path} element={route.element} />
+						})}
 					</Route>
 				</Routes>
 			</Suspense>

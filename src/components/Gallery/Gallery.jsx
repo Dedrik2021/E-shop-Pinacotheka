@@ -9,7 +9,7 @@ import GallerySkeleton from '../../skeletons/gallerySkeleton';
 
 import './gallery.scss';
 
-const Gallery = memo(({ switchBtn, gallery }) => {
+const Gallery = memo(({ switchBtn, gallery, authorsData }) => {
 	const [filterBtn, setFilterBtn] = useState(0);
 	const [dataSelected, setDataSelected] = useState(1);
 	const [authorsDataLength, setAuthorsDataLength] = useState(0);
@@ -99,7 +99,7 @@ const Gallery = memo(({ switchBtn, gallery }) => {
 				>
 					{!loadingWorks ? (
 						<>
-							<PaintingCard switchBtn={switchBtn} paintingsInfo={paintings} />
+							<PaintingCard switchBtn={switchBtn} paintingsInfo={paintings} authorsData={authorsData} />
 						</>
 					) : (
 						<div style={{

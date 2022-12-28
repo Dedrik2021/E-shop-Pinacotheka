@@ -4,11 +4,11 @@
     display: none;
     align-items: center;
     margin-bottom: 40px;
-
+    
     @include r($mobile-sm) {
         margin-bottom: 30px;
     }
-
+    
     &__list {
         display: flex;
         align-items: center;

@@ -4,6 +4,7 @@ import { fetchAuthorsData } from "./authorsThunks"
 import { Status } from "../../../utils/status/status"
 
 const initialState = {
+    singlePainting: {},
     authorsData: [],
     authorsDataStatus: Status.LOADING,
 }
@@ -11,7 +12,11 @@ const initialState = {
 const authorsInfoSlice = createSlice({
     name: 'authorsSlice',
     initialState,
-    reducers: {},
+    reducers: {
+        setSinglePainting(state, active) {
+            state.singlePainting = active.payload
+        }
+    },
     extraReducers: (builder) => {
         builder
             .addCase(fetchAuthorsData.pending,  (state) => {
@@ -28,5 +33,7 @@ const authorsInfoSlice = createSlice({
             })
     }
 })
+
+export const {setSinglePainting} = authorsInfoSlice.actions
 
 export default authorsInfoSlice.reducer

@@ -3,6 +3,7 @@
 .authors-list {
     padding-bottom: 100px;
     transition: filter 0.2s;
+    // display: grid;
 
     &.active {
         filter: blur(10px);
@@ -28,8 +29,7 @@
         }
     }
 
-    &__content,
-    &__list {
+    &__content {
         display: grid;
         gap: 10px;
     }
@@ -40,15 +40,40 @@
         @include r($mobile-md) {
             grid-template-columns: 1fr;
         }
-    }
 
-    &__list {
-        grid-template-columns: repeat(auto-fit, minmax(122px, 1fr));
-        gap: 19px;
-        margin-right: 10px;
+        .authors {
 
-        @include r($mobile-md) {
-            margin: 0 0 10px;
+            &__list {
+                display: flex;
+                justify-content: space-between;
+            }
+    
+            &__item {
+                max-width: 100%;
+                flex-direction: column;
+
+                .author-card {
+                    display: flex;
+                    flex-direction: column;
+                    border-radius: 10px;
+                    width: 122px;
+                    transition: box-shadow 0.4s;
+                    position: relative;
+                    background-color: $white;
+                    padding: 5px;
+
+                    &__link {
+                        border-bottom: none;
+                        height: 100%;
+                    }
+
+                    &__img-link {
+                        margin-right: 0;
+                        height: 125px;
+                    }
+                }
+            }
+
         }
     }
 

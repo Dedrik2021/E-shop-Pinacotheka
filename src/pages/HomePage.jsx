@@ -17,7 +17,7 @@ import { setBreadCrumbsTitle } from '../redux/slices/breadCrumbsSlice';
 
 import { Status } from '../utils/status/status';
 
-const Home = () => {
+const HomePage = () => {
 	const dispatch = useDispatch()
 	const { authorsData, authorsDataStatus } = useSelector((state) => state.authorsSlice);
 	const { newsData, newsDataStatus } = useSelector((state) => state.newsSlice);
@@ -33,6 +33,7 @@ const Home = () => {
 		const name = pathName.split('/');
 		dispatch(setBreadCrumbsTitle(name));
 	}, [dispatch]);
+
 
 	return (
 		<>
@@ -51,7 +52,7 @@ const Home = () => {
 				</div>
 			)}
 			{authorsDataStatus === Status.SUCCESS ? (
-				<Gallery switchBtn={switchBtn} gallery={paintingsInfo} />
+				<Gallery switchBtn={switchBtn} gallery={paintingsInfo} authorsData={authorsData} />
 			) : (
 				<div className="container" style={{marginBottom: '100px'}}>
 					{[...new Array(18)].map((_, i) => (
@@ -87,4 +88,4 @@ const Home = () => {
 	);
 };
 
-export default Home;
+export default HomePage;

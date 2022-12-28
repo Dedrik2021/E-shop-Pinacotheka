@@ -33,7 +33,7 @@ const Error404 = memo(({noData}) => {
 							<p>{switchBtn ? 'Aber es gibt noch viele andere Gemälde in unserem Katalog.' : 'But there are many other paintings in our catalog.'}</p>
 								</>
 							) : (
-								<p>Nothing was found for your query!</p>
+								<p>Nothing was found for your request!</p>
 							)}
 						</div>
 						<Link className="error-404__btn btn btn--red btn--universal" to={'/'}>

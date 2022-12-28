@@ -1,7 +1,10 @@
 import { useState, memo, useEffect } from 'react';
+import { ref, update } from 'firebase/database';
 
 import HeroImgSlider from './HeroImgSlider/HeroImgSlider';
 import HeroInfoSlider from './HeroInfoSlider/HeroInfoSlider';
+
+import { realDb } from '../../firebase/firebaseConfig';
 
 import './hero.scss';
 
@@ -35,11 +38,15 @@ const Hero = memo(({ switchBtn, paintingsInfo }) => {
 		window.scrollTo(0, 0);
 	}, [])
 
-	const onPainting = (id) => {
-		const findPainting = {
-			painting: id,
-		};
-	};
+	const clickOnPainting = (emailId) => {
+		console.log(emailId);
+		const docToUpdates = ref(realDb, `singlePainting`);
+		update(docToUpdates, {
+			authorEmailId: emailId,
+		}).catch((err) => {
+			alert(err.message);
+		});
+	}
 
 	const imgSlider = {
 		slidesToShow: 1,
@@ -104,7 +111,7 @@ const Hero = memo(({ switchBtn, paintingsInfo }) => {
 					setSliderInfo={setSliderInfo}
 					paintingsInfo={paintingsInfo}
 					switchBtn={switchBtn}
-					onPainting={onPainting}
+					onPainting={clickOnPainting}
 				/>
 			</div>
 		</section>

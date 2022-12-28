@@ -1,12 +1,26 @@
 import { Link } from 'react-router-dom';
 import { memo } from 'react';
+import { ref, update } from 'firebase/database';
+
+import { realDb } from '../../firebase/firebaseConfig';
 
 import FavoriteIcon from '../../assets/sprite/favorit-icon.svg';
 import ShareIcon from '../../assets/sprite/share-icon.svg';
 
 import './paintingCard.scss';
 
-const PaintingCard = memo(({ paintingsInfo, switchBtn }) => {
+const PaintingCard = memo(({ paintingsInfo, switchBtn, authorsData }) => {
+
+	console.log(authorsData);
+
+	const clickOnPainting = (emailId) => {
+		const docToUpdates = ref(realDb, `singlePainting`);
+		update(docToUpdates, {
+			authorEmailId: emailId,
+		}).catch((err) => {
+			alert(err.message);
+		});
+	}
 	
 	return (
 		<ul className="gallery__list cards-list">
@@ -18,19 +32,17 @@ const PaintingCard = memo(({ paintingsInfo, switchBtn }) => {
 						<article className="painting-card" tabIndex="0">
 							<Link
 								className="painting-card__img-link"
-								// to={`${switchBtn ? '/Autor/Einzelmalerei' : '/Author/SinglePainting'}/${props.id}`}
-								to={''}
-								// onClick={() => onAuthorInfo()}
+								to={`/Author/SinglePainting/${item.id}`}
+								
+								onClick={() => clickOnPainting(item.emailId)}
 							>
 								<img src={item.img} alt={item.title} />
 							</Link>
 							<Link
 								className="painting-card__link"
-								// onClick={() => onAuthorInfo()}
-								// to={`${switchBtn ? '/Autor/Einzelmalerei' : '/Author/SinglePainting'}/${
-								// 	props.id
-								// }`}
-								to={''}
+								to={`/Author/SinglePainting/${item.id}`}
+								
+								onClick={() => clickOnPainting(item.emailId)}
 							>
 								<h3 className="painting-card__title">{item.title}</h3>
 							</Link>
@@ -38,7 +50,7 @@ const PaintingCard = memo(({ paintingsInfo, switchBtn }) => {
 								<div className="painting-card__wrapper">
 									<Link
 										className="painting-card__author-link"
-										// to={`${switchBtn ? '/Autor' : '/Author'}/${props.id}`}
+										// to={`/Author/${props.id}`}
 										// onClick={() => onAuthorInfo()}
 										to={''}
 									>

@@ -2,8 +2,7 @@ import { memo, useEffect } from 'react';
 import { getAuth } from 'firebase/auth';
 import { useSelector } from 'react-redux';
 
-import AuthorCardHomePage from './AuthorCardHomePage/AuthorCardHomePage';
-import AuthorCardAuthorsPage from './AuthorCardAuthorsPage/AuthorCardAuthorsPage';
+import AuthorCardContent from './AuthorCardContent/AuthorCardContent';
 
 import unknowImg from '../../assets/images/unknow-photo.png';
 
@@ -19,20 +18,14 @@ const AuthorCard = memo(({ item, switchBtn, foundUser }) => {
 		window.scroll(0, 0);
 	}, []);
 
-	return breadCrumbsTitle[0] === 'Authors' ? (
-		<AuthorCardAuthorsPage 
-			switchBtn={switchBtn} 
-			item={item} 
-			unknowImg={unknowImg} 
-
-		/>
-	) : (
-		<AuthorCardHomePage
-			item={item}
+	return (
+		<AuthorCardContent
 			switchBtn={switchBtn}
+			item={item}
+			unknowImg={unknowImg}
 			foundUser={foundUser}
 			user={user}
-			unknowImg={unknowImg}
+			breadCrumbsTitle={breadCrumbsTitle[0]}
 		/>
 	);
 });
