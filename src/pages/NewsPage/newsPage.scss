@@ -1,0 +1,248 @@
+@import '../../scss/vars';
+
+.news {
+    margin-bottom: 100px;
+
+    .news {
+    
+        &__wrapper {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 30px;
+        }
+    
+        &__title {
+    
+            @include r($mobile-sm) {
+                margin-bottom: 20px;
+            }
+        }
+    
+        &__list {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            margin: 0 -10px 50px;
+    
+            @include r($mobile-lg) {
+                margin: 0 -5px 30px;
+            }
+    
+            @include r($mobile-sm) {
+                flex-direction: column;
+                margin: 0 0 30px;
+            }
+    
+            .news-card {
+                padding: 10px 10px 0;
+                border-radius: 20px;
+                cursor: pointer;
+                transition: box-shadow 0.3s;
+    
+                &:hover {
+                    box-shadow: 3px 7px 10px 5px rgba(0, 0, 0, 0.1);
+                }
+    
+                &__img-wrapper {
+    
+                    img {
+                        min-height: 425px;
+                    }
+                }
+    
+                &__link {
+                    
+                    &:hover {
+                        color: $red;
+    
+                        .news-card__author {
+                            color: $black;
+                            span {
+                                color: $black;
+                            }
+                        }
+                
+                        .news-card__img-wrapper {
+                            box-shadow: 3px 3px 8px 1px rgba(0, 0, 0, 0.5);
+                        }
+    
+                        p {
+                            color: $red;
+                        }
+                    }
+                }
+    
+            }
+        }
+    
+        // .pagination__item {
+        //     display: none;
+        // }
+    
+        // .pagination__btn--prev {
+        //     margin-right: 20px;
+        // }
+    
+        &__item {
+            margin: 0 10px 20px;
+            width: 545px;
+            flex: 1 1 25%;
+    
+            @include r($mobile-lg) {
+                margin: 0 5px 20px;
+            }
+    
+            @include r($mobile-md) {
+                flex: 2 0 40%;
+            }
+    
+            @include r($mobile-sm) {
+                margin: 0;
+                width: 100%;
+            }
+    
+            // &:not(:last-child) {
+            //     margin-bottom: 20px;
+            // }
+    
+            &:nth-child(1) {
+                width: 969px;
+                flex: 1 1 50%;
+    
+                @include r($mobile-md) {
+                    flex: 0 0 100%;
+                    max-width: 100%;
+                }
+            }
+    
+            &:nth-child(2) {
+                width: 686px;
+                flex: 1 1 33.5%;
+    
+                @include r($mobile-md) {
+                    width: 600px;
+                    flex: 2 0 41%;
+                }
+            }
+    
+            &:nth-child(1),
+            &:nth-child(2) {
+                .news-card__img-wrapper {
+                    max-height: 425px;
+                    height: 100%;
+                }
+    
+                @include r($mobile-sm) {
+                    max-width: 545px;
+                    width: 100%;
+                }
+            }
+    
+            // &:nth-child(9),
+            // &:nth-child(10),
+            // &:nth-child(11) {
+            //     .news-card__img-wrapper {
+            //         max-height: 425px;
+            //         height: 100%;
+            //     }
+    
+            //     @include r($mobile-sm) {
+            //         max-width: 545px;
+            //         width: 100%;
+            //     }
+            // }
+    
+            .news-card {
+                max-width: 100%;
+                width: 100%;
+                height: 100%;
+    
+                &__link {
+                    flex-direction: column;
+                    max-width: 100%;
+                    width: 100%;
+                }
+    
+                &__box {
+                    display: flex;
+                    margin-top: auto;
+                    padding: 20px;
+                    height: auto;
+    
+                    @include r($mobile-lg) {
+                        padding: 10px 15px 15px;
+                    }
+    
+                    @include r($mobile-md) {
+                        padding: 10px 10px 15px;
+                    }
+                }
+    
+                &__title {
+                    font-weight: 700;
+                    font-size: 24px;
+                    margin-bottom: 10px;
+                    order: -1;
+    
+                    @include r($mobile-lg) {
+                        font-size: 22px;
+                    }
+    
+                    @include r($mobile-md) {
+                        font-size: 20px;
+                        color: $red;
+                    }
+                }
+    
+                &__date {
+                    // margin-bottom: 15px;
+                    margin-top: auto;
+                }
+    
+                &__text {
+                    margin-top: auto;
+                    @include line-clamp(3);
+    
+                    @include r($mobile-lg) {
+                        margin: auto 0;
+                    }
+    
+                    @include r($mobile-md) {
+                        margin: auto 0 0;
+                    }
+    
+                    p {
+                        font-weight: 400;
+                        font-size: 16px;
+                        color: $gray-100;
+                        line-height: 1.8;
+                        transition: color 0.4s;
+    
+                        &:hover {
+                            color: $red;
+                        }
+                    }
+                }
+    
+                &__img-wrapper {
+                    max-width: 100%;
+                    width: 100%;
+                    height: 425px;
+                    margin-right: 0;
+                    padding: 0;
+                    background-color: rgba(0, 0, 0, 0.1);
+    
+                    img {
+                        max-width: 100%;
+                        height: auto;
+                        object-fit: cover;
+    
+                        @include r($mobile-sm) {
+                            height: 300px;
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

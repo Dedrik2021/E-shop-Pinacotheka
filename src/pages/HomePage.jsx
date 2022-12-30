@@ -24,6 +24,7 @@ const HomePage = () => {
 	const paintingsInfo = authorsData.filter((item) => item.works.length !== 0);
 	const foundUser = useSelector(state => state.usersSlice.foundUser)
 
+	const breadCrumbsTitle = useSelector((state) => state.breadCrumbsSlice.breadCrumbsTitle);
 	const switchLanguageBtn = useSelector((state) => state.langBtnsSlice.switchLanguageBtn);
 	const switchBtn = switchLanguageBtn[0] === 0;
 

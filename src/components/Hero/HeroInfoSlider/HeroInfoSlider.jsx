@@ -9,8 +9,6 @@ const HeroInfoSlider = memo((props) => {
 
 	const firstPaintings = paintingsInfo.map((item) => item.works[0]);
 
-	console.log(firstPaintings[0]);
-
 	return (
 		<Slider
 			className="hero__content-slider"
@@ -20,9 +18,9 @@ const HeroInfoSlider = memo((props) => {
 			ref={(sliderInfo) => setSliderInfo(sliderInfo)}
 		>
 			{/* <ul> */}
-				{firstPaintings.map((work, i) => {
+				{firstPaintings.map((work) => {
 					return (
-						<li className="hero__item" key={i}>
+						<li className="hero__item" key={work.emailId}>
 							<article className="pick-card">
 								<h3 className="pick-card__title">{work.title}</h3>
 								<span className="pick-card__id">

@@ -1,7 +1,7 @@
 @import '../../scss/vars';
 
 .news-block {
-    padding-bottom: 130px;
+    padding-bottom: 100px;
     transition: filter 0.2s;
 
     &.active {
@@ -49,58 +49,10 @@
         }
     }
 
-    // &__list {
-    //     display: flex;
-
-    //     @include r($screen-xl) {
-    //         justify-content: space-around;
-    //     }
-
-    //     @include r($mobile-md) {
-    //         flex-direction: column;
-    //         align-items: center;
-    //     }
-    // }
-
-    // &__item {
-    //     max-width: 535px;
-    //     width: 100%;
-    //     border-radius: 10px;
-    //     margin-bottom: 100px;
-    //     transition: all 0.5s;
-
-    //     @include r($screen-xl) {
-    //         max-width: 640px;
-    //     }
-
-    //     @include r($mobile-md) {
-    //         max-width: 600px;
-    //     }
-
-    //     @include r($mobile-sm) {
-    //         max-width: 450px;
-    //     }
-
-    //     &:not(:last-child) {
-    //         margin-right: 35px;
-
-    //         @include r($screen-xxl) {
-    //             margin-right: 20px;
-    //         }
-
-    //         @include r($mobile-lg) {
-    //             margin-right: 10px;
-    //         }
-
-    //         @include r($mobile-md) {
-    //             margin: 0 0 20px;
-    //         }
-    //     }
-
-    //     &:hover {
-    //         box-shadow: 5px 7px 10px 1px rgba(0, 0, 0, 0.5);                                     
-    //     }
-    // }
+    .news__list {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+    }
 
     &__link {
         font-weight: 600;
@@ -197,12 +149,6 @@
                     height: 100%;
                     width: 100%;
                     object-fit: cover;
-        
-                    // @include r($screen-xl) {
-                    //     max-width: 100%;
-                    //     width: 100%;
-                    //     height: 163px;
-                    // }
                 }
             }
         

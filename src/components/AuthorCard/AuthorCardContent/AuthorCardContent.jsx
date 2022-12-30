@@ -19,7 +19,7 @@ const AuthorCardContent = memo((props) => {
 	const linkToAuthor = 
 		user !== null && foundUser !== undefined && foundUser.emailId === item.emailId
 			? '/PersonalOffice'
-			: `/Author/${item.id}`
+			: `/Authors/AuthorInfo/${item.id}`
 
 	return (
 		<li className="authors__item" style={{ height: breadCrumbsTitle === 'Authors' ? '250px' : '' }}>
@@ -111,7 +111,7 @@ const AuthorCardContent = memo((props) => {
 										<Link
 											className="author-painting__link"
 											// onClick={() => dispatch(setAuthorInfoBtn(1))}
-											to={`${switchBtn ? '/Autor' : '/Author'}/${item.id}`}
+											to={`/Author/${item.id}`}
 										>
 											{switchBtn ? 'Alle Werke ansehen' : 'View all works'}
 										</Link>

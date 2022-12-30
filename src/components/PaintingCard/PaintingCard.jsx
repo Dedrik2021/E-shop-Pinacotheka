@@ -10,9 +10,6 @@ import ShareIcon from '../../assets/sprite/share-icon.svg';
 import './paintingCard.scss';
 
 const PaintingCard = memo(({ paintingsInfo, switchBtn, authorsData }) => {
-
-	console.log(authorsData);
-
 	const clickOnPainting = (emailId) => {
 		const docToUpdates = ref(realDb, `singlePainting`);
 		update(docToUpdates, {

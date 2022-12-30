@@ -12,19 +12,41 @@ import {
 	UserAccount,
 	ForgottenPassword,
 	SinglePainting,
+	News,
+	SingleNews
 } from '../../pages/indexPage';
 
 import './app.scss';
 import '../../scss/style.scss';
 
 const routes = [
-	{ path: '', element: <Home />, nodeRef: createRef() },
-	{ path: '/Authors', element: <Authors />, nodeRef: createRef() },
-	{ path: '/Author/:id', element: <AboutAuthor />, nodeRef: createRef() },
-	{ path: '/PersonalOffice', element: <UserAccount />, nodeRef: createRef() },
-	{ path: '/Author/SinglePainting/:id', element: <SinglePainting />, nodeRef: createRef() },
-	{ path: '/ForgottenPassword', element: <ForgottenPassword />, nodeRef: createRef() },
-	{ path: '*', element: <Error404 />, nodeRef: createRef() },
+	{ 
+		path: '', element: <Home />, nodeRef: createRef() 
+	},
+	{ 
+		path: '/Authors', element: <Authors />, nodeRef: createRef() 
+	},
+	{ 
+		path: '/Authors/AuthorInfo/:id', element: <AboutAuthor />, nodeRef: createRef() 
+	},
+	{ 
+		path: '/PersonalOffice', element: <UserAccount />, nodeRef: createRef() 
+	},
+	{ 
+		path: '/Author/SinglePainting/:id', element: <SinglePainting />, nodeRef: createRef() 
+	},
+	{ 
+		path: '/News', element: <News />, nodeRef: createRef() 
+	},
+	{ 
+		path: '/News/SingleNews/:id', element: <SingleNews />, nodeRef: createRef() 
+	},
+	{ 
+		path: '/ForgottenPassword', element: <ForgottenPassword />, nodeRef: createRef() 
+	},
+	{ 
+		path: '*', element: <Error404 />, nodeRef: createRef() 
+	},
 ];
 
 const App = () => {

@@ -28,8 +28,10 @@ const HeaderSearchList = memo(({ searchInput, filteredBySearch }) => {
 				filteredBySearch.map((data) => {
 					return (
 						<li className="search-list__item" key={data.ID}>
-							<Link className="search-list__link" to={`/${data.section}/${data.ID}`}>
-								<img src={data.img ? data.img : unknowImg} alt={data.title} />
+							<Link className="search-list__link" 
+							to={`${data.page}${data.id}`}
+							>
+								<img src={data.image ? data.image : unknowImg} alt={data.title} />
 								<span>{data.title}</span>
 							</Link>
 						</li>
