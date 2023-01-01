@@ -55,7 +55,7 @@ const AuthorCardContent = memo((props) => {
 					>
 						<h2 className="author-card__user">{item.title}</h2>
 					</Link>
-					{breadCrumbsTitle === 'Authors' && (
+					{(breadCrumbsTitle === 'Authors' || breadCrumbsTitle === 'Author') && (
 						<>
 							<div className="author-card__rating">
 								<div className="author-card__stars"></div>
@@ -86,7 +86,7 @@ const AuthorCardContent = memo((props) => {
 											<li className="author-painting__item" key={work.id}>
 												<Link
 													className="author-painting__link"
-													to={`/Author/SinglePainting/${item.id}`}
+													to={`/Author/SinglePainting/${work.id}`}
 													onClick={() => clickOnPainting(work.emailId)}
 												>
 													<img

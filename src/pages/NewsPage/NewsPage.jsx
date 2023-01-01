@@ -21,11 +21,12 @@ import {
 
 import BreadCrumbs from '../../components/BreadCrumbs/BreadCrumbs';
 import Pagination from '../../components/Pagination/Pagination';
-import { setBreadCrumbsTitle } from '../../redux/slices/breadCrumbsSlice';
-
+import NewsCard from '../../components/NewsCard/NewsCard';
 import NewsSkeleton from '../../skeletons/newsSkeleton';
 import NewsBlockSkeleton from '../../skeletons/newsBlockSkeleton';
-import NewsCard from '../../components/NewsCard/NewsCard';
+
+import { setBreadCrumbsTitle } from '../../redux/slices/breadCrumbsSlice';
+import { Status } from '../../utils/status/status';
 
 import { database, realDb } from '../../firebase/firebaseConfig';
 
@@ -62,6 +63,7 @@ const News = () => {
 	}, [dispatch]);
 
 	useMemo(() => {
+		window.scrollTo(0, 0);
 		setLoading(true);
 		setLimitLast(11 * dataSelected);
 		setLimitStart(limitLast - 11);
@@ -149,7 +151,7 @@ const News = () => {
 	// };
 
 	const contentLoaded = () => {
-		if (newsDataStatus === 'loading' || newsDataStatus === 'error') {
+		if (newsDataStatus === Status.LOADING || newsDataStatus === Status.ERROR) {
 			return (
 				<div style={{ marginBottom: '20px' }}>
 					<NewsSkeleton />
@@ -158,7 +160,7 @@ const News = () => {
 					))}
 				</div>
 			);
-		} else if (newsDataStatus === 'success') {
+		} else if (newsDataStatus === Status.SUCCESS) {
 			if (loading) {
 				return (
 					<div style={{ marginBottom: '20px' }}>

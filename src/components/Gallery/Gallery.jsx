@@ -35,7 +35,9 @@ const Gallery = memo(({ switchBtn, gallery, authorsData }) => {
 	}, [dataSelected, limitLast]);
 
 	useEffect(() => {
-		setAuthorsDataLength(Math.ceil(filterBtn < 1 ? works.length / 18 : filterWorks().length / 18));
+		setAuthorsDataLength(
+			Math.ceil(filterBtn < 1 ? works.length / 18 : filterWorks().length / 18),
+		);
 	}, [works]);
 
 	const onCurrentPage = (data) => {
@@ -98,13 +100,23 @@ const Gallery = memo(({ switchBtn, gallery, authorsData }) => {
 					}}
 				>
 					{!loadingWorks ? (
-						<>
-							<PaintingCard switchBtn={switchBtn} paintingsInfo={paintings} authorsData={authorsData} />
-						</>
+						<ul className="gallery__list cards-list">
+							{paintings.map((item, i) => {
+								return (
+									<PaintingCard
+										key={i}
+										switchBtn={switchBtn}
+										paintingInfo={item}
+									/>
+								);
+							})}
+						</ul>
 					) : (
-						<div style={{
-									height: '1197px'
-								}}>
+						<div
+							style={{
+								height: '1197px',
+							}}
+						>
 							<div
 								className="container"
 								style={{
@@ -123,9 +135,9 @@ const Gallery = memo(({ switchBtn, gallery, authorsData }) => {
 				</div>
 				{!loading && (
 					<Pagination
-						pageChange={ onCurrentPage}
-						pageCount={ authorsDataLength}
-						dataSelected={ dataSelected}
+						pageChange={onCurrentPage}
+						pageCount={authorsDataLength}
+						dataSelected={dataSelected}
 					/>
 				)}
 			</div>

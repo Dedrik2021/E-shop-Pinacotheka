@@ -5,6 +5,7 @@ import { Status } from "../../../utils/status/status"
 
 const initialState = {
     singlePainting: {},
+    paintingWatched: [],
     authorsData: [],
     authorsDataStatus: Status.LOADING,
 }
@@ -15,6 +16,9 @@ const authorsInfoSlice = createSlice({
     reducers: {
         setSinglePainting(state, active) {
             state.singlePainting = active.payload
+        },
+        setPaintingWatched(state, active) {
+            state.paintingWatched = active.payload
         }
     },
     extraReducers: (builder) => {
@@ -34,6 +38,6 @@ const authorsInfoSlice = createSlice({
     }
 })
 
-export const {setSinglePainting} = authorsInfoSlice.actions
+export const {setSinglePainting, setPaintingWatched} = authorsInfoSlice.actions
 
 export default authorsInfoSlice.reducer

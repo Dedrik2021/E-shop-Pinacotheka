@@ -2,7 +2,7 @@ import { memo } from 'react';
 import { Transition } from 'react-transition-group';
 import { Link } from 'react-router-dom';
 
-import unknowImg from '../../../assets/images/unknow-photo.png'
+import unknowImg from '../../../assets/images/unknow-photo.png';
 
 import './headerSearchList.scss';
 
@@ -24,24 +24,20 @@ const HeaderSearchList = memo(({ searchInput, filteredBySearch }) => {
 
 	const serchData = () => {
 		if (filteredBySearch.length !== 0) {
-			return (
-				filteredBySearch.map((data) => {
-					return (
-						<li className="search-list__item" key={data.ID}>
-							<Link className="search-list__link" 
-							to={`${data.page}${data.id}`}
-							>
-								<img src={data.image ? data.image : unknowImg} alt={data.title} />
-								<span>{data.title}</span>
-							</Link>
-						</li>
-					);
-				})
-			)
+			return filteredBySearch.map((data) => {
+				return (
+					<li className="search-list__item" key={data.ID}>
+						<Link className="search-list__link" to={`${data.page}${data.id}`}>
+							<img src={data.image ? data.image : unknowImg} alt={data.title} />
+							<span>{data.title}</span>
+						</Link>
+					</li>
+				);
+			});
 		} else {
-			return <p className='search-list__message'>Nothing was found for your request!</p>
+			return <p className="search-list__message">Nothing was found for your request!</p>;
 		}
-	}
+	};
 
 	return (
 		<Transition timeout={duration} in={searchInput.val ? true : false} unmountOnExit>

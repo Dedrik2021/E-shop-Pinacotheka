@@ -10,6 +10,7 @@ import BreadCrumbs from '../../components/BreadCrumbs/BreadCrumbs';
 import { setBreadCrumbsTitle } from '../../redux/slices/breadCrumbsSlice';
 
 import SingleNewsSkeleton from '../../skeletons/singleNewsSkeleton';
+import { Status } from '../../utils/status/status';
 
 import './singleNewsPage.scss';
 
@@ -63,7 +64,7 @@ const SingleNews = () => {
 	}, [dispatch]);
 
 	const contentLoaded = () => {
-		if (newsDataStatus === 'loading' || newsDataStatus === 'error') {
+		if (newsDataStatus === Status.LOADING || newsDataStatus === Status.ERROR) {
 			return <SingleNewsSkeleton />;
 		} else {
 			return (

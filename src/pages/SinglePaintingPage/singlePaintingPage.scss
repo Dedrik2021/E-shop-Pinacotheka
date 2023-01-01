@@ -1,0 +1,22 @@
+.recent-watched,
+.similar-paintings,
+.others-creation {
+    .gallery {
+        &__list {
+            margin-bottom: 90px;
+        }
+
+        &__item {
+            .painting-card {
+                transition: box-shadow 0.3s;
+                &:hover {
+                    box-shadow: 0px -2px 10px 0px rgba(0, 0, 0, 0.5);    
+                    .painting-card__buy {
+                        box-shadow: 0px 5px 5px 0px rgba(0, 0, 0, 0.5);
+                    }
+                }
+
+            }
+        }
+    }
+}

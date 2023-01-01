@@ -1,0 +1,401 @@
+@import '../../../scss/vars';
+
+.creations-details__info {
+    margin-bottom: 100px;
+}
+
+.details-card {
+    display: flex;
+    justify-content: center;
+    height: auto;
+
+    @include r($screen-xxl) {
+        justify-content: center;
+    }
+
+    @include r($screen-xl) {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    &__wrapper-img {
+        position: relative;
+        margin-right: 100px;
+    }
+
+    &__img {
+        border-radius: 20px;
+        position: relative;
+        object-fit: unset;
+        z-index: 5;
+        
+        &--blur {
+            position: absolute;
+            left: 15px;
+            top: 15px;
+            filter: blur(10px);
+            z-index: 0;
+            box-shadow: 5px 5px 8px 2px rgba(0, 0, 0, 0.5);
+        }
+    }
+
+    &__item {
+        position: relative;
+        @include liner-gradient;
+        cursor: pointer;
+    }
+
+    &__img-blur {
+        left: 40px;
+
+        @include r($screen-xxl) {
+            top: 170px;
+            width: 640px;
+            height: 400px;
+        }
+
+        @include r($screen-xl) {
+            width: 730px;
+            height: 400px;
+            top: 20px;
+        }
+
+        @include r($mobile-lg) {
+            width: 520px;
+        }
+
+        @include r($mobile-md) {
+            width: 90%;
+        }
+
+        @include r($mobile-sm) {
+            display: none;
+        }
+    }
+
+    &__box {
+        max-width: 355px;
+        width: 100%;
+        height: auto;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+
+        @include r($screen-xl) {
+            max-width: 750px;
+        }
+
+        .block {
+
+            @include r($mobile-md) {
+                margin-bottom: 25px;
+            }
+
+            &__item {
+
+                @include r($mobile-sm) {
+                    display: block;
+                }
+                
+                &:not(:last-child) {
+                    margin-bottom: 10px;
+                }
+            }
+
+            &__author-item {
+
+                @include r($mobile-sm) {
+                    max-width: 100%;
+                    margin-right: 0;
+                }
+            }
+        }
+    }
+
+    &__price-sum,
+    &__statistics,
+    &__lot {
+        font-weight: 700;
+    }
+
+    &__lot {
+        display: block;
+        font-size: 18px;
+        margin-bottom: 25px;
+
+        @include r($mobile-md) {
+            margin-bottom: 15px;
+        }
+    }
+
+    &__lot,
+    &__title {
+        @include line-clamp(2)
+    }
+
+    &__title {
+        font-size: 30px;
+        margin-bottom: 20px;
+
+        @include r($mobile-sm) {
+            font-size: 25px;
+        }
+    }
+
+    &__price,
+    &__wrap,
+    &__message,
+    &__wrapper {
+        display: flex;
+    }
+
+    &__message {
+        justify-content: space-between;
+    }
+
+    &__message,
+    &__wrapper {
+        margin-bottom: 25px;
+    }
+
+    &__statistics,
+    &__message-btn {
+        display: flex;
+        align-items: center;
+        font-size: 14px;
+        line-height: 2;
+
+        span {
+            max-width: 100%;
+        }
+    }
+
+    &__statistics {
+        color: $gray-100;
+        padding-left: 30px;
+        position: relative;
+        max-width: 40%;
+        @include line-clamp(1);
+
+        @include r($mobile-sm) {
+            max-width: 100%;
+        }
+
+        &::before {
+            position: absolute;
+            content: "";
+            width: 20px;
+            height: 20px;
+            top: 50%;
+            transform: translateY(-50%);
+            background-repeat: no-repeat;
+            left: 0;
+            background-position: center;
+        }
+
+        &--shared {
+            margin-right: 50px;
+
+            @include r($mobile-sm) {
+                max-width: 100%;
+                margin-right: 20px;
+            }
+
+            &::before {
+                background-image: url(../../../assets/images/shared-icon.svg);
+            }
+        } 
+
+        &--viewing::before {
+            background-image: url(../../../assets/images/views-icon.svg);
+        }
+    }
+
+    &__message-btn {
+        font-weight: 500;
+        border: 1px solid $gray-300;
+        border-radius: 10px;
+        padding: 5px 20px;
+        transition: background-color 0.4s, color 0.4s, border-color 0.4s;
+        word-wrap: break-word;
+
+        &.active {
+            background-color: $red;
+            color: $white;
+            pointer-events: none;
+
+            svg {
+                fill: $white;
+            }
+        }
+
+        &--message {
+            width: 70%;
+        }
+
+        @include r($mobile-md) {
+            background-color: $green;
+            color: $white;
+        }
+
+        @include r($mobile-sm) {
+            padding: 5px 10px;
+        }
+
+        &:hover {
+            background-color: $green;
+            color: $white;
+            border-color: transparent;
+
+            svg {
+                fill: $white;
+            }
+        }
+
+        svg {
+            max-width: 20px;
+            width: 100%;
+            transition: fill 0.4s;
+
+            @include r($mobile-md) {
+                fill: $white;
+            }
+        }
+
+        span {
+            margin-left: 5px;
+        }
+
+        &--like {
+            margin-right: 10px;
+        }
+    }
+
+    &__price {
+        align-items: center;
+        justify-content: space-between;
+        margin-bottom: 25px;
+
+        @include r($mobile-sm) {
+            margin-bottom: 20px;
+        }
+    }
+
+    &__price-sum {
+        font-size: 60px;
+        position: relative;
+        padding-left: 25px;
+        max-width: 60%;
+        @include line-clamp(1);
+
+        @include r($mobile-md) {
+            font-size: 40px;
+            padding-left: 20px;
+        }
+
+        @include r($mobile-sm) {
+            font-size: 30px;
+            padding-left: 15px;
+        }
+
+        span {
+            font-size: 24px;
+            position: absolute;
+            top: 10px;
+            left: 0;
+
+            @include r($mobile-md) {
+                font-size: 20px;
+                top: 5px;
+            }
+
+            @include r($mobile-sm) {
+                font-size: 18px;
+            }
+        }
+    }
+
+    &__question {
+        font-weight: 400;
+        font-size: 14px;
+        line-height: 3.2;
+        align-self: flex-end;
+        position: relative;
+        padding-left: 25px;
+        max-width: 45%;
+
+        @include r($mobile-sm) {
+            max-width: 100%;
+        }
+
+        &::before {
+            position: absolute;
+            content: "";
+            width: 20px;
+            height: 20px;
+            left: 0;
+            top: 50%;
+            transform: translateY(-50%);
+            background-image: url(../../../assets/images/question-icon.svg);
+        }
+
+        &:hover {
+
+            .details-card__question-text {
+                opacity: 1;
+                visibility: visible;
+                top: 35px;
+            }
+        }
+    }
+
+    &__question-text {
+        position: absolute;
+        line-height: 1.5;
+        top: 20px;
+        left: -115px;
+        border-radius: 10px;
+        background-color: $white;
+        width: 250px;
+        padding: 15px;
+        box-shadow: 3px 7px 10px -2px rgba(0, 0, 0, 0.5);
+        opacity: 0;
+        visibility: hidden;
+        border: 2px solid $gray-300;
+        transition: opacity 0.6s ease, visibility 0.6s, top 0.6s;
+    }
+
+    &__btns {
+
+        @include r($mobile-sm) {
+            display: flex;
+            flex-direction: column;
+        }
+    }
+
+    &__btns-btn {
+        display: inline-block;
+        padding: 17px 12px 19px;
+        border: 1px solid $black;
+        border-radius: 10px;
+
+        @include r($mobile-md) {
+            background-color: $red;
+            color: $white;
+            border-color: transparent;
+        }
+
+        @include r($mobile-sm) {
+            text-align: center;
+            padding: 15px 0;
+        }
+
+        &--buy {
+            margin-right: 10px;
+
+            @include r($mobile-sm) {
+                margin: 0 0 15px;
+            }
+        }
+    }
+}

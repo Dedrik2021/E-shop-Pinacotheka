@@ -1,0 +1,121 @@
+@import '../../../../scss/vars';
+
+.tabs-btns {
+    display: flex;
+    align-items: center;
+
+    @include r($mobile-md) {
+        justify-content: center;
+    }
+
+    @include r($mobile-sm) {
+        overflow-x: auto;
+        text-align: center;
+        justify-content: space-between;
+        background-color: $gray;
+        border-radius: 15px;
+        padding: 11px 0px 3px;
+        position: relative;
+    }
+
+    &::before {
+        position: absolute;
+        content: "";
+        z-index: 10;
+        width: 35px;
+        height: 20px;
+        background-size: 80%;
+        right: -5px;
+        top: 10px;
+        transform: rotate(-90deg);
+        background-image: url(../../../../assets/images/angle-down.svg);
+        background-repeat: no-repeat;
+    }
+
+    &::-webkit-scrollbar {
+        height: 0;
+    }
+
+    &__item {
+
+        @include r($mobile-sm) {
+            margin: 0 15px;
+            min-width: 150px;
+        }
+
+        &:not(:last-child) {
+            margin-right: 280px;
+
+            @include r($screen-xl) {
+                margin-right: 165px;
+            }
+
+            @include r($mobile-lg) {
+                margin-right: 50px;
+            }
+
+            @include r($mobile-md) {
+                margin-right: 30px;
+            }
+
+            @include r($mobile-sm) {
+                margin-right: 15px;
+            }
+        }
+    }
+
+    &__btn {
+        font-weight: 600;
+        font-size: 20px;
+        color: $gray-500;
+        transition: color 0.4s, font-weight 0.2s;
+
+        @include r($mobile-sm) {
+            font-weight: 700;
+            width: 100%;
+            color: $red;
+        }
+
+        span {
+            display: block;
+            position: relative;
+            z-index: 5;
+            top: 2px;
+            margin-top: 15px;
+            border: 2px solid transparent;
+            border-radius: 50px;
+            transition: border-color 0.4s, top 0.4s;
+
+            @include r($mobile-sm) {
+                margin-top: 5px;
+            }
+        }
+
+        &:focus,
+        &:hover {
+            outline: transparent;
+
+            span {
+                border-color: $red;
+            }
+        }
+
+        &.active {
+            font-weight: 700;
+            color: $gray-200;
+            pointer-events: none;
+
+            @include r($mobile-sm) {
+                color: $white;
+            }
+
+            span {
+                border-color: $black;
+
+                @include r($mobile-sm) {
+                    border-color: $white;
+                }
+            }
+        }
+    }
+}
