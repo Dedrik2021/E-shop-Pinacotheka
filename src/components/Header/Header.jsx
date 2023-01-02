@@ -242,6 +242,7 @@ const Header = memo(({ clickOpenLogout, openLogout }) => {
 						<HeaderSearchList
 							searchInput={searchInput}
 							filteredBySearch={filteredBySearch}
+							setSearch={setSearch}
 						/>
 						<ul className="menu__list" ref={dropdownRefs}>
 							<li

@@ -5,35 +5,35 @@ const AuthorsBioSkeleton = () => (
 	<ContentLoader
 		speed={2}
 		width={1275}
-		height={1080}
-		viewBox="0 0 1275 1080"
+		height={1000}
+		viewBox="0 0 1275 1000"
 		backgroundColor="#e3e3e3"
 		foregroundColor="#d6d1d1"
 	>
-		<rect x="0" y="200" rx="0" ry="0" width="0" height="22" />
 		<rect x="0" y="60" rx="9" ry="9" width="291" height="400" />
-		<rect x="330" y="80" rx="0" ry="0" width="1300" height="15" />
-		<rect x="330" y="105" rx="0" ry="0" width="1300" height="15" />
-		<rect x="330" y="130" rx="0" ry="0" width="1300" height="15" />
-		<rect x="330" y="155" rx="0" ry="0" width="1000" height="15" />
-		<rect x="1045" y="200" rx="0" ry="0" width="600" height="15" />
-		<rect x="350" y="300" rx="10" ry="10" width="230" height="50" />
-		<rect x="350" y="400" rx="0" ry="0" width="1300" height="15" />
-		<rect x="350" y="425" rx="0" ry="0" width="1300" height="15" />
-		<rect x="350" y="450" rx="0" ry="0" width="1300" height="15" />
-		<rect x="350" y="475" rx="0" ry="0" width="1300" height="15" />
-		<rect x="350" y="500" rx="0" ry="0" width="1300" height="15" />
-		<rect x="350" y="525" rx="0" ry="0" width="800" height="15" />
-		<rect x="350" y="580" rx="0" ry="0" width="1300" height="15" />
-		<rect x="350" y="605" rx="0" ry="0" width="1300" height="15" />
-		<rect x="350" y="630" rx="0" ry="0" width="1300" height="15" />
-		<rect x="350" y="655" rx="0" ry="0" width="600" height="15" />
-		<rect x="350" y="710" rx="0" ry="0" width="1300" height="15" />
-		<rect x="350" y="735" rx="0" ry="0" width="1300" height="15" />
-		<rect x="350" y="760" rx="0" ry="0" width="1300" height="15" />
-		<rect x="350" y="785" rx="0" ry="0" width="1300" height="15" />
-		<rect x="350" y="810" rx="0" ry="0" width="1300" height="15" />
-		<rect x="350" y="835" rx="0" ry="0" width="500" height="15" />
+
+		<rect x="400" y="160" rx="10" ry="10" width="240" height="40" />
+		<rect x="400" y="235" rx="10" ry="10" width="240" height="40" />
+		<rect x="750" y="140" rx="5" ry="5" width="350" height="20" />
+		<rect x="750" y="200" rx="5" ry="5" width="350" height="20" />
+		<rect x="750" y="260" rx="5" ry="5" width="350" height="20" />
+		<rect x="750" y="320" rx="5" ry="5" width="350" height="20" />
+		<rect x="0" y="515" rx="10" ry="10" width="300" height="40" />
+		
+		<rect x="0" y="635" rx="5" ry="5" width="1270" height="15" />
+		<rect x="0" y="660" rx="5" ry="5" width="1270" height="15" />
+		<rect x="0" y="685" rx="5" ry="5" width="1270" height="15" />
+		<rect x="0" y="710" rx="5" ry="5" width="500" height="15" />
+
+		<rect x="0" y="750" rx="5" ry="5" width="1270" height="15" />
+		<rect x="0" y="775" rx="5" ry="5" width="1270" height="15" />
+		<rect x="0" y="800" rx="5" ry="5" width="1270" height="15" />
+		<rect x="0" y="825" rx="5" ry="5" width="500" height="15" />
+
+		<rect x="0" y="865" rx="5" ry="5" width="1270" height="15" />
+		<rect x="0" y="890" rx="5" ry="5" width="1270" height="15" />
+		<rect x="0" y="915" rx="5" ry="5" width="1270" height="15" />
+		<rect x="0" y="940" rx="5" ry="5" width="500" height="15" />
 	</ContentLoader>
 );
 

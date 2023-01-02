@@ -1,16 +1,23 @@
 import { memo } from 'react';
 import { Link } from 'react-router-dom';
 import { ref, update } from 'firebase/database';
+import { useSelector, useDispatch } from 'react-redux';
+
+import { setPaintingWatched } from '../../../redux/modules/authors/authorsSlice';
 
 import { realDb } from '../../../firebase/firebaseConfig';
 
 const AuthorCardContent = memo((props) => {
 	const { switchBtn, item, unknowImg, foundUser, user, breadCrumbsTitle } = props;
+	const dispatch = useDispatch()
+	const { paintingWatched } = useSelector((state) => state.authorsSlice);
 
-	const clickOnPainting = (emailId) => {
+	const clickOnPainting = (work) => {
+		const filteredPainting = paintingWatched.filter(item => item.img !== work.img)
+		dispatch(setPaintingWatched([work, ...filteredPainting]))
 		const docToUpdates = ref(realDb, `singlePainting`);
 		update(docToUpdates, {
-			authorEmailId: emailId,
+			authorEmailId: work.emailId,
 		}).catch((err) => {
 			alert(err.message);
 		});
@@ -87,7 +94,7 @@ const AuthorCardContent = memo((props) => {
 												<Link
 													className="author-painting__link"
 													to={`/Author/SinglePainting/${work.id}`}
-													onClick={() => clickOnPainting(work.emailId)}
+													onClick={() => clickOnPainting(work)}
 												>
 													<img
 														src={work.img}

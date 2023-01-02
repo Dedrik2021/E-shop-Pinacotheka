@@ -1,0 +1,40 @@
+.about-author {
+    transition: filter 0.2s ease-out;
+
+    &.active {
+        filter: blur(10px);
+    }
+
+    &__inner {
+        display: flex;
+        justify-content: space-between;
+    }
+
+    &__aside {
+        max-width: 300px;
+        width: 100%;
+        padding-top: 60px;
+        margin-right: 100px;
+    }
+}
+
+.authors-items {
+
+    &__list {
+        min-width: 300px;
+        width: 100%;
+    }
+
+    &__item {
+        width: 100%;
+
+        &:not(:last-child) {
+            margin-bottom: 20px;
+        }
+    }
+
+    &__btn {
+        padding: 13px 50px 12px;
+        width: 100%;
+    }
+}

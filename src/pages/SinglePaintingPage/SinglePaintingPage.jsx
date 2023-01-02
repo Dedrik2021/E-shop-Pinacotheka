@@ -10,6 +10,8 @@ import SinglePaintingDetails from './SinglePaintingDetails/SinglePaintingDetails
 import SinglePaintingAuthorInfo from './SinglePaintingAuthorInfo/SinglePaintingAuthorInfo';
 import SinglePaintingGallerySection from './SinglePaintingGallerySection/SinglePaintingGallerySection';
 
+import SinglePaintingSkeleton from '../../skeletons/singlePaintingSkeleton';
+
 import { setBreadCrumbsTitle } from '../../redux/slices/breadCrumbsSlice';
 import { Status } from '../../utils/status/status';
 
@@ -123,8 +125,11 @@ const SinglePaintingPage = () => {
 			<div className={`creations-details`}>
 				<div className="container">
 					<BreadCrumbs />
-
-					<SinglePaintingDetails switchBtn={switchBtn} painting={painting} />
+					{authorsDataStatus === Status.LOADING || authorsDataStatus === Status.ERROR ? (
+						<SinglePaintingSkeleton />
+					) : (
+						<SinglePaintingDetails switchBtn={switchBtn} painting={painting} />
+					)}
 
 					<SinglePaintingAuthorInfo
 						filterBtn={filterBtn}

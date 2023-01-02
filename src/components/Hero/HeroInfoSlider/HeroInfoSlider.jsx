@@ -52,7 +52,7 @@ const HeroInfoSlider = memo((props) => {
 									</span>
 								</div>
 								<div className="pick-card__dots">
-									<span className="pick-card__num">0{paintingsInfo[0].id}</span>
+									<span className="pick-card__num">01</span>
 									<span className="pick-card__num">0{paintingsInfo.length}</span>
 								</div>
 							</article>

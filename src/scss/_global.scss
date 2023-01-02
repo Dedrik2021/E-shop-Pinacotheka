@@ -58,11 +58,11 @@ main {
         color: $white;
         background-color: $red;
         padding: 5px 50px;
-        border-radius: 5px;
+        border-radius: 10px;
         transition: background-color 0.4s;
 
         &:hover {
-            background-color: $black;
+            background-color: rgba(0, 0, 0, 0.7);
         }
 
         &:focus {
@@ -92,7 +92,7 @@ main {
 
     &--active {
         color: $white;
-        background-color: rgba(0, 0, 0, 0.7);
+        background-color: $black;
         pointer-events: none;
     }
 }

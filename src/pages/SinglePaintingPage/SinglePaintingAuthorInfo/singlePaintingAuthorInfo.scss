@@ -217,6 +217,8 @@
             height: 122px;
             max-width: 122px;
             width: 100%;
+            background-color: $gray;
+            border-radius: 10px;
 
             @include r($mobile-lg) {
                 margin-right: 15px;
