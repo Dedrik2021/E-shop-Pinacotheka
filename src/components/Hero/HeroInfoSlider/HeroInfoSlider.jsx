@@ -40,7 +40,7 @@ const HeroInfoSlider = memo((props) => {
 								<div className="pick-card__box">
 									<Link
 										className="pick-card__btn btn btn--red btn--universal"
-										// to={`/Author/SinglePainting/${work.id}`}
+										// to={`/SinglePainting/${work.id}`}
 										// to={''}
 										onClick={() => onPainting(work.emailId)}
 									>

@@ -20,6 +20,7 @@ const BreadCrumbs = () => {
 	}
 
 	const getBreadCrumbs = (breadCrumbsTitle) => {
+
 		if (breadCrumbsTitle.length > 1) {
 			return breadCrumbsTitle.map((item) => {
 				return (
@@ -27,7 +28,7 @@ const BreadCrumbs = () => {
 						<Link
 							onClick={clickCleanBreadCrumbsTitle}
 							className="breadcrumbs__link"
-							to={breadCrumbsTitle[0].startsWith('N') ? `/${breadCrumbsTitle[0]}` : `/${breadCrumbsTitle[0]}/${id}`}
+							to={(breadCrumbsTitle[0].startsWith('N') || breadCrumbsTitle[0].startsWith('A')) ? `/${breadCrumbsTitle[0]}` : `/${breadCrumbsTitle[0]}/${id}`}
 						>
 							{item}
 						</Link>
@@ -50,7 +51,8 @@ const BreadCrumbs = () => {
 			<li className="breadcrumbs__item">
 				<Link 
 					className="breadcrumbs__link" 
-					to={'/'}>
+					to={'/'}
+				>
 					{switchBtn ? 'Heimat' : 'Home'}
 				</Link>
 			</li>

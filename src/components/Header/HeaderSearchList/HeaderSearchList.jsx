@@ -6,7 +6,7 @@ import unknowImg from '../../../assets/images/unknow-photo.png';
 
 import './headerSearchList.scss';
 
-const HeaderSearchList = memo(({ searchInput, filteredBySearch, setSearch }) => {
+const HeaderSearchList = memo(({ searchInput, filteredBySearch, clearSearchInput }) => {
 	const duration = 0;
 
 	const defaultStyle = {
@@ -30,7 +30,7 @@ const HeaderSearchList = memo(({ searchInput, filteredBySearch, setSearch }) => 
 						<Link 
 							className="search-list__link" 
 							to={`${data.page}${data.id}`}
-							onClick={() => setSearch(false)}
+							onClick={clearSearchInput}
 						>
 							<img src={data.image ? data.image : unknowImg} alt={data.title} />
 							<span>{data.title}</span>

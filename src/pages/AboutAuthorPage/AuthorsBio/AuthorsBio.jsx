@@ -6,9 +6,9 @@ import unknownImage from '../../../assets/images/unknow-photo.png';
 import './authorsBio.scss'
 
 const AuthorsBio = memo((props) => {
-	const { authorInfo, switchBtn } = props;
+	const { authorInfo, switchBtn, dispatch, setAboutAuthorSwitchContentBtn } = props;
 
-	const elTel = authorInfo ? authorInfo.tel.substring(1) : '';
+	const elTel = authorInfo ? authorInfo.tel.substring(1) : ''
 	const phone = elTel.replace(/\s+/g, '');
 
 	return (
@@ -16,9 +16,9 @@ const AuthorsBio = memo((props) => {
 			<Helmet>
 				<meta
 					name="description"
-					content={switchBtn ? 'Biographie das Autors' : 'Biography of the author'}
+					content={switchBtn ? `Informationen über ${authorInfo.title}` : `Information about ${authorInfo.title}`}
 				/>
-				<title>{switchBtn ? 'Biographie das Autors' : 'Biography of the author'}</title>
+				<title>{switchBtn ? `Informationen über ${authorInfo.title}` : `Information about ${authorInfo.title}`}</title>
 			</Helmet>
 			<section className="authors-bio">
 				<h1 className="sr-only">
@@ -64,13 +64,12 @@ const AuthorsBio = memo((props) => {
 									<button
 										type="button"
 										className="authors-bio__btn btn btn--red btn--universal"
-										// onClick={() => dispatch(setAuthorInfoBtn(2))}
+										onClick={() => dispatch(setAboutAuthorSwitchContentBtn(2))}
 									>
-										<span>{switchBtn ? 'Bewertungen' : 'Review'}:</span>
+										<span>{switchBtn ? 'Bewertungen' : 'Review'}: </span>
 										<span>
-											{authorInfo
-												? authorInfo.feedBack.length
-												: '-- -- -- --'}
+											{ authorInfo
+												&& authorInfo.feedBack.length}
 										</span>
 									</button>
 								</span>
@@ -78,13 +77,12 @@ const AuthorsBio = memo((props) => {
 									<button
 										type="button"
 										className=" authors-bio__btn btn btn--red btn--universal"
-										// onClick={() => dispatch(setAuthorInfoBtn(1))}
+										onClick={() => dispatch(setAboutAuthorSwitchContentBtn(1))}
 									>
 										<span>
-											{switchBtn ? 'Gesamtarbeiten' : 'Overall works'}:
-										</span>
+											{switchBtn ? 'Gesamtarbeiten' : 'Overall works'}: </span>
 										<span>
-											{authorInfo ? authorInfo.works.length : '-- -- --'}
+											{ authorInfo && authorInfo.works.length}
 										</span>
 									</button>
 								</span>
@@ -93,7 +91,7 @@ const AuthorsBio = memo((props) => {
 								<span className="authors-bio__item">
 									<a className="authors-bio__link" href={`tel: ${phone}`}>
 										<span>Tel:</span>
-										{authorInfo ? authorInfo.tel : '-- -- -- --'}
+										{authorInfo ? authorInfo.tel : '-//--//--//--'}
 									</a>
 								</span>
 								<span className="authors-bio__item">
@@ -102,7 +100,7 @@ const AuthorsBio = memo((props) => {
 										href={`mailto:${authorInfo && authorInfo.mail}`}
 									>
 										<span>Email:</span>
-										{authorInfo ? authorInfo.mail : '-- -- -- --'}
+										{authorInfo ? authorInfo.mail : '-//--//--//--'}
 									</a>
 								</span>
 								<span className="authors-bio__item">
@@ -113,7 +111,7 @@ const AuthorsBio = memo((props) => {
 										<span>Facebook:</span>
 										{authorInfo && authorInfo.facebook !== ''
 											? authorInfo.facebook
-											: '-- -- -- --'}
+											: '-//--//--//--'}
 									</a>
 								</span>
 								<span className="authors-bio__item">
@@ -124,7 +122,7 @@ const AuthorsBio = memo((props) => {
 										<span>Instagram:</span>
 										{authorInfo && authorInfo.insta !== ''
 											? authorInfo.insta
-											: '-- -- -- -- '}
+											: '-//--//--//--'}
 									</a>
 								</span>
 							</div>
@@ -136,7 +134,7 @@ const AuthorsBio = memo((props) => {
 							<cite>{authorInfo && authorInfo.quote && authorInfo.name}</cite>
 						</blockquote>
 						{authorInfo && authorInfo.info.length > 0 && (
-							<h2 className="title">{switchBtn ? 'Biographie' : 'Biography'}</h2>
+							<h2 className="title">{switchBtn ? 'Über mich' : 'About me'}</h2>
 						)}
 						{authorInfo &&
 							authorInfo.info.map((item, i) => {

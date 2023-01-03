@@ -41,7 +41,7 @@ const routes = [
 		nodeRef: createRef(),
 	},
 	{
-		path: '/Author/SinglePainting/:id',
+		path: '/SinglePainting/:id',
 		element: <SinglePainting />,
 		nodeRef: createRef(),
 	},

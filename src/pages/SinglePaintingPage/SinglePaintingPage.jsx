@@ -60,7 +60,7 @@ const SinglePaintingPage = () => {
 
 	useEffect(() => {
 		dispatch(setBreadCrumbsTitle(''));
-		const pathName = window.location.pathname.substring(1, 22);
+		const pathName = window.location.pathname.substring(1, 15);
 		const name = pathName.split('/');
 		dispatch(setBreadCrumbsTitle(name));
 	}, [dispatch]);
@@ -118,9 +118,9 @@ const SinglePaintingPage = () => {
 			<Helmet>
 				<meta
 					name="description"
-					content={switchBtn ? 'Details das Bildes' : 'Details the picture'}
+					content={switchBtn ? `Details von das Bildes ${painting.title}` : `Details of the painting ${painting.title}`}
 				/>
-				<title>{switchBtn ? 'Details das Bildes' : 'Details the picture'}</title>
+				<title>{switchBtn ? `Details von das Bildes ${painting.title}` : `Details of the painting ${painting.title}`}</title>
 			</Helmet>
 			<div className={`creations-details`}>
 				<div className="container">

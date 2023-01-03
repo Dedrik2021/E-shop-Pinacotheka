@@ -6,7 +6,7 @@ import AuthorsSearch from '../../components/AuthorsSearch/AuthorsSearch';
 import AuthorCard from '../../components/AuthorCard/AuthorCard';
 import Pagination from '../../components/Pagination/Pagination';
 import BreadCrumbs from '../../components/BreadCrumbs/BreadCrumbs';
-import Error404 from '../Error404Page/Error404Page';
+import PaintingAttention from '../../components/PaintingAttention/PaintingAttention';
 
 import AuthorsSkeleton from '../../skeletons/authorsSkeleton';
 import { searchData } from '../../services/data/searchData';
@@ -106,8 +106,11 @@ const AuthorsPage = () => {
 		} else if (filteredBySearch.length === 0) {
 			if (!loading) {
 				return (
-					<Error404 
-						noData={filteredBySearch}
+					<PaintingAttention 
+						title='no data'
+						attention1='We are very sorry!'
+						attention2='Nothing was found for your request!'
+						marginTop='0'
 					/>
 				);
 			} else {

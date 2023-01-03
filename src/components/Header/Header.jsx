@@ -19,6 +19,7 @@ import { searchData } from '../../services/data/searchData';
 import { fetchAuthorsData } from '../../redux/modules/authors/authorsThunks';
 import { fetchNewsData } from '../../redux/modules/news/newsThunks';
 import { fetchUsersData } from '../../redux/modules/users/usersThunks';
+import { setAboutAuthorSwitchContentBtn } from '../../redux/modules/authors/authorsSlice';
 
 import Logo from '../../UI/logo/Logo';
 import UserAuthSkeleton from '../../skeletons/userAuthSkeleton';
@@ -182,6 +183,12 @@ const Header = memo(({ clickOpenLogout, openLogout }) => {
 		setOpenMenu(!openMenu);
 	};
 
+	const clearSearchInput = () => {
+		setSearch(false)
+		setSearchInput({val: '', isValid: true})
+		dispatch(setAboutAuthorSwitchContentBtn(0))
+	}
+
 	const changeAuth = () => {
 		if (user !== null) {
 			const userContent =
@@ -242,7 +249,7 @@ const Header = memo(({ clickOpenLogout, openLogout }) => {
 						<HeaderSearchList
 							searchInput={searchInput}
 							filteredBySearch={filteredBySearch}
-							setSearch={setSearch}
+							clearSearchInput={clearSearchInput}
 						/>
 						<ul className="menu__list" ref={dropdownRefs}>
 							<li

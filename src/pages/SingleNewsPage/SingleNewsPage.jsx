@@ -56,6 +56,8 @@ const SingleNews = () => {
 		window.scroll(0, 0);
 	}, []);
 
+	console.log(foundNews);
+
 	useEffect(() => {
 		dispatch(setBreadCrumbsTitle(''));
 		const pathName = window.location.pathname.substring(1, 16);
@@ -82,8 +84,8 @@ const SingleNews = () => {
 	return (
 		<>
 			<Helmet>
-				<meta name="description" content={switchBtn ? 'Nachricht' : 'News'} />
-				<title>{switchBtn ? 'Nachricht' : 'News'}</title>
+				<meta name="description" content={switchBtn ? `Nachricht ${foundNews.title}` : `News ${foundNews.title}`} />
+				<title>{switchBtn ? `Nachricht ${foundNews.title}` : `News ${foundNews.title}`}</title>
 			</Helmet>
 			{/* {content}
 			{errorMessage} */}

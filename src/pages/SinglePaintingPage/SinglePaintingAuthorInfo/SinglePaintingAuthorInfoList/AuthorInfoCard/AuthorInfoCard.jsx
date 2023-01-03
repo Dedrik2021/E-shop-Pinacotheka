@@ -1,17 +1,21 @@
 import { memo } from 'react';
 import { Link } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
 
 import Social from '../../../../../components/Social/Social';
 
+import { setAboutAuthorSwitchContentBtn } from '../../../../../redux/modules/authors/authorsSlice';
+
 const AuthorInfoCard = memo((props) => {
 	const { title, tel, id, image } = props;
+	const dispatch = useDispatch()
 	
 	return (
 		<article className="author-card">
 			<Link 
 				className="author-card__img-link" 
-				to={`'/Author/${id}`} 
-				// onClick={() => setAuthorInfoBtn(0)}
+				to={`/Authors/AuthorInfo/${id}`} 
+				onClick={() => dispatch(setAboutAuthorSwitchContentBtn(0))}
 				>
 				<img src={image} alt={title} width="122" height="125" />
 
@@ -21,8 +25,8 @@ const AuthorInfoCard = memo((props) => {
 			<div className="author-card__box">
 				<Link 
 					className="author-card__link" 
-					to={`'/Author/${id}`} 
-					// onClick={() => setAuthorInfoBtn(0)}
+					to={`/Authors/AuthorInfo/${id}`} 
+					onClick={() => dispatch(setAboutAuthorSwitchContentBtn(0))}
 					>
 					<h2 className="author-card__user">{title}</h2>
 				</Link>

@@ -6,6 +6,7 @@ import { getAuth } from 'firebase/auth';
 import BreadCrumbs from '../../components/BreadCrumbs/BreadCrumbs';
 import AuthorsBio from './AuthorsBio/AuthorsBio';
 import AboutAuthorGallery from './AboutAuthorGallery/AboutAuthorGallery';
+import AboutAuthorReviews from './AboutAuthorReviews/AboutAuthorReviews';
 
 
 import ReviewsSkeleton from '../../skeletons/reviewsSkeleton';
@@ -19,6 +20,7 @@ import { Status } from '../../utils/status/status';
 import './aboutAuthorPage.scss'
 
 const AboutAuthorPage = () => {
+	
 	const { id } = useParams();
 	const dispatch = useDispatch();
 	const auth = getAuth();
@@ -27,11 +29,23 @@ const AboutAuthorPage = () => {
 	const [dataLength, setDataLength] = useState(0);
 	const [dataLimitLast, setDataLimitLast] = useState(16);
 	const [dataLimitStart, setDataLimitStart] = useState(16);
+
+	const [reviewsDataSelected, setReviewsDataSelected] = useState(1);
+	const [reviewsDataLength, setReviewsDataLength] = useState(0);
+	const [reviewsDataLimitLast, setReviewsDataLimitLast] = useState(10);
+	const [reviewsDataLimitStart, setReviewsDataLimitStart] = useState(10);
 	const [loading, setLoading] = useState(false);
 
 	const { authorsData, authorsDataStatus, aboutAuthorSwitchContentBtn } = useSelector((state) => state.authorsSlice);
 	const switchLanguageBtn = useSelector((state) => state.langBtnsSlice.switchLanguageBtn);
 	const switchBtn = switchLanguageBtn[0] === 0;
+
+	const aboutBtn = [
+		{ id: 0, title: switchBtn ? 'Indentität der Person' : 'Identity of the person' },
+		{ id: 1, title: switchBtn ? 'Gemälde zum Verkauf' : 'Paintings for Sale' },
+		{ id: 2, title: switchBtn ? 'Bewertungen' : 'Review' },
+		{ id: 3, title: 'Chat' },
+	];
 
 	const foundAuthorsItems = () => {
 		const foundAuthor = authorsData.find((author) => author.id === id);
@@ -44,29 +58,22 @@ const AboutAuthorPage = () => {
 		setDataLimitLast(16 * dataSelected);
 		setDataLimitStart(dataLimitLast - 16);
 
+		setReviewsDataLimitLast(10 * reviewsDataSelected);
+		setReviewsDataLimitStart(reviewsDataLimitLast - 10);
+
 		setTimeout(() => {
 			setLoading(false);
 		}, 1000);
-	}, [
-		dataLimitLast,
-		dataSelected
-	]);
+	}, [dataLimitLast, dataSelected, reviewsDataLimitLast, reviewsDataSelected]);
 
 	useEffect(() => {
 		setDataLength(Math.ceil(foundAuthorsItems().foundAuthor && foundAuthorsItems().foundAuthor.works.length / 16));
+		setReviewsDataLength(Math.ceil(foundAuthorsItems().foundAuthor && foundAuthorsItems().foundAuthor.feedBack.length / 10))
 	}, [foundAuthorsItems().foundAuthor]);
-
-
-	const aboutBtn = [
-		{ id: 0, title: switchBtn ? 'Indentität der Person' : 'Identity of the person' },
-		{ id: 1, title: switchBtn ? 'Gemälde zum Verkauf' : 'Paintings for Sale' },
-		{ id: 2, title: switchBtn ? 'Bewertungen' : 'Review' },
-		{ id: 3, title: 'Chat' },
-	];
 
 	useEffect(() => {
 		dispatch(setBreadCrumbsTitle(''));
-		const pathName = window.location.pathname.substring(1, 7);
+		const pathName = window.location.pathname.substring(1, 19);
 		const name = pathName.split('/');
 		dispatch(setBreadCrumbsTitle(name));
 	}, [dispatch]);
@@ -78,6 +85,7 @@ const AboutAuthorPage = () => {
 	const clickOnAuthorInfoBtn = (id) => {
 		dispatch(setAboutAuthorSwitchContentBtn(id))
 		setDataSelected(1)
+		setReviewsDataSelected(1)
 	}
 
 	const authorsBio = () => {
@@ -88,6 +96,8 @@ const AboutAuthorPage = () => {
 				<AuthorsBio
 				authorInfo={foundAuthorsItems().foundAuthor}
 				switchBtn={switchBtn}
+				setAboutAuthorSwitchContentBtn={setAboutAuthorSwitchContentBtn}
+				dispatch={dispatch}
 			/>
 			)
 		}
@@ -113,23 +123,10 @@ const AboutAuthorPage = () => {
 					dataSelected={dataSelected}
 					dataLength={dataLength}
 					paintings={ foundAuthorsItems().foundAuthor.works}
+					author={foundAuthorsItems().foundAuthor}
 					loading={loading}
 				/>
 			)
-		}
-	};
-
-	const reviews = () => {
-		if (authorsDataStatus === Status.LOADING || authorsDataStatus === Status.ERROR) {
-			return (
-				<div className="authors-works__content">
-					{[...new Array(10)].map((_, i) => (
-						<ReviewsSkeleton key={i} />
-					))}
-				</div>
-			);
-		} else {
-			// return <Reviews authorInfo={authorInfo} />
 		}
 	};
 
@@ -140,8 +137,18 @@ const AboutAuthorPage = () => {
 			case 1:
 				return authorsWorks();
 			case 2:
-				return 2
-				// reviews;
+				return <AboutAuthorReviews 
+					authorInfo={foundAuthorsItems().foundAuthor}
+					switchBtn={switchBtn}
+					authorsDataStatus={authorsDataStatus}
+					setDataSelected={setReviewsDataSelected}
+					setLimitLast={setReviewsDataLimitLast}
+					limitLast={reviewsDataLimitLast}
+					limitStart={reviewsDataLimitStart}
+					dataSelected={reviewsDataSelected}
+					dataLength={reviewsDataLength}
+					loading={loading}
+				/>
 			case 3:
 				return 3
 				// <AuthorsChat authorInfo={authorInfo} />;
