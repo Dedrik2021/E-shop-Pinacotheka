@@ -14,5 +14,5 @@ export const fetchUsersData = createAsyncThunk('usersData/usersDataStatus', asyn
     // const url = 'http://localhost:3001/users'
     // const error = 'Users data'
 
-    return fetchData('users')
+    return await fetchData('users')
 });

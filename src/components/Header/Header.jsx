@@ -2,7 +2,7 @@ import { useState, useRef, useEffect, memo } from 'react';
 import { Link } from 'react-router-dom';
 import { ref, onValue, update } from 'firebase/database';
 import { useDispatch, useSelector } from 'react-redux';
-import { getAuth, onAuthStateChanged } from 'firebase/auth';
+import { getAuth } from 'firebase/auth';
 
 import HeaderDropdown from './HeaderDropdown/HeaderDropdown';
 import HeaderSwitchLangBtns from './HeaderSwitchLangBtns/HeaderSwitchLangBtns';
@@ -14,11 +14,8 @@ import UserOffice from '../UserOffice/UserOffice';
 import { realDb } from '../../firebase/firebaseConfig';
 
 import { setSwitchLanguageBtn } from '../../redux/slices/langBtnsSlice';
-import { setUserOfficeDropdown, setFoundUser } from '../../redux/modules/users/usersSlice';
+import { setUserOfficeDropdown } from '../../redux/modules/users/usersSlice';
 import { searchData } from '../../services/data/searchData';
-import { fetchAuthorsData } from '../../redux/modules/authors/authorsThunks';
-import { fetchNewsData } from '../../redux/modules/news/newsThunks';
-import { fetchUsersData } from '../../redux/modules/users/usersThunks';
 import { setAboutAuthorSwitchContentBtn } from '../../redux/modules/authors/authorsSlice';
 
 import Logo from '../../UI/logo/Logo';
@@ -49,11 +46,11 @@ const Header = memo(({ clickOpenLogout, openLogout }) => {
 
 	const authorsData = useSelector((state) => state.authorsSlice.authorsData);
 	const newsData = useSelector((state) => state.newsSlice.newsData);
-	const { usersData, usersDataStatus } = useSelector((state) => state.usersSlice);
+	const { usersData, usersDataStatus, foundUser } = useSelector((state) => state.usersSlice);
 
 	const switchLanguageBtn = useSelector((state) => state.langBtnsSlice.switchLanguageBtn);
 	const switchBtn = switchLanguageBtn[0] === 0;
-	const allData = [...authorsData, ...newsData, ...usersData];
+	const allData = [...authorsData, ...newsData];
 
 	const menuBtns = [
 		{
@@ -67,28 +64,6 @@ const Header = memo(({ clickOpenLogout, openLogout }) => {
 			href: switchBtn ? '/Arbeitsplan' : '/WorkSchedule',
 		},
 	];
-
-	const foundUser = user &&
-			(usersData.find((item) => item.emailId === user.email) ||
-			authorsData.find(item => item.emailId === user.email))
-
-	useEffect(() => {
-			dispatch(setFoundUser(foundUser))
-	}, [dispatch, foundUser])
-
-	useEffect(() => {
-		onAuthStateChanged(auth, (snapshot) => {
-			if (snapshot) {
-				dispatch(fetchAuthorsData());
-				dispatch(fetchNewsData());
-				dispatch(fetchUsersData());
-			} else {
-				dispatch(fetchAuthorsData());
-				dispatch(fetchNewsData());
-				dispatch(fetchUsersData());
-			}
-		});
-	}, [auth, dispatch]);
 
 	useEffect(() => {
 		onValue(ref(realDb, 'switchLanguageBtn'), (snapshot) => {
@@ -188,6 +163,8 @@ const Header = memo(({ clickOpenLogout, openLogout }) => {
 		setSearchInput({val: '', isValid: true})
 		dispatch(setAboutAuthorSwitchContentBtn(0))
 	}
+
+	// console.log(foundUser);
 
 	const changeAuth = () => {
 		if (user !== null) {

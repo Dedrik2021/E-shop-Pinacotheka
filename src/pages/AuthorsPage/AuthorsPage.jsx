@@ -89,7 +89,7 @@ const AuthorsPage = () => {
 			return (
 				<ul 
 					className="authors__list"
-					style={{marginBottom: '70px', height: filteredBySearch.length < 7 && '500px'}}
+					style={{marginBottom: '70px'}}
 					>
 					{filteredBySearch.map((item, i) => {
 						return (

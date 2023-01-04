@@ -23,7 +23,7 @@ const authorsInfoSlice = createSlice({
 		},
 		setAboutAuthorSwitchContentBtn(state, active) {
 			state.aboutAuthorSwitchContentBtn = active.payload;
-		},
+		}
 	},
 	extraReducers: (builder) => {
 		builder
