@@ -1,4 +1,4 @@
-@import '../../scss/vars';
+@import '../../../scss/vars';
 
 .authors-search {
     position: relative;
@@ -53,5 +53,10 @@
             outline: transparent;
             border-color: $red;
         }
+    }
+
+    .cross {
+        position: relative;
+        top: -3px;
     }
 }

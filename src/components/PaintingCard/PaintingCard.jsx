@@ -61,7 +61,7 @@ const PaintingCard = memo(({ paintingInfo, switchBtn }) => {
 							to={`/Authors/AuthorInfo/${getAuthorLink(paintingInfo.emailId)}`}
 							onClick={clickOnAuthorLink}
 						>
-							<span>{paintingInfo.aboutCard[1]}</span>
+							<span>{paintingInfo.aboutCard && paintingInfo.aboutCard[1]}</span>
 						</Link>
 						<span className="painting-card__material">{paintingInfo.material}</span>
 					</div>

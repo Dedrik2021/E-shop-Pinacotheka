@@ -2,7 +2,7 @@ import { useEffect, useState, useMemo } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import Helmet from 'react-helmet';
 
-import AuthorsSearch from '../../components/AuthorsSearch/AuthorsSearch';
+import AuthorsSearch from './AuthorsSearch/AuthorsSearch';
 import AuthorCard from '../../components/AuthorCard/AuthorCard';
 import Pagination from '../../components/Pagination/Pagination';
 import BreadCrumbs from '../../components/BreadCrumbs/BreadCrumbs';
@@ -160,7 +160,7 @@ const AuthorsPage = () => {
 						</h1>
 						<div className="authors__box">
 							<span className="authors__found">
-								{authorsData.length}
+								<span className='authors__found authors__found--span'>{authorsSearchInput.val !== '' ? filteredBySearch.length : authorsData.length}</span>
 
 								{switchBtn ? ' Autoren gefunden' : ' Authors found'}
 							</span>

@@ -26,7 +26,8 @@ import logo from '../../assets/images/logo.svg';
 
 import '../Header/header.scss';
 
-const Header = memo(({ clickOpenLogout, openLogout }) => {
+const Header = memo(({ clickOpenLogout, openLogout, search, setSearch }) => {
+	const works = [];
 	const auth = getAuth();
 	const user = auth.currentUser;
 	const dispatch = useDispatch();
@@ -38,19 +39,25 @@ const Header = memo(({ clickOpenLogout, openLogout }) => {
 	const burgerBtnRefs = useRef();
 	const userOfficeDropdownRefs = useRef();
 
-	const [search, setSearch] = useState(false);
 	const [searchInput, setSearchInput] = useState({ val: '', isValid: true });
 	const [dropdown, setDropdown] = useState(false);
 	const [openMenu, setOpenMenu] = useState(false);
-	const [scroll, setScroll] = useState(false)
+	const [scroll, setScroll] = useState(false);
+	const [allData, setAllData] = useState([]);
 
-	const authorsData = useSelector((state) => state.authorsSlice.authorsData);
+	const { authorsData } = useSelector((state) => state.authorsSlice);
 	const newsData = useSelector((state) => state.newsSlice.newsData);
 	const { usersData, usersDataStatus, foundUser } = useSelector((state) => state.usersSlice);
 
 	const switchLanguageBtn = useSelector((state) => state.langBtnsSlice.switchLanguageBtn);
 	const switchBtn = switchLanguageBtn[0] === 0;
-	const allData = [...authorsData, ...newsData];
+
+	const gallery = authorsData.filter((item) => item.works.length !== 0);
+	const paintingsInfo = gallery.map((item) => item.works);
+
+	for (const i of paintingsInfo) {
+		works.push(...i);
+	}
 
 	const menuBtns = [
 		{
@@ -71,7 +78,9 @@ const Header = memo(({ clickOpenLogout, openLogout }) => {
 				dispatch(setSwitchLanguageBtn(Object.values(snapshot.val())));
 			}
 		});
-	}, [dispatch]);
+
+		setAllData([...authorsData, ...newsData, ...works]);
+	}, [authorsData, dispatch, newsData]);
 
 	useEffect(() => {
 		const checkScroll = () => {
@@ -79,14 +88,41 @@ const Header = memo(({ clickOpenLogout, openLogout }) => {
 			if (scrollPos > 0) {
 				setScroll(true);
 				setDropdown(false);
-				setOpenMenu(false)
-				dispatch(setUserOfficeDropdown(false))
+				setOpenMenu(false);
+				dispatch(setUserOfficeDropdown(false));
 			} else {
 				setScroll(false);
 			}
 		};
 		document.addEventListener('scroll', checkScroll);
 	}, [dispatch]);
+
+	// const [isOpen, setIsOpen] = useState(false)
+	// const toggle = (isOpen) => {
+	//   return setIsOpen(!isOpen)
+	// }
+	// // Hide Dropdown on Outside Click
+	// // const menuRef = useRef(null)
+	// const [listening, setListening] = useState(false)
+
+	// useEffect(() => {
+	// 	const listenForOutsideClick = (listening, setListening, formRefs, setIsOpen) => {
+	// 		return () => {
+	// 			if (listening) return
+	// 			if (!formRefs.current) return
+	// 			setListening(true)
+	// 			;[`click`, `touchstart`].forEach((type) => {
+	// 			  document.addEventListener(`click`, (evt) => {
+	// 				const cur = formRefs.current
+	// 				const node = evt.target
+	// 				if (cur.contains(node)) return
+	// 				setIsOpen(false)
+	// 			  })
+	// 			})
+	// 		  }
+	// 	}
+	// 	listenForOutsideClick(listening, setListening, formRefs, setIsOpen)
+	// }, [])
 
 	useEffect(() => {
 		const closeSearch = (e) => {
@@ -159,10 +195,10 @@ const Header = memo(({ clickOpenLogout, openLogout }) => {
 	};
 
 	const clearSearchInput = () => {
-		setSearch(false)
-		setSearchInput({val: '', isValid: true})
-		dispatch(setAboutAuthorSwitchContentBtn(0))
-	}
+		setSearch(false);
+		setSearchInput({ val: '', isValid: true });
+		dispatch(setAboutAuthorSwitchContentBtn(0));
+	};
 
 	// console.log(foundUser);
 
@@ -227,6 +263,7 @@ const Header = memo(({ clickOpenLogout, openLogout }) => {
 							searchInput={searchInput}
 							filteredBySearch={filteredBySearch}
 							clearSearchInput={clearSearchInput}
+							search={search}
 						/>
 						<ul className="menu__list" ref={dropdownRefs}>
 							<li

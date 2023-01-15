@@ -3,12 +3,12 @@ import Helmet from 'react-helmet';
 
 import unknownImage from '../../../assets/images/unknow-photo.png';
 
-import './authorsBio.scss'
+import './authorsBio.scss';
 
 const AuthorsBio = memo((props) => {
 	const { authorInfo, switchBtn, dispatch, setAboutAuthorSwitchContentBtn } = props;
 
-	const elTel = authorInfo ? authorInfo.tel.substring(1) : ''
+	const elTel = authorInfo ? authorInfo.tel.substring(1) : '';
 	const phone = elTel.replace(/\s+/g, '');
 
 	return (
@@ -16,9 +16,17 @@ const AuthorsBio = memo((props) => {
 			<Helmet>
 				<meta
 					name="description"
-					content={switchBtn ? `Informationen über ${authorInfo.title}` : `Information about ${authorInfo.title}`}
+					content={
+						switchBtn
+							? `Informationen über ${authorInfo.title}`
+							: `Information about ${authorInfo.title}`
+					}
 				/>
-				<title>{switchBtn ? `Informationen über ${authorInfo.title}` : `Information about ${authorInfo.title}`}</title>
+				<title>
+					{switchBtn
+						? `Informationen über ${authorInfo.title}`
+						: `Information about ${authorInfo.title}`}
+				</title>
 			</Helmet>
 			<section className="authors-bio">
 				<h1 className="sr-only">
@@ -55,76 +63,79 @@ const AuthorsBio = memo((props) => {
 								{switchBtn ? 'Feedback hinterlassen' : 'Leave feedback'}
 							</button>
 						</div>
-						<div className="authors-bio__box">
-							<div className="authors-bio__box-wrapper">
-								<span className="authors-bio__name">
-									{authorInfo ? authorInfo.name : '-- -- -- --'}
-								</span>
-								<span className="authors-bio__span">
-									<button
-										type="button"
-										className="authors-bio__btn btn btn--red btn--universal"
-										onClick={() => dispatch(setAboutAuthorSwitchContentBtn(2))}
-									>
-										<span>{switchBtn ? 'Bewertungen' : 'Review'}: </span>
-										<span>
-											{ authorInfo
-												&& authorInfo.feedBack.length}
-										</span>
-									</button>
-								</span>
-								<span className="authors-bio__span">
-									<button
-										type="button"
-										className=" authors-bio__btn btn btn--red btn--universal"
-										onClick={() => dispatch(setAboutAuthorSwitchContentBtn(1))}
-									>
-										<span>
-											{switchBtn ? 'Gesamtarbeiten' : 'Overall works'}: </span>
-										<span>
-											{ authorInfo && authorInfo.works.length}
-										</span>
-									</button>
-								</span>
-							</div>
-							<div className="authors-bio__box-wrapper">
-								<span className="authors-bio__item">
-									<a className="authors-bio__link" href={`tel: ${phone}`}>
-										<span>Tel:</span>
-										{authorInfo ? authorInfo.tel : '-//--//--//--'}
-									</a>
-								</span>
-								<span className="authors-bio__item">
-									<a
-										className="authors-bio__link"
-										href={`mailto:${authorInfo && authorInfo.mail}`}
-									>
-										<span>Email:</span>
-										{authorInfo ? authorInfo.mail : '-//--//--//--'}
-									</a>
-								</span>
-								<span className="authors-bio__item">
-									<a
-										className="authors-bio__link"
-										href={authorInfo && authorInfo.facebook}
-									>
-										<span>Facebook:</span>
-										{authorInfo && authorInfo.facebook !== ''
-											? authorInfo.facebook
-											: '-//--//--//--'}
-									</a>
-								</span>
-								<span className="authors-bio__item">
-									<a
-										className="authors-bio__link"
-										href={authorInfo && authorInfo.insta}
-									>
-										<span>Instagram:</span>
-										{authorInfo && authorInfo.insta !== ''
-											? authorInfo.insta
-											: '-//--//--//--'}
-									</a>
-								</span>
+						<div className="authors-bio__content-box">
+							<span className="authors-bio__author-name">{authorInfo && authorInfo.title}</span>
+							<div className="authors-bio__box">
+								<div className="authors-bio__box-wrapper">
+									<span className="authors-bio__name">
+										{authorInfo ? authorInfo.name : '-- -- -- --'}
+									</span>
+									<span className="authors-bio__span">
+										<button
+											type="button"
+											className="authors-bio__btn btn btn--red btn--universal"
+											onClick={() =>
+												dispatch(setAboutAuthorSwitchContentBtn(2))
+											}
+										>
+											<span>{switchBtn ? 'Bewertungen' : 'Review'}: </span>
+											<span>{authorInfo && authorInfo.feedBack.length}</span>
+										</button>
+									</span>
+									<span className="authors-bio__span">
+										<button
+											type="button"
+											className=" authors-bio__btn btn btn--red btn--universal"
+											onClick={() =>
+												dispatch(setAboutAuthorSwitchContentBtn(1))
+											}
+										>
+											<span>
+												{switchBtn ? 'Gesamtarbeiten' : 'Overall works'}:{' '}
+											</span>
+											<span>{authorInfo && authorInfo.works.length}</span>
+										</button>
+									</span>
+								</div>
+								<div className="authors-bio__box-wrapper">
+									<span className="authors-bio__item">
+										<a className="authors-bio__link" href={`tel: ${phone}`}>
+											<span>Tel:</span>
+											{authorInfo ? authorInfo.tel : '-//--//--//--'}
+										</a>
+									</span>
+									<span className="authors-bio__item">
+										<a
+											className="authors-bio__link"
+											href={`mailto:${authorInfo && authorInfo.mail}`}
+										>
+											<span>Email:</span>
+											{authorInfo ? authorInfo.mail : '-//--//--//--'}
+										</a>
+									</span>
+									<span className="authors-bio__item">
+										<a
+											className="authors-bio__link"
+											href={authorInfo && authorInfo.facebook}
+										>
+											<span>Facebook:</span>
+											{authorInfo && authorInfo.facebook !== ''
+												? authorInfo.facebook
+												: '-//--//--//--'}
+										</a>
+									</span>
+									<span className="authors-bio__item">
+										<a
+											className="authors-bio__link"
+											href={authorInfo && authorInfo.insta}
+										>
+											<span>Instagram:</span>
+											{authorInfo && authorInfo.insta !== ''
+												? authorInfo.insta
+												: '-//--//--//--'}
+										</a>
+									</span>
+								</div>
 							</div>
 						</div>
 					</div>

@@ -24,9 +24,9 @@ const AuthorCardContent = memo((props) => {
 	}
 
 	const linkToAuthor = 
-		user !== null && foundUser !== undefined && foundUser.emailId === item.emailId
+		user !== null && foundUser !== undefined && foundUser !== null && item !== null && foundUser.emailId === item.emailId
 			? '/PersonalOffice'
-			: `/Authors/AuthorInfo/${item.id}`
+			: `/Authors/AuthorInfo/${item.id}`	
 
 	const allAuthorsWorksLink = (emailId) => {
 		const author = authorsData.find(el => el.emailId === emailId)

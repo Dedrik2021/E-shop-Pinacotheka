@@ -13,9 +13,25 @@
     flex-direction: column;
     justify-content: space-between;
     height: 100%;
-    transition: filter 0.3s ease-in-out;
+    position: relative;
+    transition: all 0.3s ease-in-out;
 
     &.active {
         filter: blur(10px);
+    }
+
+    &.lock {
+
+        &:after {
+            content: '';
+            filter: blur(20px);
+            background-color: rgba(0, 0, 0, 0.6);
+            position: absolute;
+            z-index: 10;
+            top: 125px;
+            bottom: 0;
+            right: 0;
+            left: 0;
+        }
     }
 }

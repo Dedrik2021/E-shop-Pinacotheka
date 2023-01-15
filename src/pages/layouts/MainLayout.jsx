@@ -12,6 +12,7 @@ const MainLayout = () => {
 	const auth = getAuth()
 	const navigate = useNavigate()
 	const [open, setOpen] = useState(false);
+	const [search, setSearch] = useState(false);
 	const showModal = useSelector((state) => state.useModalContentSlice.showModal);
 	
 	const clickOpenLogout = () => {
@@ -29,17 +30,19 @@ const MainLayout = () => {
 	}
 
 	return (
-		<div className={`app ${showModal ? 'lock' : ''}`}>
+		<div className={`app ${search ? 'lock' : ''}`}>
 			<Modal />
 			<LogoutModal 
 				openLogout={open} 
 				handleClose={handleClose}
 				clickLogout={clickLogout}
 			/>
-			<div className={`content-container ${showModal || open ? 'active' : ''}`}>
+			<div className={`content-container ${showModal || open ? 'active' : ''} ${search ? 'lock' : ''}`}>
 				<Header 
 					clickOpenLogout={clickOpenLogout}
 					openLogout={open} 
+					search={search}
+					setSearch={setSearch}
 				/>
 				<main>
 					<Outlet />

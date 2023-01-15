@@ -1,7 +1,7 @@
 import {memo} from 'react'
 
-import CleanInputBtn from '../../UI/cleanInputBtn/CleanInputBtn';
-import SearchIcon from '../../assets/sprite/search-icon.svg';
+import CleanInputBtn from '../../../UI/cleanInputBtn/CleanInputBtn';
+import SearchIcon from '../../../assets/sprite/search-icon.svg';
 
 import './authorsSearch.scss'
 

@@ -5,11 +5,14 @@ import { addDoc, collection } from 'firebase/firestore/lite';
 import Dialog from '@mui/material/Dialog';
 import DialogContent from '@mui/material/DialogContent';
 import Slide from '@mui/material/Slide';
+import { v4 as uuiv4 } from 'uuid';
 
 import ModalSwitchContentBtns from './ModalSwitchContentBtns/ModalSwitchContentBtns';
 import ModalContent from './ModalContent/ModalContent';
 import Logo from '../../UI/logo/Logo';
 import { database } from '../../firebase/firebaseConfig';
+import { fetchAuthorsData } from '../../redux/modules/authors/authorsThunks';
+import { fetchUsersData } from '../../redux/modules/users/usersThunks';
 
 import logo from '../../assets/images/logo.svg';
 
@@ -27,6 +30,9 @@ const Modal = memo(() => {
 
 	const doublePasswordRef = useRef();
 	const emailRef = useRef();
+	const nameRef = useRef();
+	const passwordRef = useRef();
+	const telRef = useRef();
 
 	const [clientInput, setClientInput] = useState('');
 	const [authorInput, setAuthorInput] = useState('');
@@ -81,10 +87,11 @@ const Modal = memo(() => {
 			setCheckedClient({ val: false, isValid: false });
 			setFormIsValid(false);
 		}
-
+		
 		if (nameInput.val === '') {
 			setNameInput({ val: '', isValid: false });
 			setFormIsValid(false);
+			nameRef.current.focus()
 		}
 
 		if (checkedAgree.val === false) {
@@ -92,24 +99,40 @@ const Modal = memo(() => {
 			setFormIsValid(false);
 		}
 
+		if (telInput.val === '' || isNaN(telInput.val)) {
+			setTelInput({ val: telInput.val, isValid: false });
+			setFormIsValid(false);
+
+			if (nameInput.val !== '' && isNaN(telInput.val)) {
+				telRef.current.focus()
+			}
+		}
+
 		if (emailInput.val === '' || !emailInput.val.includes('@')) {
 			setEmailInput({ val: '', isValid: false, existEmail: false });
 			setFormIsValid(false);
-		}
 
-		if (telInput.val === '') {
-			setTelInput({ val: '', isValid: false });
-			setFormIsValid(false);
+			if (nameInput.val !== '' && telInput.val !== '') {
+				emailRef.current.focus()
+			}
 		}
 
 		if (passwordInput.val === '') {
 			setPasswordInput({ val: '', isValid: false, wrongPass: false });
 			setFormIsValid(false);
+
+			if (nameInput.val !== '' && telInput.val !== '' && (emailInput.val !== '' || emailInput.val.includes('@'))) {
+				passwordRef.current.focus()
+			}
 		}
 
 		if (doublePasswordInput.val === '') {
 			setDoublePasswordInput({ val: '', isValid: false });
 			setFormIsValid(false);
+
+			if (nameInput.val !== '' && telInput.val !== '' && (emailInput.val !== '' || emailInput.val.includes('@')) && passwordInput.val !== '') {
+				doublePasswordRef.current.focus()
+			}
 		}
 	};
 
@@ -127,8 +150,12 @@ const Modal = memo(() => {
 		) {
 			createUserWithEmailAndPassword(auth, emailInput.val, passwordInput.val)
 				.then(addData)
+				.then(
+					dispatch(fetchAuthorsData()),
+					dispatch(fetchUsersData())
+				)
 				.then(cleanInputs)
-				.then(dispatch(setModalSwitchBtn(1)))
+				.then(dispatch(setModalSwitchBtn(0)))
 				.then(dispatch(setShowModal(false)))
 				.catch(() => {
 					setEmailInput({ val: emailInput.val, isValid: false, existEmail: true });
@@ -156,7 +183,7 @@ const Modal = memo(() => {
 	const addClientData = () => {
 		addDoc(collectionRefClients, {
 			emailId: emailInput.val,
-			id: new Date().toISOString(),
+			id: uuiv4(),
 			title: nameInput.val,
 			email: emailInput.val,
 			tel: telInput.val,
@@ -182,8 +209,7 @@ const Modal = memo(() => {
 	const addAuthorData = () => {
 		addDoc(collectionRefAuthors, {
 			emailId: emailInput.val,
-			// id: authors.length + 1,
-			id: new Date().toISOString(),
+			id: uuiv4(),
 			title: nameInput.val,
 			mail: emailInput.val,
 			tel: telInput.val,
@@ -272,7 +298,10 @@ const Modal = memo(() => {
 		setShowPassword,
 		checkedAgree,
 		setCheckedAgree,
-		setShowModal
+		setShowModal,
+		nameRef,
+		passwordRef,
+		telRef
 	};
 
 	return (

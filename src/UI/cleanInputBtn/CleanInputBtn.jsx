@@ -6,23 +6,24 @@ import Keyboard from '../../assets/sprite/keyboard-icon.svg';
 
 import './cleanInputBtn.scss';
 
-const CleanInputBtn = memo(({ inputValue, setInputValue }) => {
+const CleanInputBtn = memo(({ inputValue, setInputValue, id }) => {
 	const switchLanguageBtn = useSelector((state) => state.langBtnsSlice.switchLanguageBtn);
 	const switchLangBtn = switchLanguageBtn[0] === 0;
 
 	return (
-		<div className="clean">
+		<span className="clean">
 			{inputValue.val ? (
 				<button 
 					className="clean-btn btn" 
 					type="button" 
+					id={id}
 					onClick={() => setInputValue({val: '', isValid: true})}
 					title={inputValue ? 'Clean Input' : 'Type in Input'}
 				>
 					<span className="sr-only">
 						{switchLangBtn ? 'Eingabefeld löschen' : 'Delete input field'}
 					</span>
-					<svg width="20" height="20">
+					<svg className='cross' width="20" height="20">
 						<use href={`${CleanInputIcon}#clean-input`}></use>
 					</svg>
 				</button>
@@ -31,7 +32,7 @@ const CleanInputBtn = memo(({ inputValue, setInputValue }) => {
 					<use href={`${Keyboard}#keyboard`}></use>
 				</svg>
 			)}
-		</div>
+		</span>
 	);
 });
 

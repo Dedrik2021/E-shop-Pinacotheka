@@ -96,6 +96,19 @@
         }
     }
 
+    &__content-box {
+        padding-top: 20px;
+        width: 100%;
+    }
+
+    &__author-name {
+        font-weight: 800;
+        font-size: 25px;
+        display: block;
+        text-align: center;
+        margin-bottom: 30px;
+    }
+
     &__btns-wrapper {
         position: absolute;
         right: 0;
@@ -126,11 +139,10 @@
     }
 
     &__box {
-        max-width: 700px;
         width: 100%;
-        padding-top: 70px;
         display: grid;
         grid-template-columns: 1fr 1fr;
+        justify-items: center;
 
         .authors-works__btn {
             padding: 12px 30px;

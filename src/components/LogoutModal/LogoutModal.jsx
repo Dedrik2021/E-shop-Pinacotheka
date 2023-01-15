@@ -10,6 +10,8 @@ import Logo from '../../UI/logo/Logo';
 import img from '../../assets/images/logo.svg'
 import image from '../../assets/images/exit.gif'
 
+import './logoutModal.scss'
+
 const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
 });
@@ -30,9 +32,9 @@ const LogoutModal = ({openLogout, handleClose, clickLogout}) => {
         <Logo styles={{paddingTop: '10px', margin: '0 auto'}} img={img} height={'50'} width={'150'} />
         <DialogContent>
 
-          <img src={image} style={{height: '130px', width: '380px', marginBottom: '10px'}} alt="exit" />
+          <img className='image' src={image} alt="exit" />
 
-          <DialogContentText style={{textAlign: 'center'}} id="alert-dialog-slide-description">
+          <DialogContentText id="alert-dialog-slide-description">
           {switchBtn ? 
           'Sind Sie sicher, dass Sie sich von Ihrem Konto abmelden möchten' : 
           'Are you sure, you want to log out of your account?'}

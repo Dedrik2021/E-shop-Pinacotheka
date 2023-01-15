@@ -1,13 +1,11 @@
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import { Suspense, createRef, useEffect, useState, useMemo } from 'react';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { getAuth, onAuthStateChanged } from 'firebase/auth';
-import { getDocs, collection, orderBy, query } from 'firebase/firestore/lite';
 
 import { fetchUsersData } from '../../redux/modules/users/usersThunks';
 import { fetchAuthorsData } from '../../redux/modules/authors/authorsThunks';
 import {fetchNewsData} from '../../redux/modules/news/newsThunks'
-import { database } from '../../firebase/firebaseConfig';
 import { setFoundUser } from '../../redux/modules/users/usersSlice';
 
 import {
@@ -78,35 +76,19 @@ const App = () => {
 	const dispatch = useDispatch()
 	const auth = getAuth()
 	const user = auth.currentUser
-	const [authorsData, setAuthorsData] = useState([])
-	const [usersData, setUsersData] = useState([])
 	const [allData, setAllData] = useState([])
 
-	const collectionUsersRef = collection(database, 'users');
-	const collectionUsersQuery = query(collectionUsersRef, orderBy('id', 'asc'));
-
-	const collectionAuthorsRef = collection(database, 'authors');
-	const collectionAuthorsQuery = query(collectionAuthorsRef, orderBy('id', 'asc'));
+	const {authorsData} = useSelector(state => state.authorsSlice)
+	const {usersData} = useSelector(state => state.usersSlice)
 
 	useMemo(() => {
 		onAuthStateChanged(auth, (snapshot) => {
 			if (snapshot) {
-				getDocs(collectionUsersQuery).then((res) => {
-					const data = res.docs.map((item) => {
-						return { ...item.data(), ID: item.id };
-					});
-					setUsersData(data)
-				});
-
-				getDocs(collectionAuthorsQuery).then((res) => {
-					const data = res.docs.map((item) => {
-						return { ...item.data(), ID: item.id };
-					});
-					setAuthorsData(data)
-				});
-				dispatch(fetchAuthorsData());
-				dispatch(fetchNewsData());
-				dispatch(fetchUsersData());
+				setTimeout(() => {
+					dispatch(fetchAuthorsData());
+					dispatch(fetchNewsData());
+					dispatch(fetchUsersData());
+				}, 0)
 			} else {
 				dispatch(fetchAuthorsData());
 				dispatch(fetchNewsData());
@@ -118,7 +100,7 @@ const App = () => {
 	useMemo(() => {
 		setAllData([...authorsData, ...usersData])
 	}, [authorsData, usersData])
-	
+
 	const getFoundUser = () => {
 		const foundUser = user &&
 			allData.find(item => item.emailId === user.email)
@@ -127,8 +109,7 @@ const App = () => {
 
 	useEffect(() => {
 		dispatch(setFoundUser(getFoundUser()))
-	}, [ dispatch, getFoundUser()])
-
+	}, [dispatch, getFoundUser()])
 
 	return (
 		<Router>

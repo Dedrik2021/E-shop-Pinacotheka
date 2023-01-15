@@ -73,6 +73,12 @@
         @include r($mobile-lg) {
             margin-bottom: 10px;
         }
+
+        &--span {
+            font-size: 16px;
+            font-weight: 600;
+            color: $red;
+        }
     }
 
     .filters-items {
