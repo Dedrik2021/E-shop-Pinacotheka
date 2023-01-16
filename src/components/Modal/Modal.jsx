@@ -88,37 +88,38 @@ const Modal = memo(() => {
 			setFormIsValid(false);
 		}
 		
+		if (checkedAgree.val === false) {
+			setCheckedAgree({ val: false, isValid: false });
+			setFormIsValid(false);
+		}
+
 		if (nameInput.val === '') {
 			setNameInput({ val: '', isValid: false });
 			setFormIsValid(false);
 			nameRef.current.focus()
 		}
 
-		if (checkedAgree.val === false) {
-			setCheckedAgree({ val: false, isValid: false });
-			setFormIsValid(false);
-		}
 
 		if (telInput.val === '' || isNaN(telInput.val)) {
 			setTelInput({ val: telInput.val, isValid: false });
 			setFormIsValid(false);
 
-			if (nameInput.val !== '' && isNaN(telInput.val)) {
-				telRef.current.focus()
+			if (nameInput.val !== '') {
+				telRef.current && telRef.current.focus()
 			}
 		}
 
 		if (emailInput.val === '' || !emailInput.val.includes('@')) {
-			setEmailInput({ val: '', isValid: false, existEmail: false });
+			setEmailInput({ val: emailInput.val, isValid: false, existEmail: false });
 			setFormIsValid(false);
 
-			if (nameInput.val !== '' && telInput.val !== '') {
+			if (nameInput.val !== '' && (telInput.val !== '' && !isNaN(telInput.val))) {
 				emailRef.current.focus()
 			}
 		}
 
-		if (passwordInput.val === '') {
-			setPasswordInput({ val: '', isValid: false, wrongPass: false });
+		if (passwordInput.val === '' || passwordInput.val.length <= 5) {
+			setPasswordInput({ val: passwordInput.val, isValid: false, wrongPass: false });
 			setFormIsValid(false);
 
 			if (nameInput.val !== '' && telInput.val !== '' && (emailInput.val !== '' || emailInput.val.includes('@'))) {
@@ -126,12 +127,12 @@ const Modal = memo(() => {
 			}
 		}
 
-		if (doublePasswordInput.val === '') {
-			setDoublePasswordInput({ val: '', isValid: false });
+		if (doublePasswordInput.val === '' || passwordInput.val !== doublePasswordInput.val) {
+			setDoublePasswordInput({ val: doublePasswordInput.val, isValid: false });
 			setFormIsValid(false);
 
 			if (nameInput.val !== '' && telInput.val !== '' && (emailInput.val !== '' || emailInput.val.includes('@')) && passwordInput.val !== '') {
-				doublePasswordRef.current.focus()
+				doublePasswordRef.current && doublePasswordRef.current.focus()
 			}
 		}
 	};

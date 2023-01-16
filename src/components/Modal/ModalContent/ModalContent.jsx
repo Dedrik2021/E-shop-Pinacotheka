@@ -49,7 +49,7 @@ const ModalContent = memo(({ props }) => {
 							type="tel"
 							placeholder={switchLangBtn ? 'Telefon' : 'Phone'}
 							name="[register]tel"
-							message="The Phone field should not be empty!"
+							message={`${props.telInput.val ? isNaN(props.telInput.val) && 'The phone field must contain the signs of the number!' : 'The Phone field should not be empty!'}`}
 							inputRef={props.telRef}
 						/>
 					</>
@@ -67,10 +67,10 @@ const ModalContent = memo(({ props }) => {
 						modalSwitchBtn === 1
 							? props.emailInput.existEmail
 								? 'This email already exists'
-								: 'The Email field should not be empty and contain "@" symbol!'
+								: props.emailInput.val ? !props.emailInput.val.includes('@') && 'The Email field should be contain "@" symbol!' : 'The Email field should not be empty!'
 							: props.emailInput.existEmail
 							? 'This email not exists'
-							: 'The Email field should not be empty and contain "@" symbol!'
+							: props.emailInput.val ? !props.emailInput.val.includes('@') && 'The Email field should be contain "@" symbol!' : 'The Email field should not be empty!'
 					}
 					inputRef={props.emailRef}
 				/>
@@ -105,7 +105,7 @@ const ModalContent = memo(({ props }) => {
 							type={props.showPassword ? 'text' : 'password'}
 							placeholder={switchLangBtn ? 'Passwort wiederholen' : 'Repeat Password'}
 							name="[register]repeat-password"
-							message='The Password field should not be empty!'
+							message={`${props.doublePasswordInput.val ? props.doublePasswordInput.val !== props.passwordInput.val && 'The double password field must match the password field and contain the same signs!' : 'The Password field should not be empty!'} `}
 							inputRef={props.doublePasswordRef}
 						/>
 					</>

@@ -4,14 +4,20 @@ import CleanInputBtn from '../../../UI/cleanInputBtn/CleanInputBtn';
 
 import './headerSearchForm.scss'
 
-const HeaderSearchForm = ({ searchFormProps }) => {
+const HeaderSearchForm = ({ searchFormProps, searchInputRefs }) => {
 	return (
 		<form
 			className={`menu__form ${searchFormProps.search ? 'active' : ''} `}
 			ref={searchFormProps.formRefs}
 		>
-			<label className="menu__label" htmlFor="nav-search">
+			<div className={`menu__form-wrapper ${searchFormProps.search ? 'active' : ''}`}>
+			<label className="menu__label" htmlFor="nav-search" ref={searchInputRefs}>
 				<span className="sr-only">{searchFormProps.switchBtn ? 'Suche' : 'Search'}</span>
+				<CleanInputBtn
+				inputValue={searchFormProps.searchInput}
+				setInputValue={searchFormProps.setSearchInput}
+				id={1}
+			/>
 			</label>
 			<input
 				className={`menu__search ${searchFormProps.search ? 'active' : ''}`}
@@ -26,10 +32,7 @@ const HeaderSearchForm = ({ searchFormProps }) => {
 				}
 				required
 			/>
-			<CleanInputBtn
-				inputValue={searchFormProps.searchInput}
-				setInputValue={searchFormProps.setSearchInput}
-			/>
+			</div>
 
 			<button 
 				className="menu__btn btn" 

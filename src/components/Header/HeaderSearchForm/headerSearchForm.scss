@@ -57,25 +57,43 @@
                 }
             }
     
-            &>.clean {
-                right: 58px;
-                opacity: 0.6;
-                visibility: visible;
-            }
-        }
-    
-        .clean {
-            position: absolute;
-            width: 20px;
-            height: 20px;
-            right: 0px;
-            top: 2px;
-            opacity: 0;
-            visibility: hidden;
-            background-color: $white;
-            transition: right 0.3s, opacity 0.3s, visibility 0.3s;
+            
         }
     }
+
+    &__form-wrapper {
+        position: relative;
+        width: 100%;
+
+        &.active {
+            &>.menu__label>.clean {
+                right: 50px;
+                z-index: 10;
+                opacity: 0.6;
+            }
+        }
+        
+    }
+    .clean {
+        background-color: $white;
+        opacity: 0;
+        top: -6px;
+        cursor: pointer;
+        right: 0px;
+        z-index: -10;
+        transition: all 0.3s;
+    
+        &:hover {
+            opacity: 1;
+        }
+
+        .cross {
+            position: relative;
+            right: -2px;
+            top: -2px;
+        }
+    }
+
     
     &__search {
         max-width: 93%;

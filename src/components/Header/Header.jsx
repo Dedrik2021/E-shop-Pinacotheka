@@ -1,4 +1,4 @@
-import { useState, useRef, useEffect, memo } from 'react';
+import { useState, useRef, useEffect, memo, useMemo } from 'react';
 import { Link } from 'react-router-dom';
 import { ref, onValue, update } from 'firebase/database';
 import { useDispatch, useSelector } from 'react-redux';
@@ -38,12 +38,14 @@ const Header = memo(({ clickOpenLogout, openLogout, search, setSearch }) => {
 	const dropdownRefs = useRef();
 	const burgerBtnRefs = useRef();
 	const userOfficeDropdownRefs = useRef();
+	const searchInputRefs = useRef();
 
 	const [searchInput, setSearchInput] = useState({ val: '', isValid: true });
 	const [dropdown, setDropdown] = useState(false);
 	const [openMenu, setOpenMenu] = useState(false);
 	const [scroll, setScroll] = useState(false);
 	const [allData, setAllData] = useState([]);
+	const [loadingSearchItems, setLoadingSearchItems] = useState(false)
 
 	const { authorsData } = useSelector((state) => state.authorsSlice);
 	const newsData = useSelector((state) => state.newsSlice.newsData);
@@ -174,9 +176,9 @@ const Header = memo(({ clickOpenLogout, openLogout, search, setSearch }) => {
 		setSearch(!search);
 		setDropdown(false);
 		if (!search) {
-			inputRefs.current.focus();
+			searchInputRefs.current.focus();
 		} else {
-			inputRefs.current.blur();
+			searchInputRefs.current.blur();
 			setSearchInput({ val: '', isValid: true });
 		}
 	};
@@ -237,7 +239,16 @@ const Header = memo(({ clickOpenLogout, openLogout, search, setSearch }) => {
 		formRefs,
 		setSearch,
 	};
-	const filteredBySearch = searchData(searchInput, allData);
+
+	useMemo(() => {
+		setLoadingSearchItems(true)
+		setTimeout(() => {
+			setLoadingSearchItems(false)
+		}, 600);
+		searchData(searchInput, allData);
+	}, [allData, searchInput])
+
+	const filteredBySearch = searchData(searchInput, allData)
 
 	return (
 		<header className={`header ${scroll ? 'sticky' : ''}`}>
@@ -258,12 +269,13 @@ const Header = memo(({ clickOpenLogout, openLogout, search, setSearch }) => {
 						<span></span>
 					</button>
 					<div className={`menu__inner ${openMenu ? 'active' : ''}`} ref={menuInnerRefs}>
-						<HeaderSearchForm searchFormProps={searchFormProps} />
+					<HeaderSearchForm searchInputRefs={searchInputRefs} searchFormProps={searchFormProps} />
 						<HeaderSearchList
 							searchInput={searchInput}
 							filteredBySearch={filteredBySearch}
 							clearSearchInput={clearSearchInput}
 							search={search}
+							loading={loadingSearchItems}
 						/>
 						<ul className="menu__list" ref={dropdownRefs}>
 							<li
