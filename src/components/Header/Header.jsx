@@ -34,7 +34,7 @@ const Header = memo(({ clickOpenLogout, openLogout, search, setSearch }) => {
 
 	const menuInnerRefs = useRef();
 	const inputRefs = useRef();
-	const formRefs = useRef();
+	const formRefs = useRef(null);
 	const dropdownRefs = useRef();
 	const burgerBtnRefs = useRef();
 	const userOfficeDropdownRefs = useRef();
@@ -45,7 +45,7 @@ const Header = memo(({ clickOpenLogout, openLogout, search, setSearch }) => {
 	const [openMenu, setOpenMenu] = useState(false);
 	const [scroll, setScroll] = useState(false);
 	const [allData, setAllData] = useState([]);
-	const [loadingSearchItems, setLoadingSearchItems] = useState(false)
+	const [loadingSearchItems, setLoadingSearchItems] = useState(false);
 
 	const { authorsData } = useSelector((state) => state.authorsSlice);
 	const newsData = useSelector((state) => state.newsSlice.newsData);
@@ -99,38 +99,12 @@ const Header = memo(({ clickOpenLogout, openLogout, search, setSearch }) => {
 		document.addEventListener('scroll', checkScroll);
 	}, [dispatch]);
 
-	// const [isOpen, setIsOpen] = useState(false)
-	// const toggle = (isOpen) => {
-	//   return setIsOpen(!isOpen)
-	// }
-	// // Hide Dropdown on Outside Click
-	// // const menuRef = useRef(null)
-	// const [listening, setListening] = useState(false)
-
-	// useEffect(() => {
-	// 	const listenForOutsideClick = (listening, setListening, formRefs, setIsOpen) => {
-	// 		return () => {
-	// 			if (listening) return
-	// 			if (!formRefs.current) return
-	// 			setListening(true)
-	// 			;[`click`, `touchstart`].forEach((type) => {
-	// 			  document.addEventListener(`click`, (evt) => {
-	// 				const cur = formRefs.current
-	// 				const node = evt.target
-	// 				if (cur.contains(node)) return
-	// 				setIsOpen(false)
-	// 			  })
-	// 			})
-	// 		  }
-	// 	}
-	// 	listenForOutsideClick(listening, setListening, formRefs, setIsOpen)
-	// }, [])
-
 	useEffect(() => {
 		const closeSearch = (e) => {
-			if (!e.path.includes(formRefs.current)) {
-				setSearch(false);
-				setSearchInput({ val: '', isValid: true });
+			if ( !formRefs.current) return
+			if ( !formRefs.current.contains(e.target)) {
+			setSearch(false);
+			setSearchInput({ val: '', isValid: true });
 			}
 		};
 		document.body.addEventListener('click', closeSearch);
@@ -139,7 +113,8 @@ const Header = memo(({ clickOpenLogout, openLogout, search, setSearch }) => {
 
 	useEffect(() => {
 		const closeUserOfficeDropdown = (e) => {
-			if (!e.path.includes(userOfficeDropdownRefs.current)) {
+			if (!userOfficeDropdownRefs.current) return
+			if (!userOfficeDropdownRefs.current.contains(e.target)) {
 				dispatch(setUserOfficeDropdown(false));
 			}
 		};
@@ -149,12 +124,13 @@ const Header = memo(({ clickOpenLogout, openLogout, search, setSearch }) => {
 
 	useEffect(() => {
 		const closeMenu = (e) => {
+			if (!menuInnerRefs.current && !burgerBtnRefs.current) return
 			if (
-				!e.path.includes(menuInnerRefs.current) &&
-				!e.path.includes(burgerBtnRefs.current)
+				!menuInnerRefs.current.contains(e.target) &&
+				!burgerBtnRefs.current.contains(e.target)
 			) {
 				setOpenMenu(false);
-			} else if (e.path.includes(menuInnerRefs.current)) {
+			} else if (menuInnerRefs.current.contains(e.target)) {
 				setOpenMenu(true);
 			}
 		};
@@ -164,7 +140,8 @@ const Header = memo(({ clickOpenLogout, openLogout, search, setSearch }) => {
 
 	useEffect(() => {
 		const closeDropdown = (e) => {
-			if (!e.path.includes(dropdownRefs.current)) {
+			if (!dropdownRefs.current) return
+			if (!dropdownRefs.current.contains(e.target)) {
 				setDropdown(false);
 			}
 		};
@@ -181,6 +158,7 @@ const Header = memo(({ clickOpenLogout, openLogout, search, setSearch }) => {
 			searchInputRefs.current.blur();
 			setSearchInput({ val: '', isValid: true });
 		}
+		
 	};
 
 	const clickLanguageBtn = (id) => {
@@ -201,8 +179,6 @@ const Header = memo(({ clickOpenLogout, openLogout, search, setSearch }) => {
 		setSearchInput({ val: '', isValid: true });
 		dispatch(setAboutAuthorSwitchContentBtn(0));
 	};
-
-	// console.log(foundUser);
 
 	const changeAuth = () => {
 		if (user !== null) {
@@ -236,19 +212,18 @@ const Header = memo(({ clickOpenLogout, openLogout, search, setSearch }) => {
 		clickSearchOpen,
 		setSearchInput,
 		inputRefs,
-		formRefs,
-		setSearch,
+		formRefs
 	};
 
-	useMemo(() => {
-		setLoadingSearchItems(true)
+	useEffect(() => {
+		setLoadingSearchItems(true);
 		setTimeout(() => {
-			setLoadingSearchItems(false)
+			setLoadingSearchItems(false);
 		}, 600);
 		searchData(searchInput, allData);
-	}, [allData, searchInput])
+	}, [allData, searchInput]);
 
-	const filteredBySearch = searchData(searchInput, allData)
+	const filteredBySearch = searchData(searchInput, allData);
 
 	return (
 		<header className={`header ${scroll ? 'sticky' : ''}`}>
@@ -269,7 +244,10 @@ const Header = memo(({ clickOpenLogout, openLogout, search, setSearch }) => {
 						<span></span>
 					</button>
 					<div className={`menu__inner ${openMenu ? 'active' : ''}`} ref={menuInnerRefs}>
-					<HeaderSearchForm searchInputRefs={searchInputRefs} searchFormProps={searchFormProps} />
+						<HeaderSearchForm
+							searchInputRefs={searchInputRefs}
+							searchFormProps={searchFormProps}
+						/>
 						<HeaderSearchList
 							searchInput={searchInput}
 							filteredBySearch={filteredBySearch}

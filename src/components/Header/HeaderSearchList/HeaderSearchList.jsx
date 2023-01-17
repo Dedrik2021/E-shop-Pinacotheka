@@ -55,7 +55,7 @@ const HeaderSearchList = memo((props) => {
 			if (filteredBySearch.length !== 0) {
 				return filteredBySearch.map((data) => {
 					return (
-						<li className="search-list__item" key={data.ID}>
+						<li className="search-list__item" key={data.image ? data.image : data.ID}>
 							<Link 
 								className="search-list__link" 
 								to={`${data.page}${data.id}`}

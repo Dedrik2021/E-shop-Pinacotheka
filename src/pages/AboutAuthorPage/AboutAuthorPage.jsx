@@ -89,7 +89,7 @@ const AboutAuthorPage = () => {
 	}
 
 	const authorsBio = () => {
-		if (authorsDataStatus === Status.LOADING || authorsDataStatus === Status.ERROR) {
+		if (loading || authorsDataStatus === Status.LOADING || authorsDataStatus === Status.ERROR) {
 			return <AuthorsBioSkeleton />;
 		} else {
 			return (
@@ -103,11 +103,13 @@ const AboutAuthorPage = () => {
 		}
 	};
 
+	console.log(foundAuthorsItems().foundAuthor && foundAuthorsItems().foundAuthor.works.length);
+
 	const authorsWorks = () => {
-		if (authorsDataStatus === Status.LOADING || authorsDataStatus === Status.ERROR) {
+		if (loading || authorsDataStatus === Status.LOADING || authorsDataStatus === Status.ERROR) {
 			return (
-				<div className="container" style={{ paddingTop: '60px' }}>
-					{[...new Array(foundAuthorsItems().foundAuthor && foundAuthorsItems().foundAuthor.length)].map((_, i) => (
+				<div className="container" style={{ paddingTop: '60px', marginBottom: '150px' }}>
+					{[...new Array(foundAuthorsItems().foundAuthor && foundAuthorsItems().foundAuthor.works.length).slice(dataLimitStart, dataLimitLast)].map((_, i) => (
 						<GallerySkeleton key={i} />
 					))}
 				</div>
