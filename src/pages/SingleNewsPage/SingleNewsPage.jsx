@@ -7,50 +7,75 @@ import { getAuth } from 'firebase/auth';
 
 import NewsCard from '../../components/NewsCard/NewsCard';
 import BreadCrumbs from '../../components/BreadCrumbs/BreadCrumbs';
-import { setBreadCrumbsTitle } from '../../redux/slices/breadCrumbsSlice';
+import ConfirmModal from '../../components/ConfirmModal/ConfirmModal';
 
+import { setBreadCrumbsTitle } from '../../redux/slices/breadCrumbsSlice';
+import { database } from '../../firebase/firebaseConfig';
+import { fetchNewsData } from '../../redux/modules/news/newsThunks';
 import SingleNewsSkeleton from '../../skeletons/singleNewsSkeleton';
 import { Status } from '../../utils/status/status';
+
+import image from '../../assets/images/delete-img.png';
 
 import './singleNewsPage.scss';
 
 const SingleNews = () => {
 	const { id } = useParams();
+	const navigate = useNavigate();
 	const dispatch = useDispatch();
+	const auth = getAuth();
+	const user = auth.currentUser;
+
+	const [open, setOpen] = useState(false);
+
 	const { newsData, newsDataStatus } = useSelector((state) => state.newsSlice);
 	const switchLanguageBtn = useSelector((state) => state.langBtnsSlice.switchLanguageBtn);
 	const switchBtn = switchLanguageBtn[0] === 0;
 	const breadCrumbsTitle = useSelector((state) => state.breadCrumbsSlice.breadCrumbsTitle);
-	const auth = getAuth();
-	const user = auth.currentUser;
 	const foundNews = newsData.find((news) => news.id == id);
 
-	// const onDelete = () => {
-	// 	if (window.confirm('Delete news! are you sure?')) {
-	// 		const docToUpdates = doc(database, 'news', foundNews.ID);
-	// 		deleteDoc(docToUpdates)
-	// 			.then(navigate(switchBtn ? '/Nachrichten' : '/News'))
-	// 			.catch((err) => {
-	// 				alert(err.message);
-	// 			});
-	// 	}
-	// };
+	const clickOnDelete = () => {
+		const docToUpdates = doc(database, 'news', foundNews.ID);
+		deleteDoc(docToUpdates)
+			.then(navigate(switchBtn ? '/Nachrichten' : '/News'))
+			.then(
+				setTimeout(() => {
+					dispatch(fetchNewsData());
+				}, 100),
+			)
+			.then(setOpen(false))
+			.catch((err) => {
+				alert(err.message);
+			});
+	};
 
-	// const showBtns = () => {
-	// 	return user ? (
-	// 		<>
-	// 			<button className="single-news__delete-btn btn btn--universal" type="button" onClick={onDelete}>
-	// 				Delete news
-	// 			</button>
-	// 			<Link
-	// 				className="single-news__edit-btn btn btn--red btn--universal"
-	// 				to={`${switchBtn ? '/Nachrichten/NeuigkeitenBearbeiten/' : '/News/EditNews/'}${id}`}
-	// 			>
-	// 				Edit news
-	// 			</Link>
-	// 		</>
-	// 	) : null;
-	// }
+	const clickOpenConfirmModal = () => {
+		setOpen(true);
+	};
+
+	const handleClose = () => {
+		setOpen(false);
+	};
+
+	const showBtns = () => {
+		return user ? (
+			<>
+				<button
+					className="single-news__delete-btn btn btn--universal"
+					type="button"
+					onClick={clickOpenConfirmModal}
+				>
+					Delete news
+				</button>
+				<Link
+					className="single-news__edit-btn btn btn--red btn--universal"
+					to={`/News/EditNews/${id}`}
+				>
+					Edit news
+				</Link>
+			</>
+		) : null;
+	};
 
 	useEffect(() => {
 		window.scroll(0, 0);
@@ -82,19 +107,42 @@ const SingleNews = () => {
 	return (
 		<>
 			<Helmet>
-				<meta name="description" content={switchBtn ? `Nachricht ${foundNews && foundNews.title}` : `News ${foundNews && foundNews.title}`} />
-				<title>{switchBtn ? `Nachricht ${foundNews && foundNews.title}` : `News ${foundNews && foundNews.title}`}</title>
+				<meta
+					name="description"
+					content={
+						switchBtn
+							? `Nachricht ${foundNews && foundNews.title}`
+							: `News ${foundNews && foundNews.title}`
+					}
+				/>
+				<title>
+					{switchBtn
+						? `Nachricht ${foundNews && foundNews.title}`
+						: `News ${foundNews && foundNews.title}`}
+				</title>
 			</Helmet>
-			{/* {content}
-			{errorMessage} */}
-			<div className="container">
+			<ConfirmModal
+				openModal={open}
+				handleClose={handleClose}
+				clickOnBtn={clickOnDelete}
+				image={image}
+				imgStyles={{ height: '300px', width: '100%' }}
+				message={
+					switchBtn
+						? 'Diese Nachricht löschen? Bist du dir sicher?'
+						: 'Delete this news? Are you sure?'
+				}
+			/>
+			<div className={`container single-news__container ${open ? 'active' : ''}`}>
 				<BreadCrumbs />
 				<section className="single-news">
 					<div className="single-news__wrapper">
 						<h1 className="single-news__title title">
 							{switchBtn ? 'Nachricht' : 'News'}
 						</h1>
-						<div className="single-news__btns-wrapper">{/* {showBtns()} */}</div>
+						<div className="single-news__btns-wrapper">
+							<div>{showBtns()}</div>
+						</div>
 					</div>
 					{contentLoaded()}
 				</section>

@@ -49,7 +49,7 @@ const Header = memo(({ clickOpenLogout, openLogout, search, setSearch }) => {
 
 	const { authorsData } = useSelector((state) => state.authorsSlice);
 	const newsData = useSelector((state) => state.newsSlice.newsData);
-	const { usersData, usersDataStatus, foundUser } = useSelector((state) => state.usersSlice);
+	const { usersDataStatus, foundUser } = useSelector((state) => state.usersSlice);
 
 	const switchLanguageBtn = useSelector((state) => state.langBtnsSlice.switchLanguageBtn);
 	const switchBtn = switchLanguageBtn[0] === 0;

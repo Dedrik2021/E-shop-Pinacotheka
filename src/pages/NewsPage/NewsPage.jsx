@@ -23,6 +23,7 @@ import BreadCrumbs from '../../components/BreadCrumbs/BreadCrumbs';
 import Pagination from '../../components/Pagination/Pagination';
 import NewsCard from '../../components/NewsCard/NewsCard';
 import NewsSkeleton from '../../skeletons/newsSkeleton';
+import {fetchNewsData} from '../../redux/modules/news/newsThunks'
 import NewsBlockSkeleton from '../../skeletons/newsBlockSkeleton';
 
 import { setBreadCrumbsTitle } from '../../redux/slices/breadCrumbsSlice';
@@ -53,7 +54,10 @@ const News = () => {
 
 	useEffect(() => {
 		window.scrollTo(0, 0);
-	}, []);
+		setTimeout(() => {
+			dispatch(fetchNewsData())
+		}, 200)
+	}, [dispatch]);
 
 	useEffect(() => {
 		dispatch(setBreadCrumbsTitle(''));

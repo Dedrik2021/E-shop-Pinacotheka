@@ -8,6 +8,8 @@ const UserAccount = lazy(() => import('./UserAccountPage/UserAccountPage'));
 const SinglePainting = lazy(() => import('./SinglePaintingPage/SinglePaintingPage'));
 const News = lazy(() => import('./NewsPage/NewsPage'));
 const SingleNews = lazy(() => import('./SingleNewsPage/SingleNewsPage'));
+const CreateNews = lazy(() => import('./CreateNewsPage/CreateNewsPage'))
+const EditNews = lazy(() => import('./EditNewsPage/EditNewsPage'))
 
 
 const ForgottenPassword = lazy(() => import('./ForgottenPasswordPage/ForgottenPasswordPage'));
@@ -23,5 +25,7 @@ export {
     ForgottenPassword,
     SinglePainting,
     News,
-    SingleNews
+    SingleNews,
+    CreateNews,
+    EditNews
 }

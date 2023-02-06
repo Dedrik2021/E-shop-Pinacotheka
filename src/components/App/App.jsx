@@ -19,6 +19,8 @@ import {
 	SinglePainting,
 	News,
 	SingleNews,
+	CreateNews,
+	EditNews
 } from '../../pages/indexPage';
 
 import './app.scss';
@@ -51,8 +53,18 @@ const routes = [
 		nodeRef: createRef(),
 	},
 	{
+		path: '/News/CreateNews',
+		element: <CreateNews />,
+		nodeRef: createRef(),
+	},
+	{
 		path: '/News',
 		element: <News />,
+		nodeRef: createRef(),
+	},
+	{
+		path: '/News/EditNews/:id',
+		element: <EditNews />,
 		nodeRef: createRef(),
 	},
 	{

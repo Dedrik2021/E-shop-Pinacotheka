@@ -19,17 +19,20 @@ const InputForm = memo((props) => {
 		switchLangBtn,
 		setShowPassword,
 		showPassword,
-		inputRef
+		inputRef,
+		labelName
 	} = props;
 
 	return (
 		<div className='input-form'>
 			<label className="input-form__label" htmlFor={id} ref={inputRef}>
 				<span className="sr-only">{srOnly}</span>
+				<span className='input-form__label-name'>{labelName}</span>
 				<CleanInputBtn inputValue={inputValue} setInputValue={setInputValue} id={id} />
 			</label>
 			{password && (
 				<ShowPasswordBtn
+					id={id}
 					switchLangBtn={switchLangBtn}
 					showPassword={showPassword}
 					setShowPassword={setShowPassword}
@@ -44,7 +47,6 @@ const InputForm = memo((props) => {
 				style={{ marginBottom: !inputValue.isValid && '5px' }}
 				value={inputValue.val}
 				onChange={(e) => setInputValue({ val: e.target.value, isValid: true })}
-				required
 			/>
 
 			{!inputValue.isValid && <p className="error-message">{message}</p>}

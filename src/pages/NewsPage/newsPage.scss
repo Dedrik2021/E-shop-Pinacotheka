@@ -8,6 +8,7 @@
         &__wrapper {
             display: flex;
             justify-content: space-between;
+            align-items: center;
             margin-bottom: 30px;
         }
     
@@ -75,17 +76,10 @@
             }
         }
     
-        // .pagination__item {
-        //     display: none;
-        // }
-    
-        // .pagination__btn--prev {
-        //     margin-right: 20px;
-        // }
-    
         &__item {
             margin: 0 10px 20px;
-            width: 545px;
+            max-width: 545px;
+            // width: 545px;
             flex: 1 1 25%;
     
             @include r($mobile-lg) {
@@ -106,7 +100,7 @@
             // }
     
             &:nth-child(1) {
-                width: 969px;
+                max-width: 969px;
                 flex: 1 1 50%;
     
                 @include r($mobile-md) {
@@ -116,7 +110,7 @@
             }
     
             &:nth-child(2) {
-                width: 686px;
+                max-width: 686px;
                 flex: 1 1 33.5%;
     
                 @include r($mobile-md) {

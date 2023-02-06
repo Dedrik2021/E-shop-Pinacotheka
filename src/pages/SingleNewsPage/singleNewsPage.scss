@@ -5,6 +5,13 @@
     flex-direction: column;
     margin-bottom: 80px;
 
+    &__container {
+        transition: all 0.3s ease-in-out;
+        &.active {
+            filter: blur(10px);
+        }
+    }
+
     &__wrapper {
         display: flex;
         justify-content: space-between;
@@ -13,13 +20,14 @@
 
     &__btns-wrapper {
         display: flex;
+        align-items: center;
     }
 
     &__delete-btn {
         background-color: $black;
         color: $white;
         margin-right: 50px;
-        padding: 15px 80px 15px;
+        padding: 9px 80px 11px;
         transition: background-color 0.3s;
 
         &:hover {

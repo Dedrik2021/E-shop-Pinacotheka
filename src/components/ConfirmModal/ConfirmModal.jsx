@@ -8,22 +8,21 @@ import { useSelector } from 'react-redux';
 
 import Logo from '../../UI/logo/Logo';
 import img from '../../assets/images/logo.svg'
-import image from '../../assets/images/exit.gif'
 
-import './logoutModal.scss'
+
+import './confirmModal.scss'
 
 const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
 });
 
-const LogoutModal = ({openLogout, handleClose, clickLogout}) => {
-  const switchLanguageBtn = useSelector((state) => state.langBtnsSlice.switchLanguageBtn);
-	const switchBtn = switchLanguageBtn[0] === 0;
+const LogoutModal = (props) => {
+  const {openModal, handleClose, clickOnBtn, image, imgStyles, message} = props
 
   return (
     <div>
       <Dialog
-        open={openLogout}
+        open={openModal}
         TransitionComponent={Transition}
         keepMounted
         onClose={handleClose}
@@ -32,17 +31,15 @@ const LogoutModal = ({openLogout, handleClose, clickLogout}) => {
         <Logo styles={{paddingTop: '10px', margin: '0 auto'}} img={img} height={'50'} width={'150'} />
         <DialogContent>
 
-          <img className='image' src={image} alt="exit" />
+          <img className='image' src={image} alt="exit" style={imgStyles} />
 
           <DialogContentText id="alert-dialog-slide-description">
-          {switchBtn ? 
-          'Sind Sie sicher, dass Sie sich von Ihrem Konto abmelden möchten' : 
-          'Are you sure, you want to log out of your account?'}
+            {message}
           </DialogContentText>
         </DialogContent>
         <DialogActions>
-          <button className='logout__btn btn btn--red' onClick={clickLogout}>Confirm</button>
-          <button className='logout__btn btn btn--red' onClick={handleClose}>Close</button>
+          <button className='confirm__btn btn btn--red' onClick={clickOnBtn}>Confirm</button>
+          <button className='confirm__btn btn btn--red' onClick={handleClose}>Close</button>
         </DialogActions>
       </Dialog>
     </div>
