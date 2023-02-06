@@ -8,6 +8,16 @@
     &__title {
         margin-bottom: 50px;
     }
+    
+    &__edittile {
+        color: $red;
+        font-size: 40px;
+        display: block;
+        width: 100%;
+        text-align: center;
+        margin-bottom: 15px;
+        border-bottom: 1px solid $red;
+    }
 
     &__form {
         display: flex;
@@ -86,6 +96,30 @@
                 background-color: $red;
             }
         }
+
+        &--add {
+            opacity: 0.7;
+            pointer-events: none;
+        }
+
+        &.active {
+            opacity: 1;
+            pointer-events: visible;
+            animation-duration: 0.7s;
+            animation-name: active;
+            animation-iteration-count: 100;
+            animation-direction: alternate-reverse;
+        }
+
+        @keyframes active {
+            from {
+                background-color: $black;
+            }
+
+            to {
+                background-color: $red;
+            }
+        }
     }
 
     &__box {
@@ -106,6 +140,7 @@
         justify-content: space-between;
         width: 100%;
         position: relative;
+        border-bottom: 1px solid $red;
 
         &--title {
             font-size: 20px;
@@ -117,46 +152,5 @@
             overflow-x: hidden;
         }
 
-    }
-
-    &__wrapper-btn {
-        display: flex;
-        flex-direction: column;
-        justify-content: space-between;
-        position: absolute;
-        right: -40px;
-    }
-
-    &__text-btn {
-        height: 25px;
-        width: 25px;
-
-        &:first-child {
-            margin-bottom: 7px;
-        }
-
-        .cross {
-            fill: $red;
-        }
-
-        .check {
-            fill: $green;
-        }
-
-        &--edit {
-            position: absolute;
-            top: 50%;
-            transform: translateY(-50%);
-            right: -40px;
-        }
-
-        svg {
-            opacity: 0.7;
-            transition: all 0.3s;
-
-            &:hover {
-                opacity: 1;
-            }
-        }
     }
 }

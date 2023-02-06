@@ -38,15 +38,14 @@ const SingleNews = () => {
 		const docToUpdates = doc(database, 'news', foundNews.ID);
 		deleteDoc(docToUpdates)
 			.then(navigate(switchBtn ? '/Nachrichten' : '/News'))
-			.then(
-				setTimeout(() => {
-					dispatch(fetchNewsData());
-				}, 100),
-			)
 			.then(setOpen(false))
 			.catch((err) => {
 				alert(err.message);
 			});
+			dispatch(fetchNewsData());
+			setTimeout(() => {
+                dispatch(fetchNewsData());
+            }, 200);
 	};
 
 	const clickOpenConfirmModal = () => {
@@ -121,19 +120,19 @@ const SingleNews = () => {
 						: `News ${foundNews && foundNews.title}`}
 				</title>
 			</Helmet>
+			<div className={`container single-news__container ${open ? 'active' : ''}`}>
 			<ConfirmModal
 				openModal={open}
 				handleClose={handleClose}
 				clickOnBtn={clickOnDelete}
 				image={image}
-				imgStyles={{ height: '300px', width: '100%' }}
+				imgStyles={{ height: '300px', width: '70%' }}
 				message={
 					switchBtn
-						? 'Diese Nachricht löschen? Bist du dir sicher?'
-						: 'Delete this news? Are you sure?'
+						? `"${foundNews !== undefined && foundNews.title}" Nachricht löschen? Bist du dir sicher?`
+						: `Delete "${foundNews !== undefined && foundNews.title}" news? Are you sure?`
 				}
 			/>
-			<div className={`container single-news__container ${open ? 'active' : ''}`}>
 				<BreadCrumbs />
 				<section className="single-news">
 					<div className="single-news__wrapper">

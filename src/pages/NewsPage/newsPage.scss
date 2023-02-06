@@ -3,8 +3,13 @@
 .news {
     margin-bottom: 100px;
 
-    .news {
     
+    .single-news__edit-btn {
+        padding: 10px 74px 11px;
+        width: 250px;
+    }
+    .news {
+        
         &__wrapper {
             display: flex;
             justify-content: space-between;
@@ -95,10 +100,6 @@
                 width: 100%;
             }
     
-            // &:not(:last-child) {
-            //     margin-bottom: 20px;
-            // }
-    
             &:nth-child(1) {
                 max-width: 969px;
                 flex: 1 1 50%;
@@ -131,20 +132,6 @@
                     width: 100%;
                 }
             }
-    
-            // &:nth-child(9),
-            // &:nth-child(10),
-            // &:nth-child(11) {
-            //     .news-card__img-wrapper {
-            //         max-height: 425px;
-            //         height: 100%;
-            //     }
-    
-            //     @include r($mobile-sm) {
-            //         max-width: 545px;
-            //         width: 100%;
-            //     }
-            // }
     
             .news-card {
                 max-width: 100%;

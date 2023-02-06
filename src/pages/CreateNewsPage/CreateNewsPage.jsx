@@ -5,13 +5,14 @@ import { uploadBytesResumable, getDownloadURL, ref } from 'firebase/storage';
 import { Helmet } from 'react-helmet';
 import { useNavigate } from 'react-router-dom';
 
-import { database, storage } from '../../firebase/firebaseConfig';
-import { setBreadCrumbsTitle } from '../../redux/slices/breadCrumbsSlice';
-import Spinner from '../../spinner/Spinner';
-
 import BreadCrumbs from '../../components/BreadCrumbs/BreadCrumbs';
 import InputForm from '../../components/InputForm/InputForm';
 import TextareaForm from '../../components/TextareaForm/TextareaForm';
+
+import { database, storage } from '../../firebase/firebaseConfig';
+import { setBreadCrumbsTitle } from '../../redux/slices/breadCrumbsSlice';
+import { fetchNewsData } from '../../redux/modules/news/newsThunks';
+import Spinner from '../../spinner/Spinner';
 
 import img from '../../assets/images/news-image.jpg';
 
@@ -30,6 +31,8 @@ const CreateNewsPage = () => {
 	const [imageInput, setImageInput] = useState('');
 	const [loading, setLoading] = useState(false);
 	const [newsImg, setNewsImg] = useState('');
+	const [formIsValid, setFormIsValid] = useState(true)
+	const [activeBtn, setActiveBtn] = useState(false)
 
 	const { newsData } = useSelector((state) => state.newsSlice);
 	const { foundUser } = useSelector((state) => state.usersSlice);
@@ -48,22 +51,47 @@ const CreateNewsPage = () => {
 
 	const createNews = (e) => {
 		e.preventDefault();
-		addDoc(collection(database, 'news'), {
-			id: new Date().toISOString(),
-			image: newsImg === '' ? img : newsImg,
-			title: titleInput.val,
-			textInfo: [textInput.val],
-			data: new Date().toLocaleDateString(),
-			author: foundUser.title,
-			authorEmail: foundUser.emailId,
-		})
-			.then(navigate(switchBtn ? '/Nachrichten' : '/News'))
-			.catch((error) => {
-				alert(error.message);
-			});
+		textInputsValidate()
+		if (!formIsValid) return
+
+		if (titleInput.val !== '' && textInput.val !== '') {
+			addDoc(collection(database, 'news'), {
+				id: new Date().toISOString(),
+				image: newsImg === '' ? img : newsImg,
+				title: titleInput.val,
+				textInfo: [textInput.val],
+				data: new Date().toLocaleDateString(),
+				author: foundUser.title,
+				authorEmail: foundUser.emailId,
+				page: '/News/SingleNews/'
+			})
+				.then(setActiveBtn(false))
+				.then(navigate('/News'))
+				.catch((error) => {
+					alert(error.message);
+				});
+			setTimeout(() => {
+				dispatch(fetchNewsData());
+			}, 100);
+		}
 	};
 
+	const textInputsValidate = () => {
+		setFormIsValid(true)
+
+		if (titleInput.val === '') {
+			setTitleInput({val: '', isValid: false})
+			setFormIsValid(false)
+		}
+
+		if (textInput.val === '') {
+			setTextInput({val: '', isValid: false})
+			setFormIsValid(false)
+		}
+	}
+
 	const onStorage = () => {
+		setActiveBtn(false)
 		const storageRef = ref(storage, `images/ news/ ${newsData.length + 1}/${dataStorage.name}`);
 		const uploadTask = uploadBytesResumable(storageRef, dataStorage);
 		uploadTask.on(
@@ -90,6 +118,14 @@ const CreateNewsPage = () => {
 				});
 			},
 		);
+	};
+
+	const changeImage = (e) => {
+		setImageInput(e.target.value);
+		setDataStorage(e.target.files[0])
+		setTimeout(() => {
+			setActiveBtn(true)
+		}, 100);
 	};
 
 	const onLoading = () => {
@@ -145,14 +181,11 @@ const CreateNewsPage = () => {
 									type="file"
 									name="img"
 									id="img"
-									onChange={(e) => (
-										setImageInput(e.target.value),
-										setDataStorage(e.target.files[0])
-									)}
+									onChange={(e) => changeImage(e)}
 								/>
 							</label>
 							<button
-								className="create-news__btn btn btn--red btn--universal"
+								className={`create-news__btn create-news__btn--add btn btn--red btn--universal ${activeBtn ? 'active' : ''}`}
 								type="button"
 								onClick={onStorage}
 							>
@@ -186,7 +219,7 @@ const CreateNewsPage = () => {
 							message="The Text field should not be empty!"
 							textareaRef={textInputRefs}
 							labelName="Text"
-							styleProp={{marginBottom: '35px'}}
+							styleArea={{ marginBottom: textInput.isValid ? '35px' : '10px' }}
 						/>
 						<div className="create-news__btns-wrapper">
 							<button

@@ -15,10 +15,10 @@ const EditNewsSkeleton = () => (
 		<rect x="85" y="500" rx="10" ry="10" width="320" height="40" />
 		<rect x="465" y="500" rx="10" ry="10" width="320" height="40" />
 
-		<rect x="890" y="10" rx="10" ry="10" width="720" height="30" />
-		<rect x="890" y="60" rx="10" ry="10" width="720" height="50" />
+		<rect x="890" y="10" rx="10" ry="10" width="720" height="50" />
+		<rect x="890" y="70" rx="10" ry="10" width="720" height="50" />
 		<rect x="890" y="130" rx="10" ry="10" width="720" height="50" />
-		<rect x="890" y="200" rx="10" ry="10" width="720" height="50" />
+		<rect x="890" y="190" rx="10" ry="10" width="720" height="50" />
 		<rect x="890" y="270" rx="10" ry="10" width="720" height="180" />
 
 		<rect x="930" y="500" rx="10" ry="10" width="280" height="40" />

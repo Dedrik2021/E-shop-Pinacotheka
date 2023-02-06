@@ -13,11 +13,6 @@ const HeaderSearchForm = ({ searchFormProps, searchInputRefs }) => {
 			<div className={`menu__form-wrapper ${searchFormProps.search ? 'active' : ''}`}>
 			<label className="menu__label" htmlFor="nav-search" ref={searchInputRefs}>
 				<span className="sr-only">{searchFormProps.switchBtn ? 'Suche' : 'Search'}</span>
-				<CleanInputBtn
-				inputValue={searchFormProps.searchInput}
-				setInputValue={searchFormProps.setSearchInput}
-				id={1}
-			/>
 			</label>
 			<input
 				className={`menu__search ${searchFormProps.search ? 'active' : ''}`}

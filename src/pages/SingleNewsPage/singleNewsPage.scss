@@ -10,6 +10,8 @@
         &.active {
             filter: blur(10px);
         }
+        
+
     }
 
     &__wrapper {
@@ -26,8 +28,8 @@
     &__delete-btn {
         background-color: $black;
         color: $white;
-        margin-right: 50px;
-        padding: 9px 80px 11px;
+        margin-right: 30px;
+        padding: 11px 0 10px;
         transition: background-color 0.3s;
 
         &:hover {
@@ -36,8 +38,15 @@
     }
 
     &__edit-btn {
+        display: inline-block;
+        text-align: center;
         padding: 10px 50px;
         border-radius: 10px;
+    }
+
+    &__delete-btn,
+    &__edit-btn {
+        width: 250px;
     }
 
     .news__item {

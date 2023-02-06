@@ -8,6 +8,7 @@ import { Helmet } from 'react-helmet';
 import BreadCrumbs from '../../components/BreadCrumbs/BreadCrumbs';
 import InputForm from '../../components/InputForm/InputForm';
 import TextareaForm from '../../components/TextareaForm/TextareaForm';
+import OpenEditBtns from '../../components/OpenEditBtns/OpenEditBtns';
 
 import { database, storage } from '../../firebase/firebaseConfig';
 import { fetchNewsData } from '../../redux/modules/news/newsThunks';
@@ -18,8 +19,6 @@ import { Status } from '../../utils/status/status';
 
 import img from '../../assets/images/news-image.jpg';
 import EditIcon from '../../assets/sprite/edit-icon.svg';
-import CheckIcon from '../../assets/sprite/check-icon.svg';
-import CrossIcon from '../../assets/sprite/cross-icon.svg';
 
 import './editNewsPage.scss';
 
@@ -35,8 +34,9 @@ const EditNews = () => {
 	const [dataStorage, setDataStorage] = useState({});
 	const [loading, setLoading] = useState(false);
 	const [newsImg, setNewsImg] = useState('');
-	const [edit, setEdit] = useState(null);
+	const [editText, setEditText] = useState(null);
 	const [editTitle, setEditTitle] = useState(false);
+	const [activeBtn, setActiveBtn] = useState(false);
 
 	const navigate = useNavigate();
 	const dispatch = useDispatch();
@@ -70,17 +70,19 @@ const EditNews = () => {
 			textInfo: textInput.val === '' ? foundNews.textInfo : arrayUnion(textInput.val),
 			data: new Date().toLocaleDateString(),
 		})
+			.then(setActiveBtn(false))
 			.then(navigate(`/News/SingleNews/${id}`))
 			.catch((error) => {
 				alert(error.message);
 			});
-
-            setTimeout(() => {
-                dispatch(fetchNewsData());
-            }, 0);
+		dispatch(fetchNewsData());
+		setTimeout(() => {
+			dispatch(fetchNewsData());
+		}, 900);
 	};
 
 	const onStorage = () => {
+		setActiveBtn(false);
 		const storageRef = ref(storage, `images/ news/ ${newsData.length + 1}/${dataStorage.name}`);
 		const uploadTask = uploadBytesResumable(storageRef, dataStorage);
 		uploadTask.on(
@@ -108,9 +110,10 @@ const EditNews = () => {
 		);
 	};
 
-	const clickOnEditBtn = (text, index) => {
+	const clickOnEditTextBtn = (text, index) => {
 		setEditTextInput({ val: text, isValid: true });
-		setEdit(index);
+		setEditText(index);
+		setEditTitle(false);
 	};
 
 	const clickOnSaveTextBtn = (e, index) => {
@@ -118,20 +121,21 @@ const EditNews = () => {
 		const docToUpdates = doc(database, 'news', foundNews.ID);
 		updateDoc(docToUpdates, {
 			textInfo: foundNews.textInfo.map((text, i) => {
-				return index === i ? editTextInput.val : text;
+				console.log(index === i);
+				return index === i && editTextInput.val !== '' ? editTextInput.val : text;
 			}),
-		})
-        .catch((error) => {
+		}).catch((error) => {
 			alert(error.message);
 		});
+		dispatch(fetchNewsData());
 		setTimeout(() => {
 			dispatch(fetchNewsData());
-            setEdit(null)
-		}, 200);
-		
+			setEditText(null);
+		}, 900);
 	};
 
 	const clickOnEditTitleBtn = () => {
+		setEditText(null);
 		setEditTitle(true);
 		setTitleInput({ val: foundNews.title, isValid: true });
 	};
@@ -144,10 +148,18 @@ const EditNews = () => {
 		}).catch((error) => {
 			alert(error.message);
 		});
+		dispatch(fetchNewsData());
 		setTimeout(() => {
 			dispatch(fetchNewsData());
 			setEditTitle(false);
-		}, 200);
+		}, 900);
+	};
+
+	const changeImage = (e) => {
+		setDataStorage(e.target.files[0]);
+		setTimeout(() => {
+			setActiveBtn(true);
+		}, 100);
 	};
 
 	const onLoading = () => {
@@ -189,194 +201,171 @@ const EditNews = () => {
 				{switchBtn ? 'Nachrichten erstellen' : 'Edit News'}
 			</h1>
 			{newsDataStatus === Status.SUCCESS ? (
-                <section className="create-news">
-				<form className="create-news__form" onSubmit={(e) => saveEditNews(e)}>
-					<div className="create-news__block">
-						<div className="create-news__img-wrapper">{onLoading()}</div>
-						<div className="create-news__block-btn">
-							<label
-								className="create-news__label create-news__label--img btn btn--universal"
-								htmlFor="img"
-							>
-								Select image
-								<input
-									className="create-news__input create-news__input--img"
-									type="file"
-									name="img"
-									id="img"
-									onChange={(e) => setDataStorage(e.target.files[0])}
-								/>
-							</label>
-							<button
-								className="create-news__btn btn btn--red btn--universal"
-								type="button"
-								onClick={onStorage}
-							>
-								Add image
-							</button>
+				<section className="create-news">
+					<form className="create-news__form" onSubmit={(e) => saveEditNews(e)}>
+						<div className="create-news__block">
+							<div className="create-news__img-wrapper">{onLoading()}</div>
+							<div className="create-news__block-btn">
+								<label
+									className="create-news__label create-news__label--img btn btn--universal"
+									htmlFor="img"
+								>
+									Select image
+									<input
+										className="create-news__input create-news__input--img"
+										type="file"
+										name="img"
+										id="img"
+										onChange={(e) => changeImage(e)}
+									/>
+								</label>
+								<button
+									className={`create-news__btn create-news__btn--add btn btn--red btn--universal ${
+										activeBtn ? 'active' : ''
+									}`}
+									type="button"
+									onClick={onStorage}
+								>
+									Add image
+								</button>
+							</div>
 						</div>
-					</div>
 
-					<div className="create-news__box">
-						{editTitle ? (
-							<div 
-                                className="create-news__text-description"
-                                style={{marginBottom: editTitle && '0', padding: editTitle && '0'}}    
-                            >
-								<div className="create-news__wrapper-btn">
+						<div className="create-news__box">
+							<span className="create-news__edittile title">Title</span>
+							{editTitle ? (
+								<div
+									className="create-news__text-description"
+									style={{
+										marginBottom: editTitle && '0',
+										padding: editTitle && '0',
+									}}
+								>
+									<OpenEditBtns
+										clickOnSaveEditing={(e) => clickOnSaveTitleBtn(e)}
+										cancelEdit={setEditTitle}
+									/>
+									<InputForm
+										id="title"
+										srOnly="Name"
+										inputValue={titleInput}
+										setInputValue={setTitleInput}
+										type="text"
+										placeholder="Type a Title Your News"
+										name="title"
+										inputRef={titleInputRefs}
+										labelName="Title"
+									/>
+								</div>
+							) : (
+								<div
+									className="create-news__text-description create-news__text-description--title"
+									style={{
+										marginBottom: !editTitle && '15px',
+										padding: !editTitle && '14px 0 16px',
+									}}
+								>
+									<p>{foundNews !== undefined && foundNews.title}</p>
 									<button
-										className="create-news__text-btn btn"
-										type="submit"
-										title="Save Title"
-										onClick={(e) => clickOnSaveTitleBtn(e)}
-									>
-										<svg className="check" width="25" height="25">
-											<use href={`${CheckIcon}#check-icon`}></use>
-										</svg>
-									</button>
-									<button
-										className="create-news__text-btn btn"
+										className="create-news__text-btn create-news__text-btn--edit btn"
+										title="Edit Title"
 										type="button"
-                                        title='Cancel'
-										onClick={() => setEditTitle(false)}
+										onClick={clickOnEditTitleBtn}
 									>
-										<svg className="cross" width="25" height="25">
-											<use href={`${CrossIcon}#cross-icon`}></use>
+										<svg className="edit" width="23" height="25">
+											<use href={`${EditIcon}#edit`}></use>
 										</svg>
 									</button>
 								</div>
-								<InputForm
-									id="title"
-									srOnly="Name"
-									inputValue={titleInput}
-									setInputValue={setTitleInput}
-									type="text"
-									placeholder="Type a Title Your News"
-									name="title"
-									message="The Title field should not be empty!"
-									inputRef={titleInputRefs}
-									labelName="Title"
-								/>
-							</div>
-						) : (
-							<div 
-                                className="create-news__text-description create-news__text-description--title"
-                                style={{marginBottom: !editTitle && '15px', padding: !editTitle && '14px 0 16px'}}    
-                            >
-								<p>{foundNews !== undefined && foundNews.title}</p>
-								<button
-									className="create-news__text-btn create-news__text-btn--edit btn"
-									title="Edit Title"
-									type="button"
-									onClick={clickOnEditTitleBtn}
-								>
-									<svg className="edit" width="23" height="25">
-										<use href={`${EditIcon}#edit`}></use>
-									</svg>
-								</button>
-							</div>
-						)}
-
-						{foundNews !== undefined &&
-							foundNews.textInfo.map((text, i) => {
-								return edit === i ? (
-									<div 
-                                        key={i} 
-                                        className="create-news__text-description"
-                                        style={{marginBottom: editTitle === i && '0', padding: editTitle === i && '0'}}  
-                                    >
-										<div className="create-news__wrapper-btn">
+							)}
+							<span className="create-news__edittile title">Text</span>
+							{foundNews !== undefined &&
+								foundNews.textInfo.map((text, i) => {
+									return editText === i ? (
+										<div
+											key={i}
+											className="create-news__text-description"
+											style={{
+												marginBottom: editText === i && '0',
+												padding: editText === i && '0',
+											}}
+										>
+											<OpenEditBtns
+												clickOnSaveEditing={(e) => clickOnSaveTextBtn(e, i)}
+												cancelEdit={setEditText}
+											/>
+											<TextareaForm
+												id="text-input"
+												srOnly="Text"
+												textareaValue={editTextInput}
+												setTextareaValue={setEditTextInput}
+												type="text"
+												placeholder="Type a Description Your News"
+												name="text"
+												textareaRef={textInputRefs}
+												labelName="Edit Text"
+												styleArea={{ marginBottom: '5px', height: '185px' }}
+											/>
+										</div>
+									) : (
+										<div
+											key={i}
+											className="create-news__text-description"
+											style={{
+												marginBottom: editText !== i && '15px',
+												padding: editText !== i && '5px 0 7px',
+											}}
+										>
+											<p>{text}</p>
 											<button
-												className="create-news__text-btn btn"
-												type="submit"
-												title="Save Text"
-												onClick={(e) => clickOnSaveTextBtn(e, i)}
-											>
-												<svg className="check" width="25" height="25">
-													<use href={`${CheckIcon}#check-icon`}></use>
-												</svg>
-											</button>
-											<button
-												className="create-news__text-btn btn"
+												title="Edit Text"
+												className="create-news__text-btn create-news__text-btn--edit btn"
 												type="button"
-                                                title='Cancel'
-												onClick={() => setEdit(null)}
+												onClick={() => clickOnEditTextBtn(text, i)}
 											>
-												<svg className="cross" width="25" height="25">
-													<use href={`${CrossIcon}#cross-icon`}></use>
+												<svg className="edit" width="23" height="25">
+													<use href={`${EditIcon}#edit`}></use>
 												</svg>
 											</button>
 										</div>
-										<InputForm
-											id="edit-text"
-											srOnly="Name"
-											inputValue={editTextInput}
-											setInputValue={setEditTextInput}
-											type="text"
-											placeholder="Type a Title Your News"
-											name="text"
-											message="The Title field should not be empty!"
-											inputRef={textInputRefs}
-											labelName="Edit Text"
-										/>
-									</div>
-								) : (
-									<div 
-                                        key={i} 
-                                        className="create-news__text-description"
-                                        style={{marginBottom: edit !== i && '15px', padding: edit !== i && '5px 0 7px'}}  
-                                    >
-										<p>{text}</p>
-										<button
-											title="Edit Text"
-											className="create-news__text-btn create-news__text-btn--edit btn"
-											type="button"
-											onClick={() => clickOnEditBtn(text, i)}
-										>
-											<svg className="edit" width="23" height="25">
-												<use href={`${EditIcon}#edit`}></use>
-											</svg>
-										</button>
-									</div>
-								);
-							})}
+									);
+								})}
 
-						<TextareaForm
-							id="text"
-							srOnly="Text"
-							textareaValue={textInput}
-							setTextareaValue={setTextInput}
-							type="text"
-							placeholder="Type a Description Your News"
-							name="text"
-							message="The Text field should not be empty!"
-							textareaRef={textInputRefs}
-							labelName="Create New Text"
-							styleArea={{ marginBottom: '35px', height: '185px' }}
-                            styleBlock={{paddingTop: '20px'}}
-						/>
+							<TextareaForm
+								id="text"
+								srOnly="Text"
+								textareaValue={textInput}
+								setTextareaValue={setTextInput}
+								type="text"
+								placeholder="Type a Description Your News"
+								name="text"
+								textareaRef={textInputRefs}
+								labelName="Create New Text"
+								styleArea={{ marginBottom: '35px', height: '185px' }}
+								styleBlock={{ paddingTop: '20px' }}
+							/>
 
-						<div className="create-news__btns-wrapper">
-							<button
-								className="create-news__btn create-news__btn--cancel btn btn--universal"
-								type="button"
-								onClick={() => navigate(`/News/SingleNews/${id}`)}
-							>
-								Cancel
-							</button>
-							<button
-								className="create-news__btn btn btn--red btn--universal"
-								type="submit"
-							>
-								Save
-							</button>
+							<div className="create-news__btns-wrapper">
+								<button
+									className="create-news__btn create-news__btn--cancel btn btn--universal"
+									type="button"
+									onClick={() => navigate(`/News/SingleNews/${id}`)}
+								>
+									Cancel
+								</button>
+								<button
+									className="create-news__btn btn btn--red btn--universal"
+									type="submit"
+								>
+									Save
+								</button>
+							</div>
 						</div>
-					</div>
-				</form>
-			</section>
-            ) : (
-                <EditNewsSkeleton/>
-            )}
+					</form>
+				</section>
+			) : (
+				<EditNewsSkeleton />
+			)}
 		</div>
 	);
 };

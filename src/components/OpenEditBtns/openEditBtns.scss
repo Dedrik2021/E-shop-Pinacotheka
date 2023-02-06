@@ -1,0 +1,45 @@
+@import '../../scss/vars';
+
+.create-news {
+
+    &__wrapper-btn {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        position: absolute;
+        right: -40px;
+    }
+    
+    &__text-btn {
+        height: 25px;
+        width: 25px;
+    
+        &:first-child {
+            margin-bottom: 7px;
+        }
+    
+        .cross {
+            fill: $red;
+        }
+    
+        .check {
+            fill: $green;
+        }
+    
+        &--edit {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            right: -40px;
+        }
+    
+        svg {
+            opacity: 0.7;
+            transition: all 0.3s;
+    
+            &:hover {
+                opacity: 1;
+            }
+        }
+    }
+}

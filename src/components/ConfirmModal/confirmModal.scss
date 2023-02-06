@@ -10,8 +10,11 @@
 
 .MuiDialogContent-root {
     text-align: center;
+    word-wrap: break-word;
+    overflow-x: hidden;
 }
 
 .confirm__btn {
     width: 50%;
+    padding: 7px 0 8px;
 }

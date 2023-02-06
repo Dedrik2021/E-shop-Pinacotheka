@@ -70,16 +70,20 @@
                 right: 50px;
                 z-index: 10;
                 opacity: 0.6;
+                visibility: visible;
             }
         }
         
     }
+
     .clean {
         background-color: $white;
         opacity: 0;
-        top: -6px;
+        top: 6px;
         cursor: pointer;
-        right: 0px;
+        position: absolute;
+        visibility: hidden;
+        right: -20px;
         z-index: -10;
         transition: all 0.3s;
     

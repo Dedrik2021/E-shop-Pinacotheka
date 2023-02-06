@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 
 import './newsCard.scss';
 
-const NewsCard = memo(({ news, switchBtn, breadCrumbsTitle }) => {
+const NewsCard = memo(({ news, breadCrumbsTitle }) => {
 	return (
 		<li className="news__item">
 			<Link
