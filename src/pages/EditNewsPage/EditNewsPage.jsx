@@ -37,6 +37,7 @@ const EditNews = () => {
 	const [editText, setEditText] = useState(null);
 	const [editTitle, setEditTitle] = useState(false);
 	const [activeBtn, setActiveBtn] = useState(false);
+	const [progress, setProgress] = useState(0)
 
 	const navigate = useNavigate();
 	const dispatch = useDispatch();
@@ -89,8 +90,7 @@ const EditNews = () => {
 			'state_changed',
 			(snapshot) => {
 				setLoading(true);
-				const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
-				console.log(`Upload is ${progress}% done`);
+				setProgress((snapshot.bytesTransferred / snapshot.totalBytes) * 100)
 			},
 			(error) => {
 				console.log(error.message);
@@ -121,7 +121,6 @@ const EditNews = () => {
 		const docToUpdates = doc(database, 'news', foundNews.ID);
 		updateDoc(docToUpdates, {
 			textInfo: foundNews.textInfo.map((text, i) => {
-				console.log(index === i);
 				return index === i && editTextInput.val !== '' ? editTextInput.val : text;
 			}),
 		}).catch((error) => {
@@ -141,8 +140,8 @@ const EditNews = () => {
 	};
 
 	const clickOnSaveTitleBtn = (e) => {
-		const docToUpdates = doc(database, 'news', foundNews.ID);
 		e.preventDefault();
+		const docToUpdates = doc(database, 'news', foundNews.ID);
 		updateDoc(docToUpdates, {
 			title: titleInput.val === '' ? foundNews.title : titleInput.val,
 		}).catch((error) => {
@@ -164,7 +163,14 @@ const EditNews = () => {
 
 	const onLoading = () => {
 		if (loading) {
-			return <Spinner />;
+			return (
+				<>
+					<Spinner 
+						styleProps={{with: '100%', height: '100%', objectFit: 'contain', position: 'relative', padding: '130px 130px', display: 'block', margin: '0 auto'}}
+					/>
+					<span className='progress'>{Math.floor(progress)} %</span>
+				</>
+			);
 		} else {
 			return (
 				<>

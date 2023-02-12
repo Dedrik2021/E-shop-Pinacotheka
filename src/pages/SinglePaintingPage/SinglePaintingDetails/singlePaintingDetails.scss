@@ -218,14 +218,19 @@
         padding: 5px 20px;
         transition: background-color 0.4s, color 0.4s, border-color 0.4s;
         word-wrap: break-word;
+        justify-content: center;
 
         &.active {
             background-color: $red;
             color: $white;
-            pointer-events: none;
+            // pointer-events: none;
 
             svg {
                 fill: $white;
+            }
+
+            &:hover {
+                background-color: red;
             }
         }
 
@@ -267,7 +272,8 @@
         }
 
         &--like {
-            margin-right: 10px;
+            max-width: 90px;
+            width: 100%;
         }
     }
 

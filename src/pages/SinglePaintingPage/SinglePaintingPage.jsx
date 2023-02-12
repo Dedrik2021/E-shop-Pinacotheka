@@ -1,21 +1,27 @@
-import { useEffect, useState, useMemo } from 'react';
+import { useEffect, useState, useMemo, useRef } from 'react';
 import { useParams } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 import Helmet from 'react-helmet';
 import { getAuth } from 'firebase/auth';
 import { ref, onValue } from 'firebase/database';
+import { doc, arrayRemove, updateDoc, arrayUnion } from 'firebase/firestore/lite';
+import {v4 as costomId} from 'uuid'
 
 import BreadCrumbs from '../../components/BreadCrumbs/BreadCrumbs';
+import ReviewModal from '../../components/reviewModal/ReviewModal';
+
+import { setBreadCrumbsTitle } from '../../redux/slices/breadCrumbsSlice';
+import { realDb } from '../../firebase/firebaseConfig';
+import { database } from '../../firebase/firebaseConfig';
+
 import SinglePaintingDetails from './SinglePaintingDetails/SinglePaintingDetails';
 import SinglePaintingAuthorInfo from './SinglePaintingAuthorInfo/SinglePaintingAuthorInfo';
 import SinglePaintingGallerySection from './SinglePaintingGallerySection/SinglePaintingGallerySection';
-
 import SinglePaintingSkeleton from '../../skeletons/singlePaintingSkeleton';
-
-import { setBreadCrumbsTitle } from '../../redux/slices/breadCrumbsSlice';
+import { setShowModal } from '../../redux/slices/modalContentSlice';
 import { Status } from '../../utils/status/status';
-
-import { realDb } from '../../firebase/firebaseConfig';
+import { fetchUsersData } from '../../redux/modules/users/usersThunks';
+import { fetchAuthorsData } from '../../redux/modules/authors/authorsThunks';
 
 import './singlePaintingPage.scss';
 
@@ -23,31 +29,31 @@ const SinglePaintingPage = () => {
 	const { id } = useParams();
 	const auth = getAuth();
 	const dispatch = useDispatch();
+	const user =  auth.currentUser;
+
 	const [filterBtn, setFilterBtn] = useState(0);
 	const [authorsEmailId, setAuthorsEmailId] = useState('');
-
 	const [authorsWorksDataSelected, setAuthorsWorksDataSelected] = useState(1);
 	const [authorsWorksDataLength, setAuthorsWorksDataLength] = useState(0);
 	const [authorsWorksLimitLast, setAuthorsWorksLimitLast] = useState(6);
 	const [authorsWorksLimitStart, setAuthorsWorksLimitStart] = useState(6);
-
 	const [authorsSimilarWorksDataSelected, setAuthorsSimilarWorksDataSelected] = useState(1);
 	const [authorsSimilarWorksDataLength, setAuthorsSimilarWorksDataLength] = useState(0);
 	const [authorsSimilarWorksLimitLast, setAuthorsSimilarWorksLimitLast] = useState(6);
 	const [authorsSimilarWorksLimitStart, setAuthorsSimilarWorksLimitStart] = useState(6);
-
 	const [watchedWorksByAuthorsDataSelected, setWatchedWorksByAuthorsDataSelected] = useState(1);
 	const [watchedWorksByAuthorsDataLength, setWatchedWorksByAuthorsDataLength] = useState(0);
 	const [watchedWorksByAuthorsLimitLast, setWatchedWorksByAuthorsLimitLast] = useState(6);
 	const [watchedWorksByAuthorsLimitStart, setWatchedWorksByAuthorsLimitStart] = useState(6);
-
-	const [loading, setLoading] = useState(false);
+	const [openModal, setOpenModal] = useState(false)
 
 	const { authorsData, authorsDataStatus, paintingWatched } = useSelector(
 		(state) => state.authorsSlice,
 	);
+	const {showModal} = useSelector(state => state.useModalContentSlice)
 	const switchLanguageBtn = useSelector((state) => state.langBtnsSlice.switchLanguageBtn);
 	const switchBtn = switchLanguageBtn[0] === 0;
+	const { foundUser } = useSelector((state) => state.usersSlice);
 
 	useEffect(() => {
 		window.scroll(0, 0);
@@ -71,7 +77,7 @@ const SinglePaintingPage = () => {
 		for (const i of paintingsInfo) {
 			works.push(...i);
 		}
-		const similarPaintings = works.filter((work) => work.category === painting.category);
+		const similarPaintings = works.filter((work) => work.category === getItems().painting.category);
 		return { similarPaintings };
 	};
 
@@ -81,11 +87,20 @@ const SinglePaintingPage = () => {
 			foundAuthor !== undefined && foundAuthor.works.find((work) => work.id == id);
 		return searchPainting !== undefined && { searchPainting, foundAuthor };
 	};
-	const painting = foundPainting().searchPainting;
-	const author = foundPainting().foundAuthor;
+
+	const getItems = () => {
+		const painting = foundPainting().searchPainting;
+		const author = foundPainting().foundAuthor;
+		const likeMeActive = foundUser && foundUser.likeMe.find(item => item.initialID === painting.id)
+
+		return {
+			painting,
+			author,
+			likeMeActive
+		}
+	}	
 
 	useMemo(() => {
-		setLoading(true);
 		setAuthorsWorksLimitLast(6 * authorsWorksDataSelected);
 		setAuthorsWorksLimitStart(authorsWorksLimitLast - 6);
 
@@ -94,9 +109,6 @@ const SinglePaintingPage = () => {
 
 		setWatchedWorksByAuthorsLimitLast(6);
 		setWatchedWorksByAuthorsLimitStart(0);
-		setTimeout(() => {
-			setLoading(false);
-		}, 1000);
 	}, [
 		authorsWorksDataSelected,
 		authorsWorksLimitLast,
@@ -105,50 +117,112 @@ const SinglePaintingPage = () => {
 	]);
 
 	useEffect(() => {
-		setAuthorsWorksDataLength(Math.ceil(author !== undefined && author.works.length / 6));
+		setAuthorsWorksDataLength(Math.ceil(getItems().author !== undefined && getItems().author.works.length / 6));
 		setAuthorsSimilarWorksDataLength(
 			Math.ceil(
-				author !== undefined && foundInterestingAuthorsWorks().similarPaintings.length / 6,
+				getItems().author !== undefined && foundInterestingAuthorsWorks().similarPaintings.length / 6,
 			),
 		);
-	}, [author, paintingWatched]);
+	}, [getItems().author, paintingWatched]);
+
+	const clickOnReviewBtn = () => {
+		if (user !== null) {
+			setOpenModal(!openModal)
+		} else {
+			dispatch(setShowModal(!showModal))
+		}
+	}
+
+	const clickOnLikeMeBtn = () => {
+		if (getItems().likeMeActive !== undefined) {
+			const removeLike = getItems().likeMeActive
+			const collectionReff = doc(database, user === 'authors' ? 'authors' : 'users', foundUser.ID);
+
+			updateDoc(collectionReff, {
+				likeMe: arrayRemove(removeLike),
+			})
+				.then(dispatch(user === 'authors' ? fetchAuthorsData() : fetchUsersData()))
+				.catch((error) => {
+					console.log(error.message);
+				});
+		} else {
+			const newLike = {
+				id: costomId(),
+				initialID: getItems().painting.id,
+				author: getItems().painting.cardInfo[0],
+				image: getItems().painting.image,
+				rating: getItems().painting.rating,
+				title: getItems().painting.title,
+				date: new Date().toLocaleDateString(),
+				timeToLike: new Date().toLocaleTimeString(),
+				lot: getItems().painting.lot,
+				price: getItems().painting.price,
+				page: getItems().painting.page
+			};
+
+			const collectionReff = doc(database, user === 'authors' ? 'authors' : 'users', foundUser.ID);
+
+			updateDoc(collectionReff, {
+				likeMe: arrayUnion(newLike),
+			})
+			.then(dispatch(user === 'authors' ? fetchAuthorsData() : fetchUsersData()))
+				.catch((error) => {
+					console.log(error.message);
+				});
+		}
+	}
 
 	return (
 		<>
 			<Helmet>
 				<meta
 					name="description"
-					content={switchBtn ? `Details von das Bildes ${painting.title}` : `Details of the painting ${painting.title}`}
+					content={switchBtn ? `Details von das Bildes ${getItems().getItems().painting.title}` : `Details of the painting ${getItems().painting.title}`}
 				/>
-				<title>{switchBtn ? `Details von das Bildes ${painting.title}` : `Details of the painting ${painting.title}`}</title>
+				<title>{switchBtn ? `Details von das Bildes ${getItems().painting.title}` : `Details of the painting ${getItems().painting.title}`}</title>
 			</Helmet>
-			<div className={`creations-details`}>
+				{openModal && (
+					<ReviewModal 
+						openModal={openModal} 
+						handleClose={setOpenModal} 
+						itemProp={getItems().painting} 
+						author={getItems().author} 
+						painting={getItems().painting}
+					/>
+				)}
+			<div className={`creations-details ${openModal ? 'active' : ''}`}>
 				<div className="container">
 					<BreadCrumbs />
 					{authorsDataStatus === Status.LOADING || authorsDataStatus === Status.ERROR ? (
 						<SinglePaintingSkeleton />
 					) : (
-						<SinglePaintingDetails switchBtn={switchBtn} painting={painting} />
+						<SinglePaintingDetails 
+							switchBtn={switchBtn} 
+							painting={getItems().painting} 
+							clickOnReviewBtn={clickOnReviewBtn} 
+							clickOnLikeMeBtn={clickOnLikeMeBtn}
+							likeMe={getItems().likeMeActive}
+						/>
 					)}
 
 					<SinglePaintingAuthorInfo
 						filterBtn={filterBtn}
 						setFilterBtn={setFilterBtn}
 						switchBtn={switchBtn}
-						painting={painting}
-						author={author}
+						painting={getItems().painting}
+						author={getItems().author}
 					/>
 
 					<SinglePaintingGallerySection
 						switchBtn={switchBtn}
-						paintings={author !== undefined && author.works}
+						paintings={getItems().author !== undefined && getItems().author.works}
 						setDataSelected={setAuthorsWorksDataSelected}
 						setLimitLast={setAuthorsWorksLimitLast}
 						limitLast={authorsWorksLimitLast}
 						limitStart={authorsWorksLimitStart}
 						dataLength={authorsWorksDataLength}
 						dataSelected={authorsWorksDataSelected}
-						author={author}
+						author={getItems().author}
 						sectionClassName={'others-creation'}
 						sectionAn={'other works by the author'}
 						sectionDe={'andere Werke das Autors'}
@@ -157,7 +231,7 @@ const SinglePaintingPage = () => {
 				</div>
 				<SinglePaintingGallerySection
 					switchBtn={switchBtn}
-					author={author}
+					author={getItems().author}
 					paintings={foundInterestingAuthorsWorks().similarPaintings}
 					setDataSelected={setAuthorsSimilarWorksDataSelected}
 					setLimitLast={setAuthorsSimilarWorksLimitLast}
@@ -180,7 +254,7 @@ const SinglePaintingPage = () => {
 						limitStart={watchedWorksByAuthorsLimitStart}
 						dataLength={watchedWorksByAuthorsDataLength}
 						dataSelected={watchedWorksByAuthorsDataSelected}
-						author={author}
+						author={getItems().author}
 						sectionClassName={'recent-watched'}
 						sectionAn={'recently you watched'}
 						sectionDe={'vor kurzem hast du zugeschaut'}

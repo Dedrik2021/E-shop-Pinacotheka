@@ -1,12 +1,15 @@
-.MuiPaper-elevation {
-    padding: 10px;
+.confirm {
 
+    max-width: 400px !important;
+    width: 100%;
+    
     .image {
         height: 130px;
         width: 380px;
         margin-bottom: 10px;
     }
 }
+
 
 .MuiDialogContent-root {
     text-align: center;
@@ -16,5 +19,4 @@
 
 .confirm__btn {
     width: 50%;
-    padding: 7px 0 8px;
 }

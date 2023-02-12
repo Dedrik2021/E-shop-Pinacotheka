@@ -4,6 +4,7 @@ import { Link, useParams, useNavigate } from 'react-router-dom';
 import Helmet from 'react-helmet';
 import { deleteDoc, doc } from 'firebase/firestore/lite';
 import { getAuth } from 'firebase/auth';
+import { ref, getDownloadURL } from 'firebase/storage';
 
 import NewsCard from '../../components/NewsCard/NewsCard';
 import BreadCrumbs from '../../components/BreadCrumbs/BreadCrumbs';
@@ -14,6 +15,7 @@ import { database } from '../../firebase/firebaseConfig';
 import { fetchNewsData } from '../../redux/modules/news/newsThunks';
 import SingleNewsSkeleton from '../../skeletons/singleNewsSkeleton';
 import { Status } from '../../utils/status/status';
+import { storage } from '../../firebase/firebaseConfig';
 
 import image from '../../assets/images/delete-img.png';
 
@@ -42,11 +44,45 @@ const SingleNews = () => {
 			.catch((err) => {
 				alert(err.message);
 			});
+		dispatch(fetchNewsData());
+		setTimeout(() => {
 			dispatch(fetchNewsData());
-			setTimeout(() => {
-                dispatch(fetchNewsData());
-            }, 200);
+		}, 200);
 	};
+
+	
+	
+	// useEffect(() => {
+	// 	getImages()
+	// },[])
+	
+	// const getImages = () => {
+	// 	const starsRef = ref(storage, 'images/ news/ 31/gs://pinakotheka-12056.appspot.com');
+	// 	getDownloadURL(starsRef)
+	// 	.then((url) => {
+	// 		console.log(url);
+	// 		// Insert url into an <img> tag to "download"
+	// 	})
+	// 	.catch((error) => {
+	// 		switch (error.code) {
+	// 			case 'storage/object-not-found':
+					
+	// 				break;
+	// 			case 'storage/unauthorized':
+	// 				// User doesn't have permission to access the object
+	// 				break;
+	// 			case 'storage/canceled':
+	// 				// User canceled the upload
+	// 				break;
+
+	// 			// ...
+
+	// 			case 'storage/unknown':
+	// 				// Unknown error occurred, inspect the server response
+	// 				break;
+	// 		}
+	// 	});
+	// }
 
 	const clickOpenConfirmModal = () => {
 		setOpen(true);
@@ -121,18 +157,22 @@ const SingleNews = () => {
 				</title>
 			</Helmet>
 			<div className={`container single-news__container ${open ? 'active' : ''}`}>
-			<ConfirmModal
-				openModal={open}
-				handleClose={handleClose}
-				clickOnBtn={clickOnDelete}
-				image={image}
-				imgStyles={{ height: '300px', width: '70%' }}
-				message={
-					switchBtn
-						? `"${foundNews !== undefined && foundNews.title}" Nachricht löschen? Bist du dir sicher?`
-						: `Delete "${foundNews !== undefined && foundNews.title}" news? Are you sure?`
-				}
-			/>
+				<ConfirmModal
+					openModal={open}
+					handleClose={handleClose}
+					clickOnBtn={clickOnDelete}
+					image={image}
+					imgStyles={{ height: '300px', width: '70%' }}
+					message={
+						switchBtn
+							? `"${
+									foundNews !== undefined && foundNews.title
+							  }" Nachricht löschen? Bist du dir sicher?`
+							: `Delete "${
+									foundNews !== undefined && foundNews.title
+							  }" news? Are you sure?`
+					}
+				/>
 				<BreadCrumbs />
 				<section className="single-news">
 					<div className="single-news__wrapper">

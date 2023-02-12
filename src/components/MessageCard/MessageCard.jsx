@@ -1,59 +1,30 @@
 import { memo } from 'react';
-import { Link } from 'react-router-dom';
 
 import CaretIcon from '../../assets/sprite/caret-icon.svg';
+import unknownImage from '../../assets/images/unknow-photo.png';
 
-import './messageCard.scss'
+import './messageCard.scss';
 
-const MessageCard = memo(({message, switchBtn, setItemId, itemId}) => {
+const MessageCard = memo(({ message, switchBtn, setItemId, itemId, clickRemoveMessage }) => {
 	return (
 		<li className={`reviews__message`}>
 			<article className="user-message">
-				<Link
-					className="user-message__link"
-					// to={`${
-					// 	auth.currentUser !== null
-					// 		? switchBtn
-					// 			? '/PersonlichesBuro'
-					// 			: '/PersonalOffice'
-					// 		: ''
-					// }`}
-					// onClick={() => (
-					// 	onUserLink(message), auth.currentUser === null && dispatch(setShowModal(true))
-					// )}
-                    to={''}
-				>
+				<span className="user-message__link">
 					<div className="user-message__img-wrapper">
-						<img src={message.avatar} alt={message.name} />
+						<img
+							src={message.avatar !== '' ? message.avatar : unknownImage}
+							alt={message.name}
+						/>
 					</div>
-				</Link>
+				</span>
 				<div className="user-message__wrapper">
-					<div className="user-message__wrapper-box">
-						<time>
-							{message.timeToSend}
-							<span className="user-message__slash">/</span>
-							<span>{message.data}</span>
-						</time>
-						<div className="user-message__box">
-							<Link
-								className="user-message__link user-message__link--name"
-								// to={`${
-								// 	auth.currentUser !== null
-								// 		? switchBtn
-								// 			? '/PersonlichesBuro'
-								// 			: '/PersonalOffice'
-								// 		: ''
-								// }`}
-                                to={''}
-								// onClick={() => (
-								// 	onUserLink(message),
-								// 	auth.currentUser === null && dispatch(setShowModal(true))
-								// )}
-							>
-								<span>{message.name}</span>
-							</Link>
-						</div>
-					</div>
+					<time>
+						{message.timeToSend}
+						<span className="user-message__slash">/</span>
+						<span>{message.date}</span>
+					</time>
+					<div className="user-message__wrapper-box"></div>
+					<span className="user-message__name">{message.name}</span>
 					<div className="user-message__text">
 						<p className={itemId === message.id ? 'active' : ''}>{message.message}</p>
 					</div>
@@ -67,7 +38,7 @@ const MessageCard = memo(({message, switchBtn, setItemId, itemId}) => {
 								onClick={() => setItemId(message.id)}
 							>
 								{itemId === message.id
-									? `${switchBtn ? 'Alle Nachrichten' : 'All message'}`
+									? `${switchBtn ? 'Weniger anzeigen' : 'Show less'}`
 									: `${switchBtn ? 'Mehr anzeigen' : 'Show more'}`}
 								<svg width="20" height="20">
 									<use href={`${CaretIcon}#caret`}></use>
@@ -76,7 +47,7 @@ const MessageCard = memo(({message, switchBtn, setItemId, itemId}) => {
 						)}
 						<button
 							className="user-message__delete btn btn--universal"
-							// onClick={() => onDeleteMessage(message.id)}
+							onClick={() => clickRemoveMessage(message.id)}
 							type={'button'}
 						>
 							Delete

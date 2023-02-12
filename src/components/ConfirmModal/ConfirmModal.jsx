@@ -16,11 +16,11 @@ const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
 });
 
-const LogoutModal = (props) => {
+const ConfirmModal = (props) => {
   const {openModal, handleClose, clickOnBtn, image, imgStyles, message} = props
 
   return (
-    <div>
+    <div className='confirm'>
       <Dialog
         open={openModal}
         TransitionComponent={Transition}
@@ -46,4 +46,4 @@ const LogoutModal = (props) => {
   );
 }
 
-export default LogoutModal
+export default ConfirmModal

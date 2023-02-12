@@ -33,6 +33,7 @@ const CreateNewsPage = () => {
 	const [newsImg, setNewsImg] = useState('');
 	const [formIsValid, setFormIsValid] = useState(true)
 	const [activeBtn, setActiveBtn] = useState(false)
+	const [progress, setProgress] = useState(0)
 
 	const { newsData } = useSelector((state) => state.newsSlice);
 	const { foundUser } = useSelector((state) => state.usersSlice);
@@ -98,15 +99,13 @@ const CreateNewsPage = () => {
 			'state_changed',
 			(snapshot) => {
 				setLoading(true);
-				const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
-				console.log(`Upload is ${progress}% done`);
+				setProgress((snapshot.bytesTransferred / snapshot.totalBytes) * 100)
 			},
 			(error) => {
 				console.log(error.message);
 			},
 			() => {
 				getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
-					console.log('File available at', downloadURL);
 					let img = [];
 					if (downloadURL) {
 						setTimeout(() => {
@@ -130,7 +129,14 @@ const CreateNewsPage = () => {
 
 	const onLoading = () => {
 		if (loading) {
-			return <Spinner />;
+			return (
+				<>
+					<Spinner 
+						styleProps={{with: '100%', height: '100%', objectFit: 'contain', position: 'relative', padding: '130px 130px', display: 'block', margin: '0 auto'}}
+					/>
+					<span className='progress'>{Math.floor(progress)} %</span>
+				</>
+			);
 		} else {
 			return (
 				<>

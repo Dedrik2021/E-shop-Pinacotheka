@@ -20,3 +20,11 @@
         }
     }
 }
+
+.creations-details {
+    transition: all 0.3s;
+
+    &.active {
+        filter: blur(10px)
+    }
+}

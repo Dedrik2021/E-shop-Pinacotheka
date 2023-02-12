@@ -7,7 +7,7 @@ import MessageIcon from '../../../assets/sprite/message-icon.svg';
 
 import './singlePaintingDetails.scss';
 
-const SinglePaintingDetails = memo(({ switchBtn, painting }) => {
+const SinglePaintingDetails = memo(({ switchBtn, painting, clickOnReviewBtn, clickOnLikeMeBtn, likeMe }) => {
 	return (
 		<section className="creations-details__info">
 			<h2 className="sr-only">Einzelheiten</h2>
@@ -45,26 +45,26 @@ const SinglePaintingDetails = memo(({ switchBtn, painting }) => {
 					</div>
 					<div className="details-card__message">
 						<button
-							className={`details-card__message-btn details-card__message-btn--like btn`}
+							className={`details-card__message-btn details-card__message-btn--like btn ${likeMe ? 'active' : ''}`}
 							type="button"
-							// onClick={onPressLike}
+							title={`${likeMe !== undefined ? 'Remove from favourite' : 'Add to fafourite'}`}
+							onClick={clickOnLikeMeBtn}
 						>
 							<span className="sr-only">like</span>
 							<svg width="18" height="18">
 								<use href={`${LikeIcon}#like`}></use>
 							</svg>
-							<span>{painting.like}</span>
 						</button>
 						<button
 							className="details-card__message-btn details-card__message-btn--message btn"
 							type="button"
 							style={{ justifyContent: 'center' }}
-							// onClick={() => (dispatch(setAuthorInfoBtn(0)), dispatch(setModal(true)))}
+							onClick={clickOnReviewBtn}
 						>
 							<svg width="18" height="18">
 								<use href={`${MessageIcon}#message`}></use>
 							</svg>
-							<span>{switchBtn ? 'Schreiben dem Autor' : 'Write to the author'}</span>
+							<span>{switchBtn ? 'Schreiben dem einen Kommentar' : 'Leave a comment'}</span>
 						</button>
 					</div>
 

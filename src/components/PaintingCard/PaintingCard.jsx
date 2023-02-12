@@ -50,7 +50,7 @@ const PaintingCard = memo(({ paintingInfo, switchBtn }) => {
 				<Link
 					className="painting-card__link"
 					to={`/SinglePainting/${paintingInfo.id}`}
-					onClick={() => clickOnPainting(paintingInfo.emailId)}
+					onClick={() => clickOnPainting(paintingInfo)}
 				>
 					<h3 className="painting-card__title">{paintingInfo.title}</h3>
 				</Link>
