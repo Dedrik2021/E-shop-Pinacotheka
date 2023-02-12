@@ -1,4 +1,5 @@
 import { memo } from 'react';
+import { Link } from 'react-router-dom';
 
 import AboutPaintingInfo from '../../../components/AboutPaintingInfo/AboutPaintingInfo';
 
@@ -7,7 +8,17 @@ import MessageIcon from '../../../assets/sprite/message-icon.svg';
 
 import './singlePaintingDetails.scss';
 
-const SinglePaintingDetails = memo(({ switchBtn, painting, clickOnReviewBtn, clickOnLikeMeBtn, likeMe }) => {
+const SinglePaintingDetails = memo((props) => {
+	const {
+		switchBtn,
+		painting,
+		clickOnReviewBtn,
+		clickOnLikeMeBtn,
+		likeMe,
+		clickOnBuyPainting,
+		buyPainting,
+	} = props;
+
 	return (
 		<section className="creations-details__info">
 			<h2 className="sr-only">Einzelheiten</h2>
@@ -45,9 +56,13 @@ const SinglePaintingDetails = memo(({ switchBtn, painting, clickOnReviewBtn, cli
 					</div>
 					<div className="details-card__message">
 						<button
-							className={`details-card__message-btn details-card__message-btn--like btn ${likeMe ? 'active' : ''}`}
+							className={`details-card__message-btn details-card__message-btn--like btn ${
+								likeMe ? 'active' : ''
+							}`}
 							type="button"
-							title={`${likeMe !== undefined ? 'Remove from favourite' : 'Add to fafourite'}`}
+							title={`${
+								likeMe !== undefined ? 'Remove from favourite' : 'Add to fafourite'
+							}`}
 							onClick={clickOnLikeMeBtn}
 						>
 							<span className="sr-only">like</span>
@@ -64,14 +79,13 @@ const SinglePaintingDetails = memo(({ switchBtn, painting, clickOnReviewBtn, cli
 							<svg width="18" height="18">
 								<use href={`${MessageIcon}#message`}></use>
 							</svg>
-							<span>{switchBtn ? 'Schreiben dem einen Kommentar' : 'Leave a comment'}</span>
+							<span>
+								{switchBtn ? 'Schreiben dem einen Kommentar' : 'Leave a comment'}
+							</span>
 						</button>
 					</div>
 
-					<AboutPaintingInfo
-                        info={painting}
-                        switchBtn={switchBtn}
-                    />
+					<AboutPaintingInfo info={painting} switchBtn={switchBtn} />
 					<div className="details-card__price">
 						<span className="details-card__price-sum">
 							<span>€</span>
@@ -87,13 +101,23 @@ const SinglePaintingDetails = memo(({ switchBtn, painting, clickOnReviewBtn, cli
 						</div>
 					</div>
 					<div className="details-card__btns">
-						<button
-							className="details-card__btns-btn details-card__btns-btn--buy btn btn--red-hover btn--universal"
-							type="submit"
-							// onClick={(e) => onBuy(e)}
-						>
-							{switchBtn ? 'Kaufen' : 'Buy'}
-						</button>
+						{buyPainting !== undefined ? (
+							<Link
+								className="details-card__btns-btn details-card__btns-btn--buy btn btn--red btn--universal"
+								to={'/cart'}
+							>
+								Buy Now
+							</Link>
+						) : (
+							<button
+								className={`details-card__btns-btn details-card__btns-btn--buy btn btn--red-hover btn--universal`}
+								type="submit"
+								onClick={clickOnBuyPainting}
+								title={`Add in Cart`}
+							>
+								{switchBtn ? 'Kaufen' : 'Buy'}
+							</button>
+						)}
 						<button
 							className="details-card__btns-btn btn btn--universal btn--red-hover"
 							type="button"

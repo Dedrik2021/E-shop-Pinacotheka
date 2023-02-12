@@ -20,7 +20,7 @@ import emptyImg from '../../assets/images/empty-painting.png';
 import './reviewModal.scss';
 
 const ReviewModal = (props) => {
-	const { openModal, handleClose, painting, author } = props;
+	const { openModal, handleClose, painting, author, setIsLoading, isLoading } = props;
 
 	const dispatch = useDispatch();
 
@@ -34,8 +34,6 @@ const ReviewModal = (props) => {
 	const [messages, setMessages] = useState([]);
 	const [startLimit, setStartLimit] = useState(0);
 	const [lastLimit, setLastLimit] = useState(10);
-    const [isLoading, setIsLoading] = useState(false)
-    const [limit, setLimit] = useState(null)
 
 	const { authorsDataStatus } = useSelector((state) => state.authorsSlice);
 	const { foundUser } = useSelector((state) => state.usersSlice);
@@ -52,8 +50,7 @@ const ReviewModal = (props) => {
 				}),
 		);
 
-        setLimit(messages && messages.length)
-	}, [author, painting.id, limit]);
+	}, [author, painting.id]);
 
 	const clickOpenMessage = (id) => {
 		setMessageIndex(id);
@@ -79,7 +76,6 @@ const ReviewModal = (props) => {
 		if (!validForm) return;
 
 		if (messageInput.val !== '') {
-            setIsLoading(true)
 			const newMessage = {
 				id: new Date().toISOString(),
 				initialID: painting.id,
@@ -91,25 +87,18 @@ const ReviewModal = (props) => {
 				timeToSend: new Date().toLocaleTimeString(),
 			};
 
-			setMessages([...messages, newMessage]);
+			setReverseMessages([newMessage, ...reverseMessages]);
 
 			const collectionReff = doc(database, 'authors', author.ID);
 
 			updateDoc(collectionReff, {
 				reviewsWorks: arrayUnion(newMessage),
 			})
-				.then(setMessageInput({ val: '', isValid: true }))
+			.then(setMessageInput({ val: '', isValid: true }))
 				.then(setLastLimit(10))
-				.then(dispatch(fetchAuthorsData()))
 				.catch((error) => {
 					console.log(error.message);
 				});
-			setTimeout(() => {
-				dispatch(fetchAuthorsData());
-			}, 700);
-            setTimeout(() => {
-                setIsLoading(false)
-            }, 1100);
 		}
 	};
 
@@ -123,34 +112,18 @@ const ReviewModal = (props) => {
         setTimeout(() => {
             setIsLoading(false)
         }, 1100);
-
-		const scrollToMyRef = () => {
-			window.scrollTo(0, listRefs.current.scrollIntoView())
-			window.scrollTo(0, listRefs.current.scrollIntoView())
-		}
-		setTimeout(() => {
-			scrollToMyRef()
-		}, 4000);
 	};
 
 	const clickToRemoveMessage = (id) => {
-        setIsLoading(true)
 		setReverseMessages(reverseMessages.filter((item) => item.id !== id));
 		const removeMessage = reverseMessages.find((item) => item.id === id);
 		const collectionReff = doc(database, 'authors', author.ID);
 		updateDoc(collectionReff, {
 			reviewsWorks: arrayRemove(removeMessage),
 		})
-			.then(dispatch(fetchAuthorsData()))
 			.catch((error) => {
 				console.log(error.message);
 			});
-		setTimeout(() => {
-			dispatch(fetchAuthorsData());
-		}, 700);
-        setTimeout(() => {
-            setIsLoading(false)
-        }, 1100);
 	};
 
     const style = {

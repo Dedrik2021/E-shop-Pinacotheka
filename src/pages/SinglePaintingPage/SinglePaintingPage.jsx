@@ -46,6 +46,7 @@ const SinglePaintingPage = () => {
 	const [watchedWorksByAuthorsLimitLast, setWatchedWorksByAuthorsLimitLast] = useState(6);
 	const [watchedWorksByAuthorsLimitStart, setWatchedWorksByAuthorsLimitStart] = useState(6);
 	const [openModal, setOpenModal] = useState(false)
+	const [isLoading, setIsLoading] = useState(false)
 
 	const { authorsData, authorsDataStatus, paintingWatched } = useSelector(
 		(state) => state.authorsSlice,
@@ -92,11 +93,13 @@ const SinglePaintingPage = () => {
 		const painting = foundPainting().searchPainting;
 		const author = foundPainting().foundAuthor;
 		const likeMeActive = foundUser && foundUser.likeMe.find(item => item.initialID === painting.id)
+		const buyingPainting = foundUser && foundUser.cart.find(item => item.initialID === painting.id)
 
 		return {
 			painting,
 			author,
-			likeMeActive
+			likeMeActive,
+			buyingPainting
 		}
 	}	
 
@@ -127,7 +130,12 @@ const SinglePaintingPage = () => {
 
 	const clickOnReviewBtn = () => {
 		if (user !== null) {
+			setIsLoading(true)
 			setOpenModal(!openModal)
+			dispatch(fetchAuthorsData())
+			setTimeout(() => {
+				setIsLoading(false)
+			}, 1100);
 		} else {
 			dispatch(setShowModal(!showModal))
 		}
@@ -136,12 +144,12 @@ const SinglePaintingPage = () => {
 	const clickOnLikeMeBtn = () => {
 		if (getItems().likeMeActive !== undefined) {
 			const removeLike = getItems().likeMeActive
-			const collectionReff = doc(database, user === 'authors' ? 'authors' : 'users', foundUser.ID);
+			const collectionReff = doc(database, foundUser.user === 'authors' ? 'authors' : 'users', foundUser.ID);
 
 			updateDoc(collectionReff, {
 				likeMe: arrayRemove(removeLike),
 			})
-				.then(dispatch(user === 'authors' ? fetchAuthorsData() : fetchUsersData()))
+				.then(dispatch(foundUser.user === 'authors' ? fetchAuthorsData() : fetchUsersData()))
 				.catch((error) => {
 					console.log(error.message);
 				});
@@ -160,16 +168,48 @@ const SinglePaintingPage = () => {
 				page: getItems().painting.page
 			};
 
-			const collectionReff = doc(database, user === 'authors' ? 'authors' : 'users', foundUser.ID);
+			const collectionReff = doc(database, foundUser.user === 'authors' ? 'authors' : 'users', foundUser.ID);
 
 			updateDoc(collectionReff, {
 				likeMe: arrayUnion(newLike),
 			})
-			.then(dispatch(user === 'authors' ? fetchAuthorsData() : fetchUsersData()))
+			.then(dispatch(foundUser.user === 'authors' ? fetchAuthorsData() : fetchUsersData()))
 				.catch((error) => {
 					console.log(error.message);
 				});
+			setTimeout(() => {
+				dispatch(foundUser.user === 'authors' ? fetchAuthorsData() : fetchUsersData())
+			}, 700)
 		}
+	}
+
+	const clickToBuyBtn = () => {
+		const newBuying = {
+			id: costomId(),
+			initialID: getItems().painting.id,
+			author: getItems().painting.cardInfo[0],
+			image: getItems().painting.image,
+			rating: getItems().painting.rating,
+			title: getItems().painting.title,
+			date: new Date().toLocaleDateString(),
+			timeToLike: new Date().toLocaleTimeString(),
+			lot: getItems().painting.lot,
+			price: getItems().painting.price,
+			page: getItems().painting.page
+		};
+
+	const collectionReff = doc(database, foundUser.user === 'authors' ? 'authors' : 'users', foundUser.ID);
+
+			updateDoc(collectionReff, {
+				cart: arrayUnion(newBuying),
+			})
+			.then(dispatch(foundUser.user === 'authors' ? fetchAuthorsData() : fetchUsersData()))
+				.catch((error) => {
+					console.log(error.message);
+				});
+			setTimeout(() => {
+				dispatch(foundUser.user === 'authors' ? fetchAuthorsData() : fetchUsersData())
+			}, 700)
 	}
 
 	return (
@@ -188,6 +228,8 @@ const SinglePaintingPage = () => {
 						itemProp={getItems().painting} 
 						author={getItems().author} 
 						painting={getItems().painting}
+						isLoading={isLoading}
+						setIsLoading={setIsLoading}
 					/>
 				)}
 			<div className={`creations-details ${openModal ? 'active' : ''}`}>
@@ -202,6 +244,8 @@ const SinglePaintingPage = () => {
 							clickOnReviewBtn={clickOnReviewBtn} 
 							clickOnLikeMeBtn={clickOnLikeMeBtn}
 							likeMe={getItems().likeMeActive}
+							clickOnBuyPainting={clickToBuyBtn}
+							buyPainting={getItems().buyingPainting}
 						/>
 					)}
 
