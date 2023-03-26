@@ -1,11 +1,27 @@
-import { memo } from 'react';
+import { memo, useState } from 'react';
 
 import CaretIcon from '../../assets/sprite/caret-icon.svg';
 import unknownImage from '../../assets/images/unknow-photo.png';
 
 import './messageCard.scss';
 
-const MessageCard = memo(({ message, switchBtn, setItemId, itemId, clickRemoveMessage }) => {
+const MessageCard = memo(({ message, switchBtn, clickRemoveMessage }) => {
+	const [messageId, setMessageId] = useState({ id: null, open: false });
+
+	const onShowMoreBtn = (id) => {
+		if (messageId.id === id) {
+			setMessageId({ id: id, open: !messageId.open });
+		} else {
+			setMessageId({ id: id, open: true });
+		}
+	};
+
+	const dateYestarday = (day) => {
+		var n = new Date();
+		n.setDate(n.getDate() + day);
+		return n.toLocaleDateString();
+	}
+
 	return (
 		<li className={`reviews__message`}>
 			<article className="user-message">
@@ -13,7 +29,7 @@ const MessageCard = memo(({ message, switchBtn, setItemId, itemId, clickRemoveMe
 					<div className="user-message__img-wrapper">
 						<img
 							src={message.avatar !== '' ? message.avatar : unknownImage}
-							alt={message.name}
+							alt={message}
 						/>
 					</div>
 				</span>
@@ -21,23 +37,33 @@ const MessageCard = memo(({ message, switchBtn, setItemId, itemId, clickRemoveMe
 					<time>
 						{message.timeToSend}
 						<span className="user-message__slash">/</span>
-						<span>{message.date}</span>
+						<span>
+							{message.date === new Date().toLocaleDateString()
+								? dateYestarday(-1) === message.date ? 'Yestarday' : 'Today'
+								: message.date}
+						</span>
 					</time>
 					<div className="user-message__wrapper-box"></div>
 					<span className="user-message__name">{message.name}</span>
 					<div className="user-message__text">
-						<p className={itemId === message.id ? 'active' : ''}>{message.message}</p>
+						<p
+							className={
+								messageId.open && messageId.id === message.id ? 'active' : ''
+							}
+						>
+							{message.message}
+						</p>
 					</div>
 					<div className="user-message__wrapper-btns">
 						{message.message.length > 300 && (
 							<button
 								className={`user-message__btn btn btn--universal btn--red ${
-									itemId === message.id ? 'active' : ''
+									messageId.open && messageId.id === message.id ? 'active' : ''
 								}`}
 								type="button"
-								onClick={() => setItemId(message.id)}
+								onClick={onShowMoreBtn.bind(this, message.id)}
 							>
-								{itemId === message.id
+								{messageId.open && messageId.id === message.id
 									? `${switchBtn ? 'Weniger anzeigen' : 'Show less'}`
 									: `${switchBtn ? 'Mehr anzeigen' : 'Show more'}`}
 								<svg width="20" height="20">
@@ -47,7 +73,7 @@ const MessageCard = memo(({ message, switchBtn, setItemId, itemId, clickRemoveMe
 						)}
 						<button
 							className="user-message__delete btn btn--universal"
-							onClick={() => clickRemoveMessage(message.id)}
+							onClick={clickRemoveMessage.bind(this, message.id)}
 							type={'button'}
 						>
 							Delete

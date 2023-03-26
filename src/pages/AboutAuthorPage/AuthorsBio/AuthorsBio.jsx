@@ -29,9 +29,10 @@ const AuthorsBio = memo((props) => {
 				</title>
 			</Helmet>
 			<section className="authors-bio">
-				<h1 className="sr-only">
+				<span className="sr-only">
 					{switchBtn ? 'Biographie das Autors' : 'Biography of the author'}
-				</h1>
+				</span>
+				<h1 className='title authors-bio__title-top'>Author</h1>
 				<div className="authors-bio__content">
 					<div className="authors-bio__inner">
 						<div className="authors-bio__img-wrapper">

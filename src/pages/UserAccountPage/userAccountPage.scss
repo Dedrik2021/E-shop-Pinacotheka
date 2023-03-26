@@ -1,0 +1,40 @@
+.user-account {
+    padding-top: 60px;
+
+    &__inner {
+        display: flex;
+    }
+
+    &__info {
+        max-width: 1275px;
+        width: 100%;
+    }
+
+    &__aside {
+        max-width: 300px;
+        width: 100%;
+        margin-right: 100px;
+    }
+}
+
+
+.btns {
+
+    &__list {
+        min-width: 300px;
+        width: 100%;
+    }
+
+    &__item {
+        width: 100%;
+
+        &:not(:last-child) {
+            margin-bottom: 20px;
+        }
+    }
+
+    &__btn {
+        padding: 13px 50px 12px;
+        width: 100%;
+    }
+}

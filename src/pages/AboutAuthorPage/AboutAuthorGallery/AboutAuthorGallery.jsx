@@ -45,6 +45,7 @@ const AboutAuthorGallery = memo((props) => {
 			</Helmet>
 			<section className={'about-author-gallery'}>
 				<span className='sr-only'></span>
+				<h1 className='title about-author-gallery__title'>Paintings</h1>
 				{paintings.length > 0 ? (
 					<>
 						<ul className="gallery__list cards-list">

@@ -3,6 +3,16 @@
 .authors-bio {
     max-width: 1295px;
     width: 100%;
+    position: relative;
+    padding-top: 60px;
+
+    &__title-top {
+        color: $red;
+        position: absolute;
+        top: -60px;
+        left: 50%;
+        transform: translateX(-50%);
+    }
 
     &__img-wrapper {
         position: relative;
@@ -38,7 +48,6 @@
 
     &__content {
         margin-bottom: 100px;
-        padding-top: 60px;
         position: relative;
 
         div:last-child {

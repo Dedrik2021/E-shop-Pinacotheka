@@ -1,7 +1,18 @@
+@import '../../../scss/vars';
+
 .about-author-gallery {
     max-width: 1275px;
     width: 100%;
     padding-bottom: 50px;
+    position: relative;
+
+    &__title {
+        color: $red;
+        position: absolute;
+        top: -60px;
+        left: 50%;
+        transform: translateX(-50%);
+    }
 
     .gallery {
         &__list {

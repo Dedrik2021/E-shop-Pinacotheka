@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { useState, useEffect, useRef, useMemo } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import Box from '@mui/material/Box';
 import Modal from '@mui/material/Modal';
@@ -25,10 +25,9 @@ const ReviewModal = (props) => {
 	const dispatch = useDispatch();
 
 	const messageRefs = useRef();
-	const listRefs = useRef()
+	const listRefs = useRef();
 
 	const [reverseMessages, setReverseMessages] = useState(null);
-	const [messageIndex, setMessageIndex] = useState(null);
 	const [messageInput, setMessageInput] = useState({ val: '', isValid: true });
 	const [validForm, setValidForm] = useState(true);
 	const [messages, setMessages] = useState([]);
@@ -49,17 +48,7 @@ const ReviewModal = (props) => {
 					return item.initialID === painting.id;
 				}),
 		);
-
 	}, [author, painting.id]);
-
-	const clickOpenMessage = (id) => {
-		setMessageIndex(id);
-		if (messageIndex !== id) {
-			setMessageIndex(id);
-		} else {
-			setMessageIndex(null);
-		}
-	};
 
 	const validateForm = () => {
 		setValidForm(true);
@@ -74,8 +63,9 @@ const ReviewModal = (props) => {
 		e.preventDefault();
 		validateForm();
 		if (!validForm) return;
-
+		
 		if (messageInput.val !== '') {
+			setIsLoading(true)
 			const newMessage = {
 				id: new Date().toISOString(),
 				initialID: painting.id,
@@ -94,24 +84,31 @@ const ReviewModal = (props) => {
 			updateDoc(collectionReff, {
 				reviewsWorks: arrayUnion(newMessage),
 			})
-			.then(setMessageInput({ val: '', isValid: true }))
+				.then(setMessageInput({ val: '', isValid: true }))
 				.then(setLastLimit(10))
 				.catch((error) => {
 					console.log(error.message);
 				});
+
+				setTimeout(() => {
+					dispatch(fetchAuthorsData());
+				}, 700);
+				setTimeout(() => {
+					setIsLoading(false);
+				}, 1100);
 		}
 	};
 
 	const clickOnMoreBtn = () => {
-        setIsLoading(true)
-		setLastLimit(lastLimit + 10);
+		setIsLoading(true);
+		setLastLimit((currentLimit) => currentLimit + 10);
 		dispatch(fetchAuthorsData());
-        setTimeout(() => {
-            dispatch(fetchAuthorsData());
-        }, 700);
-        setTimeout(() => {
-            setIsLoading(false)
-        }, 1100);
+		setTimeout(() => {
+			dispatch(fetchAuthorsData());
+		}, 700);
+		setTimeout(() => {
+			setIsLoading(false);
+		}, 1100);
 	};
 
 	const clickToRemoveMessage = (id) => {
@@ -120,13 +117,12 @@ const ReviewModal = (props) => {
 		const collectionReff = doc(database, 'authors', author.ID);
 		updateDoc(collectionReff, {
 			reviewsWorks: arrayRemove(removeMessage),
-		})
-			.catch((error) => {
-				console.log(error.message);
-			});
+		}).catch((error) => {
+			console.log(error.message);
+		});
 	};
 
-    const style = {
+	const style = {
 		position: 'absolute',
 		top: '50%',
 		left: '50%',
@@ -155,15 +151,13 @@ const ReviewModal = (props) => {
 					{!isLoading && authorsDataStatus === Status.SUCCESS ? (
 						reverseMessages && reverseMessages.length > 0 ? (
 							<div className="reviews__wrapper" ref={listRefs}>
-								<ul className="reviews__list" >
+								<ul className="reviews__list">
 									{reverseMessages &&
 										reverseMessages.map((item) => {
 											return (
 												<MessageCard
 													key={item.id}
 													message={item}
-													setItemId={clickOpenMessage}
-													itemId={messageIndex}
 													clickRemoveMessage={clickToRemoveMessage}
 												/>
 											);
@@ -180,20 +174,26 @@ const ReviewModal = (props) => {
 								)}
 							</div>
 						) : (
-							<div className='reviews__empty'>
+							<div className="reviews__empty">
 								<img
 									src={emptyImg}
 									alt="No data"
-									style={{ height: '420px', width: '570px', transform: 'rotate(5deg)', display: 'block', margin: '0 auto' }}
+									style={{
+										height: '420px',
+										width: '570px',
+										transform: 'rotate(5deg)',
+										display: 'block',
+										margin: '0 auto',
+									}}
 								/>
-                                <span className='reviews__nodata'>No Reviews</span>
+								<span className="reviews__nodata">No Reviews</span>
 							</div>
 						)
 					) : (
 						<Spinner
 							styleProps={{
 								with: '450px',
-								height: '490px',
+								height: '510px',
 								objectFit: 'contain',
 								position: 'relative',
 								padding: '180px 130px',
@@ -214,14 +214,14 @@ const ReviewModal = (props) => {
 							textareaRef={messageRefs}
 							labelName="Message"
 							styleArea={{
-								height: '150px',
+								height: '100px',
 								marginBottom: messageInput.isValid ? '25px' : '0px',
 								width: '745px',
-                                padding: '15px 30px 15px 15px'
+								padding: '15px 30px 15px 15px',
 							}}
 						/>
 						<button className="reviews__btn btn btn--red" type="submit">
-							Send Message
+							Leave a review
 						</button>
 					</form>
 					<button
