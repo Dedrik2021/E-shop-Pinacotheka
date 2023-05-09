@@ -1,3 +1,5 @@
+@import '../../scss/vars.scss';
+
 .user-account {
     padding-top: 60px;
 
@@ -38,3 +40,116 @@
         width: 100%;
     }
 }
+
+
+.review {
+
+    &__list {
+        // margin-bottom: 50px;
+    }
+}
+
+.reviews {
+
+    &__form {
+
+        display: flex;
+        height: 150px;
+    }
+
+    &__btn {
+        width: 150px;
+        padding: 10px;
+    }
+}
+
+.user-message {
+    background-color: rgba(0, 0, 0, 0.07);
+}
+
+.messanger {
+    padding-bottom: 100px;
+    position: relative;
+
+    &__title {
+        position: absolute;
+        top: -120px;
+        color: $red;
+        left: 50%;
+        transform: translateX(-50%);
+    }
+
+    
+
+    &__item {
+        padding: 10px 20px;
+        background-color: rgba(0, 0, 0, 0.07);
+        border-radius: 10px;
+        transition: background-color 0.3s;
+
+        &:not(:last-child) {
+            margin-bottom: 30px;
+        }
+
+        &:hover {
+            background-color: rgba(0, 0, 0, 0.2);
+        }
+    }
+
+    &__link {
+        width: 100%;
+    }
+
+    &__avatar {
+        border-radius: 50%;
+        object-fit: cover;
+        margin-right: 50px;
+    }
+
+    &__info {
+        display: flex;
+        justify-content: space-between;
+    }
+
+    &__avatar-name {
+        display: flex;
+        align-items: center;
+    }
+
+    .reviews__list {
+        padding: 20px;
+        margin-bottom: 40px;
+        border-radius: 10px;
+        background-color: rgba(0, 0, 0, 0.03);
+        border: 1px solid black;
+    }
+
+    .reviews__list,
+    .messanger__list {
+        background-color: rgba(0, 0, 0, 0.05);
+    }
+
+
+
+    .messanger {
+        position: relative;
+        
+        &__list {
+            padding: 20px;
+            border-radius: 10px;
+        }
+
+        &__item {
+            cursor: pointer;
+        }
+
+        &__btn {
+            position: absolute;
+            right: 0;
+            top: -40px;
+        }
+    }
+}
+
+
+

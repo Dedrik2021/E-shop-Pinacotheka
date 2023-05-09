@@ -17,6 +17,8 @@ const SinglePaintingDetails = memo((props) => {
 		likeMe,
 		clickOnBuyPainting,
 		buyPainting,
+		likeBtn,
+		buyBtn
 	} = props;
 
 	return (
@@ -57,7 +59,7 @@ const SinglePaintingDetails = memo((props) => {
 					<div className="details-card__message">
 						<button
 							className={`details-card__message-btn details-card__message-btn--like btn ${
-								likeMe ? 'active' : ''
+								likeBtn ? 'active' : ''
 							}`}
 							type="button"
 							title={`${
@@ -101,7 +103,7 @@ const SinglePaintingDetails = memo((props) => {
 						</div>
 					</div>
 					<div className="details-card__btns">
-						{buyPainting !== undefined ? (
+						{buyBtn ? (
 							<Link
 								className="details-card__btns-btn details-card__btns-btn--buy btn btn--red btn--universal"
 								to={'/cart'}

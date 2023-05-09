@@ -7,6 +7,7 @@ const initialState = {
     userOfficeDropdown: false,
     foundUser: {},
     usersData: [],
+    countLikeMe: 0,
     usersDataStatus: Status.LOADING
 }
 
@@ -19,6 +20,9 @@ const usersInfoSlice = createSlice({
         },
         setFoundUser(state, action) {
             state.foundUser = action.payload
+        },
+        setCountLikeMe(state, action) {
+            state.countLikeMe = action.payload
         }
     },
     extraReducers: (builder) => {
@@ -38,6 +42,6 @@ const usersInfoSlice = createSlice({
     }
 })
 
-export const {setUserOfficeDropdown, setFoundUser} = usersInfoSlice.actions
+export const {setUserOfficeDropdown, setFoundUser, setCountLikeMe} = usersInfoSlice.actions
 
 export default usersInfoSlice.reducer

@@ -22,14 +22,18 @@ import { setShowModal } from '../../redux/slices/modalContentSlice';
 import { Status } from '../../utils/status/status';
 import { fetchUsersData } from '../../redux/modules/users/usersThunks';
 import { fetchAuthorsData } from '../../redux/modules/authors/authorsThunks';
+import { setCountLikeMe } from '../../redux/modules/users/usersSlice';
 
 import './singlePaintingPage.scss';
+import { useLayoutEffect } from 'react';
 
 const SinglePaintingPage = () => {
 	const { id } = useParams();
 	const auth = getAuth();
 	const dispatch = useDispatch();
 	const user =  auth.currentUser;
+
+	const { countLikeMe} = useSelector((state) => state.usersSlice);
 
 	const [filterBtn, setFilterBtn] = useState(0);
 	const [authorsEmailId, setAuthorsEmailId] = useState('');
@@ -47,6 +51,8 @@ const SinglePaintingPage = () => {
 	const [watchedWorksByAuthorsLimitStart, setWatchedWorksByAuthorsLimitStart] = useState(6);
 	const [openModal, setOpenModal] = useState(false)
 	const [isLoading, setIsLoading] = useState(false)
+	const [likeBtn, setLikeBtn] = useState(false);
+	const [buyBtn, setBuyBtn] = useState(false);
 
 	const { authorsData, authorsDataStatus, paintingWatched } = useSelector(
 		(state) => state.authorsSlice,
@@ -104,6 +110,16 @@ const SinglePaintingPage = () => {
 	}	
 
 	useMemo(() => {
+		setLikeBtn(getItems().likeMeActive !== undefined ? true : false)
+	}, [getItems().likeMeActive])
+	
+	
+	useMemo(() => {
+		setBuyBtn(getItems().buyingPainting !== undefined ? true : false)
+	}, [getItems().buyingPainting])
+
+
+	useMemo(() => {
 		setAuthorsWorksLimitLast(6 * authorsWorksDataSelected);
 		setAuthorsWorksLimitStart(authorsWorksLimitLast - 6);
 
@@ -141,11 +157,14 @@ const SinglePaintingPage = () => {
 		}
 	}
 
+	
 	const clickOnLikeMeBtn = () => {
-		if (getItems().likeMeActive !== undefined) {
+		setLikeBtn(!likeBtn);
+		if (likeBtn) {
+			dispatch(setCountLikeMe(countLikeMe - 1))
 			const removeLike = getItems().likeMeActive
 			const collectionReff = doc(database, foundUser.user === 'authors' ? 'authors' : 'users', foundUser.ID);
-
+			
 			updateDoc(collectionReff, {
 				likeMe: arrayRemove(removeLike),
 			})
@@ -154,6 +173,8 @@ const SinglePaintingPage = () => {
 					console.log(error.message);
 				});
 		} else {
+			
+			dispatch(setCountLikeMe(countLikeMe + 1))
 			const newLike = {
 				id: costomId(),
 				initialID: getItems().painting.id,
@@ -174,16 +195,15 @@ const SinglePaintingPage = () => {
 				likeMe: arrayUnion(newLike),
 			})
 			.then(dispatch(foundUser.user === 'authors' ? fetchAuthorsData() : fetchUsersData()))
-				.catch((error) => {
-					console.log(error.message);
-				});
-			setTimeout(() => {
-				dispatch(foundUser.user === 'authors' ? fetchAuthorsData() : fetchUsersData())
-			}, 700)
+			.catch((error) => {
+				console.log(error.message);
+			});
 		}
+		
 	}
 
 	const clickToBuyBtn = () => {
+		setBuyBtn(true)
 		const newBuying = {
 			id: costomId(),
 			initialID: getItems().painting.id,
@@ -198,7 +218,7 @@ const SinglePaintingPage = () => {
 			page: getItems().painting.page
 		};
 
-	const collectionReff = doc(database, foundUser.user === 'authors' ? 'authors' : 'users', foundUser.ID);
+		const collectionReff = doc(database, foundUser.user === 'authors' ? 'authors' : 'users', foundUser.ID);
 
 			updateDoc(collectionReff, {
 				cart: arrayUnion(newBuying),
@@ -207,9 +227,6 @@ const SinglePaintingPage = () => {
 				.catch((error) => {
 					console.log(error.message);
 				});
-			setTimeout(() => {
-				dispatch(foundUser.user === 'authors' ? fetchAuthorsData() : fetchUsersData())
-			}, 700)
 	}
 
 	return (
@@ -244,8 +261,10 @@ const SinglePaintingPage = () => {
 							clickOnReviewBtn={clickOnReviewBtn} 
 							clickOnLikeMeBtn={clickOnLikeMeBtn}
 							likeMe={getItems().likeMeActive}
+							likeBtn={likeBtn}
 							clickOnBuyPainting={clickToBuyBtn}
 							buyPainting={getItems().buyingPainting}
+							buyBtn={buyBtn}
 						/>
 					)}
 

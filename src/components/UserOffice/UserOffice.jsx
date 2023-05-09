@@ -5,10 +5,14 @@ import { Link } from 'react-router-dom';
 
 import { database } from '../../firebase/firebaseConfig';
 
+import { setCountLikeMe } from '../../redux/modules/users/usersSlice';
+
 import unknowImg from '../../assets/images/unknow-photo.png'
 import UserIcon from '../../assets/sprite//user-icon.svg';
 
 import './userOffice.scss'
+import { useEffect } from 'react';
+import { useMemo } from 'react';
 
 const UserOffice = memo((props) => {
 	const { logOut, findUser, userOfficeDropdownRefs, openLogout, setUserOfficeDropdown } = props;
@@ -16,9 +20,13 @@ const UserOffice = memo((props) => {
 	const dispatch = useDispatch();
 	const linkRefs = useRef([]);
 
-	const userOfficeDropdown = useSelector((state) => state.usersSlice.userOfficeDropdown);
+	const {userOfficeDropdown, countLikeMe} = useSelector((state) => state.usersSlice);
 	const switchLanguageBtn = useSelector((state) => state.langBtnsSlice.switchLanguageBtn);
 	const switchBtn = switchLanguageBtn[0] === 0;
+
+	useEffect(() => {
+		dispatch(setCountLikeMe(findUser && findUser.likeMe.length > 0 ? findUser.likeMe.length : 0));
+	}, [dispatch, findUser])
 
 	const userLinks = [
 		{
@@ -30,7 +38,7 @@ const UserOffice = memo((props) => {
 			id: 1,
 			title: switchBtn ? 'Was dir gefallt:' : 'What you like:',
 			path: switchBtn ? '/DieIhnenGefallen' : '/WhatYouLike',
-			countItems: findUser && findUser.likeMe.length > 0 ? findUser.likeMe.length : 0,
+			countItems: countLikeMe
 		},
 		{
 			id: 2,
@@ -50,7 +58,7 @@ const UserOffice = memo((props) => {
 			id: 1,
 			title: switchBtn ? 'Was dir gefallt:' : 'What you like:',
 			path: switchBtn ? '/DieIhnenGefallen' : '/WhatYouLike',
-			countItems: findUser && findUser.likeMe.length > 0 ? findUser.likeMe.length : 0,
+			countItems: countLikeMe
 		},
 		{
 			id: 2,

@@ -5,7 +5,7 @@ import unknownImage from '../../assets/images/unknow-photo.png';
 
 import './messageCard.scss';
 
-const MessageCard = memo(({ message, switchBtn, clickRemoveMessage }) => {
+const MessageCard = memo(({ message, switchBtn, clickRemoveMessage, foundUser, styles }) => {
 	const [messageId, setMessageId] = useState({ id: null, open: false });
 
 	const onShowMoreBtn = (id) => {
@@ -23,8 +23,9 @@ const MessageCard = memo(({ message, switchBtn, clickRemoveMessage }) => {
 	}
 
 	return (
-		<li className={`reviews__message`}>
+		<li className={`reviews__message`} style={styles}>
 			<article className="user-message">
+
 				<span className="user-message__link">
 					<div className="user-message__img-wrapper">
 						<img
@@ -44,7 +45,7 @@ const MessageCard = memo(({ message, switchBtn, clickRemoveMessage }) => {
 						</span>
 					</time>
 					<div className="user-message__wrapper-box"></div>
-					<span className="user-message__name">{message.name}</span>
+					<span className="user-message__name">{message.name.user}</span>
 					<div className="user-message__text">
 						<p
 							className={

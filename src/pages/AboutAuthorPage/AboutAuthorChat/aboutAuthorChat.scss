@@ -4,7 +4,7 @@
     max-width: 1275px;
     width: 100%;
     position: relative;
-    padding-top: 60px;
+    padding: 60px 0 100px;
 
     &__title {
         color: $red;
@@ -17,17 +17,21 @@
     .reviews {
     
         &__list {
-            margin-bottom: 50px;
+            padding: 20px;
+            margin-bottom: 40px;
+            border-radius: 10px;
+            background-color: rgba(0, 0, 0, 0.03);
+            border: 1px solid black;
         }
     
         &__form {
             display: flex;
-            padding-top: 50px;
         }
         
         &__btn {
-            padding: 0px;
+            padding: 10px;
             height: 150px;
+            width: 150px;
         }
     }
 }

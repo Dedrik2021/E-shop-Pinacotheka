@@ -1,5 +1,5 @@
 import Helmet from 'react-helmet';
-import { useDispatch, useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
 
 import UserInfoSkeleton from '../../../skeletons/userInfoSkeleton';
 
@@ -72,6 +72,7 @@ const UserAccountInfo = () => {
                 ) : (
                     <UserInfoSkeleton/>
                 )}
+				
 			</section>
 		</>
 	);
