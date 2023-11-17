@@ -38,10 +38,15 @@ const AboutAuthorPage = () => {
 	const [reviewsDataLimitStart, setReviewsDataLimitStart] = useState(20);
 	const [loading, setLoading] = useState(false);
 	const [foundedAuthor, setFoundedAuthor] = useState([]);
+	const [messages, setMessages] = useState([]);
+	const [reviews, setReviews] = useState([]);
 
 	const { authorsData, authorsDataStatus, aboutAuthorSwitchContentBtn } = useSelector(
 		(state) => state.authorsSlice,
 	);
+
+	const { foundUser, usersDataStatus } = useSelector((state) => state.usersSlice);
+
 	const switchLanguageBtn = useSelector((state) => state.langBtnsSlice.switchLanguageBtn);
 	const switchBtn = switchLanguageBtn[0] === 0;
 
@@ -52,12 +57,18 @@ const AboutAuthorPage = () => {
 		{ id: 3, title: 'Chat' },
 	];
 
+	useEffect(() => {
+		setReviews(foundedAuthor !== undefined ? foundedAuthor.feedBack : []);
+		setMessages(foundedAuthor !== undefined && foundUser && foundedAuthor.chat.filter((message) => message.chatId === foundUser.ID + foundedAuthor.ID));
+	}, [foundUser, foundedAuthor]);
+
+
 	useMemo(() => {
 		setFoundedAuthor(() => authorsData.find((author) => author.id === id));
 	}, [authorsData, id]);
 
 	const foundAuthorsItems = useCallback(() => {
-		const foundAuthor = authorsData.find((author) => author.id === id);
+		const foundAuthor = authorsData && authorsData.find((author) => author.id === id);
 		return { foundAuthor };
 	}, [authorsData, id]);
 
@@ -77,12 +88,12 @@ const AboutAuthorPage = () => {
 
 	useEffect(() => {
 		setDataLength(
-			foundAuthorsItems().foundAuthor &&
-				Math.ceil(foundAuthorsItems().foundAuthor.works.length / 16),
+			foundAuthorsItems().foundAuthor !== undefined ?
+				Math.ceil(foundAuthorsItems().foundAuthor.works.length / 16) : 1,
 		);
 		setReviewsDataLength(
-			foundAuthorsItems().foundAuthor &&
-				Math.ceil(foundAuthorsItems().foundAuthor.feedBack.length / 20),
+			foundAuthorsItems().foundAuthor !== undefined ?
+				Math.ceil(foundAuthorsItems().foundAuthor.feedBack.length / 20) : 1,
 		);
 	}, [foundAuthorsItems]);
 
@@ -95,13 +106,18 @@ const AboutAuthorPage = () => {
 
 	useEffect(() => {
 		window.scroll(0, 0);
-	}, []);
+		if (aboutAuthorSwitchContentBtn === 2 || aboutAuthorSwitchContentBtn === 3) {
+			dispatch(fetchAuthorsData());
+		} 
+	}, [aboutAuthorSwitchContentBtn, dispatch]);
 
 	const clickOnAuthorInfoBtn = (id) => {
+		setLoading(true)
 		dispatch(setAboutAuthorSwitchContentBtn(id));
 		setDataSelected(1);
 		setReviewsDataSelected(1);
-	};
+		setLoading(false)
+	}
 
 	const authorsBio = () => {
 		if (loading || authorsDataStatus === Status.LOADING || authorsDataStatus === Status.ERROR) {
@@ -119,17 +135,38 @@ const AboutAuthorPage = () => {
 	};
 
 	const onDeleteMessage = (id) => {
+		setLoading(true)
+		console.log(id);
 		const collectionReff = doc(database, 'authors', foundedAuthor.ID);
 		const docToDelete = foundedAuthor.feedBack.find((item) => item.id === id);
+
+		const collectionChatReff = doc(database, 'authors', foundedAuthor.ID);
+		const docToDeleteMessage = foundedAuthor.chat.find((item) => item.id === id);
+
+		const collectionUserReff = doc(database, foundUser && foundUser.user === 'author' ? 'authors' : 'users', foundUser.ID);
+		const docToDeleteUserMessage = foundUser.chat.find((item) => item.id === id);
+		
+		setMessages((message) => message.filter((item) => item.id !== id))
+		setReviews((review) => review.filter((item) => item.id !== id))
+
 		if (window.confirm('Do you want to delite this message? Are you sure?')) {
-			setLoading(true);
-			updateDoc(collectionReff, {
-				feedBack: arrayRemove(docToDelete),
-			});
-			dispatch(fetchAuthorsData());
+			if (aboutAuthorSwitchContentBtn === 3) {
+				updateDoc(collectionChatReff, {
+					chat: arrayRemove(docToDeleteMessage),
+				});
+	
+				updateDoc(collectionUserReff, {
+					chat: arrayRemove(docToDeleteUserMessage),
+				});
+			} else {
+				updateDoc(collectionReff, {
+					feedBack: arrayRemove(docToDelete),
+				});
+			}
+
 			setTimeout(() => {
-				setLoading(false);
-			}, 1500);
+				setLoading(false)
+			}, 100);
 		}
 	};
 
@@ -188,6 +225,8 @@ const AboutAuthorPage = () => {
 						loading={loading}
 						setLoading={setLoading}
 						onDeleteMessage={onDeleteMessage}
+						setReviews={setReviews}
+						reviews={reviews}
 					/>
 				);
 			case 3:
@@ -201,6 +240,10 @@ const AboutAuthorPage = () => {
 						limitStart={reviewsDataLimitStart}
 						dataSelected={reviewsDataSelected}
 						onDeleteMessage={onDeleteMessage}
+						setMessages={setMessages}
+						messages={messages}
+						setLoading={setLoading}
+						loading={loading}
 					/>
 				);
 			default:

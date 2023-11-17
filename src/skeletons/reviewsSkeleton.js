@@ -5,9 +5,9 @@ const ReviewsSkeleton = () => {
 	return (
 		<ContentLoader
 			speed={2}
-			width={1295}
+			width={1275}
 			height={200}
-			viewBox="0 0 1295 200"
+			viewBox="0 0 1275 200"
 			backgroundColor="#b3b2b2"
 			foregroundColor="#f2eeee"
 		>

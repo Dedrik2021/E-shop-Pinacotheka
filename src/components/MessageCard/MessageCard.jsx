@@ -74,7 +74,7 @@ const MessageCard = memo(({ message, switchBtn, clickRemoveMessage, foundUser, s
 						)}
 						<button
 							className="user-message__delete btn btn--universal"
-							onClick={clickRemoveMessage.bind(this, message.id)}
+							onClick={clickRemoveMessage.bind(this, message.chatId ? message.chatId : message.id)}
 							type={'button'}
 						>
 							Delete

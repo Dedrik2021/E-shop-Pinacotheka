@@ -33,12 +33,13 @@ const AboutAuthorChat = memo((props) => {
 		loading,
 		onDeleteMessage,
 		setLoading,
+		setMessages,
+		messages,
 	} = props;
 
 	const dispatch = useDispatch();
 	const [messageInput, setMessageInput] = useState({ val: '', isValid: true });
 	const [validForm, setValidForm] = useState(true);
-	const [previousChat, setPreviousChat] = useState([]);
 
 	const { foundUser } = useSelector((state) => state.usersSlice);
 
@@ -50,10 +51,6 @@ const AboutAuthorChat = memo((props) => {
 				item.userInit.user === foundUser.emailId &&
 				item.userInit.author === authorInfo.emailId,
 		);
-
-	useMemo(() => {
-		setPreviousChat(chatContent);
-	}, []);
 
 	const validateForm = () => {
 		setValidForm(true);
@@ -68,14 +65,16 @@ const AboutAuthorChat = memo((props) => {
 		e.preventDefault();
 		validateForm();
 		if (!validForm) return;
-
+		setLoading(true);
 		if (messageInput.val !== '' && foundUser.emailId !== authorInfo.emailId) {
 			const newUserMessage = {
 				id: new Date().toISOString(),
 				name: { user: foundUser.title, author: authorInfo.title },
 				avatar: foundUser.image,
 				userInit: { user: foundUser.emailId, author: authorInfo.emailId },
-				chatId: foundUser.ID,
+				chatId: foundUser.ID + authorInfo.ID,
+				userId: foundUser.ID,
+				authorId: authorInfo.ID,
 				rating: 0,
 				date: new Date().toLocaleDateString(),
 				message: messageInput.val,
@@ -83,7 +82,7 @@ const AboutAuthorChat = memo((props) => {
 				dateFilter: new Date().toISOString(),
 			};
 
-			setPreviousChat((prev) => [...prev, newUserMessage]);
+			setMessages((prevMessages) => [...prevMessages, newUserMessage]);
 
 			const collectionReffAuthor = doc(database, 'authors', authorInfo.ID);
 			const collectionReffUser = doc(
@@ -107,10 +106,12 @@ const AboutAuthorChat = memo((props) => {
 				.catch((error) => {
 					console.log(error.message);
 				});
+
+			setTimeout(() => {
+				setLoading(false);
+			}, 100);
 		}
 	};
-
-	// console.log(foundUser.chat.filter(item => item.authorInit === authorInfo.emailId));
 
 	return (
 		<>
@@ -120,19 +121,26 @@ const AboutAuthorChat = memo((props) => {
 			</Helmet>
 			<section className="about-author-chat">
 				<span className="sr-only">Chat</span>
-				<h1 className="title about-author-chat__title">Chat with {authorInfo && authorInfo.title}</h1>
-
-				{previousChat.length > 0 ? (
-					<ul className="reviews__list">
-						{authorsDataStatus === Status.SUCCESS && !loading
-							? chatContent &&
-							  previousChat.map((item, i) => {
+				<h1 className="title about-author-chat__title">
+					Chat with {authorInfo && authorInfo.title}
+				</h1>
+				{messages && messages.length > 0 ? (
+					loading ? (
+						[
+							...new Array(
+								messages && messages.length
+							),
+						].map((_, i) => <ReviewsSkeleton key={i} />)
+					) : (
+						<ul className="reviews__list">
+							{chatContent &&
+								messages.map((item, i) => {
 									return foundUser.title === item.name.user ? (
 										<MessageCard
 											message={item}
 											key={i}
 											switchBtn={switchBtn}
-											clickRemoveMessage={onDeleteMessage}
+											clickRemoveMessage={() => onDeleteMessage(item.id)}
 											foundUser={foundUser}
 											styles={{ width: '48%', marginLeft: 'auto' }}
 										/>
@@ -141,26 +149,28 @@ const AboutAuthorChat = memo((props) => {
 											message={item}
 											key={i}
 											switchBtn={switchBtn}
-											clickRemoveMessage={onDeleteMessage}
+											clickRemoveMessage={() => onDeleteMessage(item.id)}
 											foundUser={foundUser}
 											styles={{ width: '48%' }}
 										/>
 									);
-							  })
-							: [
-									...new Array(authorInfo && authorInfo.chat.length).slice(
-										limitStart,
-										limitLast,
-									),
-							  ].map((_, i) => <ReviewsSkeleton key={i} />)}
-					</ul>
-				) : (
+								})}
+						</ul>
+						
+					)
+				) : messages && messages.length === 0 ? (
 					<PaintingAttention
 						title="here no messages"
 						attention1="Be the first"
 						attention2="To write a message"
 						marginTop="0px"
 					/>
+				) : (
+					[
+						...new Array(
+							messages !== undefined && messages.length > 0 ? messages.length : 3,
+						),
+					].map((_, i) => <ReviewsSkeleton key={i} />)
 				)}
 
 				<form className="reviews__form" onSubmit={(e) => addMessage(e)}>

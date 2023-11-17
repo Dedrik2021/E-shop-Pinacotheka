@@ -1,7 +1,6 @@
-import { useEffect, useState } from 'react';
-import { Link, useParams } from 'react-router-dom';
+import { useEffect, useLayoutEffect, useMemo, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { doc, updateDoc, arrayUnion } from 'firebase/firestore/lite';
+import { doc, updateDoc, arrayUnion, arrayRemove } from 'firebase/firestore/lite';
 
 import BreadCrumbs from '../../components/BreadCrumbs/BreadCrumbs';
 import UserAccountInfo from './UserAccountInfo/UserAccountInfo';
@@ -20,11 +19,11 @@ import './userAccountPage.scss';
 
 const UserAccount = () => {
 	const dispatch = useDispatch();
-	const paramsId = useParams().id;
 	const [previousChats, setPreviousChats] = useState([]);
 	const [messageInput, setMessageInput] = useState({ val: '', isValid: true });
 	const [validForm, setValidForm] = useState(true);
 	const [userChatId, setUserChatId] = useState(null);
+	const [loading, setLoading] = useState(false);
 
 	const { authorsData, authorsDataStatus, aboutAuthorSwitchContentBtn } = useSelector(
 		(state) => state.authorsSlice,
@@ -69,27 +68,48 @@ const UserAccount = () => {
 		return chatId;
 	};
 
+	const chatik = foundUser && [...filteredUserChat, ...previousChats];
+	const filteringChatik = foundUser && chatik.filter((item) => item.chatId === userChatId);
+	
+	useEffect(() => {
+		setPreviousChats(filteringChatik ? filteringChatik : [])
+	}, [])
+
+	console.log(previousChats);
+
 	const onDeleteMessage = (id) => {
-		// const collectionReff = doc(database, 'authors', foundedAuthor.ID);
-		// const docToDelete = foundedAuthor.feedBack.find((item) => item.id === id);
+		console.log('ondelete', id);
+		// setLoading(true);
+		// const collectionChatReff = doc(database, 'authors', userChatId);
+		// const docToDeleteMessage = filteringChatik.find((item) => item.id === id);
+
+		// const collectionUserReff = doc(
+		// 	database,
+		// 	foundUser && foundUser.user === 'author' ? 'authors' : 'users',
+		// 	foundUser.ID,
+		// );
+		// const docToDeleteUserMessage = filteringChatik.find((item) => item.id === id);
+
+		setPreviousChats((prevChat) => prevChat.filter((item) => item.id !== id));
+
 		// if (window.confirm('Do you want to delite this message? Are you sure?')) {
-		// 	setLoading(true);
-		// 	updateDoc(collectionReff, {
-		// 		feedBack: arrayRemove(docToDelete),
+		// 	updateDoc(collectionChatReff, {
+		// 		chat: arrayRemove(docToDeleteMessage),
 		// 	});
-		// 	dispatch(fetchAuthorsData());
+
+		// 	updateDoc(collectionUserReff, {
+		// 		chat: arrayRemove(docToDeleteUserMessage),
+		// 	});
+
 		// 	setTimeout(() => {
 		// 		setLoading(false);
-		// 	}, 1500);
+		// 	}, 100);
 		// }
 	};
 
 	const clickToOpenUserChat = (id) => {
 		setUserChatId(id);
-	};
-
-	const clickToCloseUserChat = () => {
-		setUserChatId(null);
+		console.log('clickToOpenUserChat', id);
 	};
 
 	const validateForm = () => {
@@ -153,9 +173,6 @@ const UserAccount = () => {
 		}
 	};
 
-	const chatik = foundUser && [...filteredUserChat, ...previousChats];
-	const filteringChatik = foundUser && chatik.filter((item) => item.chatId === userChatId);
-
 	const showContent = () => {
 		switch (aboutAuthorSwitchContentBtn) {
 			case 0:
@@ -179,13 +196,15 @@ const UserAccount = () => {
 							usersDataStatus === Status.SUCCESS ? (
 								<ul className={userChatId ? 'reviews__list' : 'messanger__list'}>
 									{userChatId
-										? filteringChatik.map((message, i) => {
+										? previousChats.map((message, i) => {
 												return foundUser.title === message.name.user ? (
 													<MessageCard
 														message={message}
 														key={i}
 														switchBtn={switchBtn}
-														clickRemoveMessage={onDeleteMessage}
+														clickRemoveMessage={() =>
+															onDeleteMessage(message.id)
+														}
 														foundUser={foundUser}
 														styles={{
 															width: '48%',
@@ -197,7 +216,7 @@ const UserAccount = () => {
 														message={message}
 														key={i}
 														switchBtn={switchBtn}
-														clickRemoveMessage={onDeleteMessage}
+														clickRemoveMessage={() => onDeleteMessage(message.id)}
 														foundUser={foundUser}
 														styles={{ width: '48%' }}
 													/>
@@ -263,11 +282,14 @@ const UserAccount = () => {
 								[...new Array(5)].map((_, i) => <ReviewsSkeleton key={i} />)
 							)
 						) : (
-							<PaintingAttention
-								title="No messages"
-								attention1="Here is no messages yet."
-								marginTop="0"
-							/>
+							(usersDataStatus === Status.SUCCESS ||
+								authorsDataStatus === Status.SUCCESS) && (
+								<PaintingAttention
+									title="No messages"
+									attention1="Here is no messages yet."
+									marginTop="0"
+								/>
+							)
 						)}
 						{userChatId && (
 							<form className="reviews__form" onSubmit={(e) => addMessage(e)}>

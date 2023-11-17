@@ -5,14 +5,14 @@ import { getDatabase } from 'firebase/database';
 import { getStorage } from 'firebase/storage';
 
 const firebaseConfig  = {
-	apiKey: 'AIzaSyDdQxVIBYDWcJ5la1nJjhTMMqADyuSOsmk',
-	authDomain: 'pinakotheka-12056.firebaseapp.com',
-	databaseURL: 'https://pinakotheka-12056-default-rtdb.europe-west1.firebasedatabase.app',
-	projectId: 'pinakotheka-12056',
-	storageBucket: 'pinakotheka-12056.appspot.com',
-	messagingSenderId: '360982582119',
-	appId: '1:360982582119:web:faa001120e772ef8c095c2',
-	measurementId: 'G-60T7YVJ275',
+	apiKey: process.env.react_APP_API_KEY,
+	authDomain: process.env.react_APP_AUTH_DOMAIN,
+	databaseURL: process.env.react_APP_DATABASE_URL,
+	projectId: process.env.react_APP_PROJECT_ID,
+	storageBucket: process.env.react_APP_STORAGE_BUCKET,
+	messagingSenderId: process.env.react_APP_SENDER_ID,
+	appId: process.env.react_APP_APP_ID,
+	measurementId: process.env.react_APP_MEASUREMENT_ID,
 };
 
 export const app = initializeApp(firebaseConfig);
